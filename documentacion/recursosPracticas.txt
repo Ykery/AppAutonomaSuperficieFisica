@@ -17,7 +17,7 @@ https://www.pythonguis.com/tutorials/pyqt6-plotting-pyqtgraph/ -> Integrar gráf
 
 https://stackabuse.com/styling-pyqt6-applications-default-and-custom-qss-stylesheets/ -> INGLES, usa CSS para dar estilos a qt6
 
-
+https://dev.to/amigosmaker/pyqt-vs-pyside-spanish-2kmg -> curiosidades
 
 ----------------------
 
