@@ -19,6 +19,12 @@ https://stackabuse.com/styling-pyqt6-applications-default-and-custom-qss-stylesh
 
 https://dev.to/amigosmaker/pyqt-vs-pyside-spanish-2kmg -> curiosidades
 
+https://pyshine.com/categories/ -> INGLES mucha crema, pero esta todo en pyqt5...
+
+https://pyphotometry.readthedocs.io/en/latest/ -> INGLES recibir datos analogicos/digitales
+
+https://books.google.es/books?id=L7MSEAAAQBAJ&pg=PA2&lpg=PA2&dq=how+to+make+a+voltage+level+signal+on+pyqt6&source=bl&ots=vKV54Fw3hq&sig=ACfU3U3BZMPDe_iPx9vPoOnlWxwo6X8ovQ&hl=es&sa=X&ved=2ahUKEwi404ToyaaFAxUBTqQEHe8eCts4FBDoAXoECAIQAw#v=onepage&q=how%20to%20make%20a%20voltage%20level%20signal%20on%20pyqt6&f=false -> INGLES como manejar pyqt..creo que es para el 5. Es un manual
+
 ----------------------
 
 
