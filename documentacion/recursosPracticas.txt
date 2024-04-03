@@ -1,0 +1,56 @@
+	TEXTOS:
+
+
+https://www.pythonguis.com/pyqt6/  -> INGLES parece bastante completo
+
+https://www.pythontutorial.net/pyqt/qt-designer/ -> INGLES tutorial con varios enlaces a widgets, layouts, etc. Te enseña a hacer un login.
+
+https://zetcode.com/pyqt6/ -> INGLES tutorial de elementos para python pyqt6
+
+	AÑADIDOS (TEXTO):
+
+https://doc.qt.io/qt-6/layout.html -> Documentación oficial de Qt6, especifica el tema de los Layouts.
+
+https://www.pythonguis.com/tutorials/pyqt6-plotting-matplotlib/  -> Integrar matplotlib en qt6
+
+https://www.pythonguis.com/tutorials/pyqt6-plotting-pyqtgraph/ -> Integrar gráficas.
+
+https://stackabuse.com/styling-pyqt6-applications-default-and-custom-qss-stylesheets/ -> INGLES, usa CSS para dar estilos a qt6
+
+
+
+----------------------
+
+
+	VIDEOS:
+
+
+https://www.youtube.com/playlist?list=PLzxELyfDjyxLXR9sHDvMd7munDYCzRPBW -> INGLES (con mucho acento)  
+
+https://www.youtube.com/playlist?list=PLMi6KgK4_mk27F2YXA_8OkQBmpq5wx5IS -> INGLES crea una desktop app desde cero, parece bastante completo
+
+https://www.youtube.com/watch?v=GLqrzLIIW2E -> INGLES parece bueno para empezar
+
+https://www.youtube.com/@Codemycom/playlists -> INGLES habla de todo y muy bien explicado..django, flask, etc
+
+https://www.youtube.com/playlist?list=PLxXeZgE132z9_NtOHevjb1oniTStIqUdk -> INGLES marrullero, se pueden pillar cosas
+
+https://www.youtube.com/@codefirstwithhala -> INGLES tiene varias cosas, no de pyqt6 pero puede valer la pena
+
+https://www.youtube.com/playlist?list=PL3K-A0oIjFzPxn358K75b3GYQ5_XTT3ye -> ESPAÑOL, parece bastante completo, es un poco largo
+
+https://www.youtube.com/@PythonSimplified/streams -> INGLES un poco de todo, por curiosear
+
+https://www.youtube.com/playlist?list=PLcraWrx3W3XRcuwKcyEht-S5C6dvyfIsQ -> INGLES popurrí de muchas cosas variadas para pyqt6
+
+https://www.youtube.com/playlist?list=PLHwXkLexR9MAm0UZsX0SGFOSNVlCYLJxx -> INGLES parece bastante completo y centrado en elementos de pyqt6
+
+	AÑADIDOS (VIDEOS):
+
+https://www.youtube.com/playlist?list=PLXTzfmlEmztEsfA5JMpYN7o899PALnXWg -> INGLES videos cortos y sencillos aparentemente
+
+https://www.youtube.com/playlist?list=PL2PZw96yQChwe5ZrLoRjf8kjTYd3KKzKZ -> ESPAÑOL video antiguo de pyqt5 OJO! pero contiene muchos detalles, seguro que algo viene bien y es interesante.
+
+https://www.youtube.com/watch?v=SelawmXHtPg -> INGLES ...como introducción parece bien, buen audio.
+
+https://www.youtube.com/watch?v=SaBwpCIV6PQ -> ESPAÑOL video de 6 horas que explica como hacer una aplicación bancaria desde cero...muy extenso!
