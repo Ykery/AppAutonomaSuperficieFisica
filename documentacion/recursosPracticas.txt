@@ -33,6 +33,10 @@ Documentacion de la libreria qwt
 https://qwt.sourceforge.io/annotated.html
 
 
+Instalación de Qwt
+https://qwt.sourceforge.io/qwtinstall.html
+
+
 
 
 ----------------------
@@ -72,3 +76,6 @@ https://www.youtube.com/watch?v=SelawmXHtPg -> INGLES ...como introducción pare
 https://www.youtube.com/watch?v=SaBwpCIV6PQ -> ESPAÑOL video de 6 horas que explica como hacer una aplicación bancaria desde cero...muy extenso!
 
 https://www.youtube.com/@SpinnTV/videos -> este tio tiene cosas chulas
+
+instalacion qwt en windows:
+https://www.youtube.com/watch?v=ZqFKwF6q7jQ -> RUSO
