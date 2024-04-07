@@ -52,6 +52,12 @@ Buscador de proyectos de python
 https://pypi.org/search/?q=&o=&c=Topic+%3A%3A+Scientific%2FEngineering+%3A%3A+Interface+Engine%2FProtocol+Translator
 
 
+https://pypi.org/project/pyummeter/
+
+Visu is an user interface library based on pyqtgraph to open and process data image . It can make plot profile and data measurements analysis on live
+https://pypi.org/project/visu/
+
+
 ----------------------
 
 
