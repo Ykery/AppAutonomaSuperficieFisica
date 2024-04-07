@@ -58,6 +58,8 @@ Visu is an user interface library based on pyqtgraph to open and process data im
 https://pypi.org/project/visu/
 
 
+Un puto osciloscopio...para ver si se puede aplicar a una barra de progreso..
+https://pypi.org/project/oscilloscope/
 ----------------------
 
 
