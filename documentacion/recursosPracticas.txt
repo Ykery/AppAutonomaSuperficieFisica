@@ -48,6 +48,9 @@ https://marceluda.github.io/python-para-fisicos/tuto/labo2/05_instrumentacion/
 ¿MATLAB? ..pero no es gratuito creo
 https://es.mathworks.com/videos/matlab-and-python-how-to-start-using-them-together-1649351332170.html
 
+Buscador de proyectos de python
+https://pypi.org/search/?q=&o=&c=Topic+%3A%3A+Scientific%2FEngineering+%3A%3A+Interface+Engine%2FProtocol+Translator
+
 
 ----------------------
 
