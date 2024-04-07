@@ -36,7 +36,17 @@ https://qwt.sourceforge.io/annotated.html
 Instalación de Qwt
 https://qwt.sourceforge.io/qwtinstall.html
 
+PyVISA -> para conectores GPIB, RS232, TCPIP y USB
+https://pypi.org/project/PyVISA/
 
+Ejemplo de un proyecto de fin de grado de ingeniería que conectan dispositivos a python
+https://upcommons.upc.edu/bitstream/handle/2117/350403/tfg-ana-aragones.pdf?sequence=1&isAllowed=y
+
+conceptos básicos necesarios para poder realizar control remoto de un instrumento y adquisición programada.
+https://marceluda.github.io/python-para-fisicos/tuto/labo2/05_instrumentacion/
+
+¿MATLAB? ..pero no es gratuito creo
+https://es.mathworks.com/videos/matlab-and-python-how-to-start-using-them-together-1649351332170.html
 
 
 ----------------------
