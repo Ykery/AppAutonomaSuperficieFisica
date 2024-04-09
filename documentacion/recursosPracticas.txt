@@ -60,6 +60,15 @@ https://pypi.org/project/visu/
 
 Un puto osciloscopio...para ver si se puede aplicar a una barra de progreso..
 https://pypi.org/project/oscilloscope/
+
+
+https://erwanleroy.com/custom-qt-knobs-for-nuke-nodes-making-stars-gizmo-part-1-2/
+
+https://biblus.us.es/bibing/proyectos/abreproy/12046/fichero/7_Capitulo7.pdf
+
+Otro proyecto de fin de carrera...a lo mejor se pueden pillar ideas
+https://academica-e.unavarra.es/xmlui/bitstream/handle/2454/37584/Memoria%20TFG%20-%20V%C3%ADctor%20Ruiz%20G%C3%B3mez.pdf?sequence=1&isAllowed=y
+
 ----------------------
 
 
