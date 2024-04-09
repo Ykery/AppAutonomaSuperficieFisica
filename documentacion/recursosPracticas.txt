@@ -69,6 +69,16 @@ https://biblus.us.es/bibing/proyectos/abreproy/12046/fichero/7_Capitulo7.pdf
 Otro proyecto de fin de carrera...a lo mejor se pueden pillar ideas
 https://academica-e.unavarra.es/xmlui/bitstream/handle/2454/37584/Memoria%20TFG%20-%20V%C3%ADctor%20Ruiz%20G%C3%B3mez.pdf?sequence=1&isAllowed=y
 
+
+Que es un header o archivo .h en C++ con explicaciones sencillas y referencias
+https://es.stackoverflow.com/questions/519627/que-es-un-header
+
+Explicacion sobre como llamar C++ desde python (madre mia que follon todo esto!!!)
+https://www.matecdev.com/posts/cpp-call-from-python.html
+
+Supuesta applicacion que te hace toda la conversion o integracion de C++ en Python
+https://tolc.io/
+
 ----------------------
 
 
