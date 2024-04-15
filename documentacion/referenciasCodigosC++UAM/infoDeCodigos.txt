@@ -1,0 +1,9 @@
+Hola,
+os envío adjuntos los listados con el código de las dos
+aplicaciones del programa que hemos visto en el laboratorio.
+
+Teasmenu es el menu de entrada.
+Para la medida de la intensidad del haz de He los códigos son
+configscan, teasplot y timescanplot, con sus respectivos .h.
+Para la otra medida con el campo magnético, configmoke,
+mokeplot y mokeloopplot. 
