@@ -325,22 +325,20 @@ class MainWindow( QWidget ):
         self.d_zoomer[1].zoom( 0 )
 
 
+def main():
+    a = QApplication(sys.argv)
+    fichero = open("mockData.csv", "r")
+    datos = fichero.readlines() # ["x,y", "0,0.2885515512807122", "1,0.45635354359464864", ....]
+    fichero.close()
+    cabecera = datos.pop(0) # "x,y"
+    for i in range(len(datos)):
+        datos[i] = datos[i].split(",") # ["0", "0.2885515512807122"]
+        datos[i] = [float(datos[i][0]), float(datos[i][1])] # [0, 0.2885515512807122]
+    configuracion = None
+    m = MainWindow(datos, configuracion)
+    m.resize( 540, 400 )
+    m.show()
 
-
-
-a = QApplication(sys.argv)
-fichero = open("mockData.csv", "r")
-datos = fichero.readlines() # ["x,y", "0,0.2885515512807122", "1,0.45635354359464864", ....]
-fichero.close()
-cabecera = datos.pop(0) # "x,y"
-for i in range(len(datos)):
-    datos[i] = datos[i].split(",") # ["0", "0.2885515512807122"]
-    datos[i] = [float(datos[i][0]), float(datos[i][1])] # [0, 0.2885515512807122]
-configuracion = None
-m = MainWindow(datos, configuracion)
-m.resize( 540, 400 )
-m.show()
-
-sys.exit(a.exec())
+    sys.exit(a.exec())
 
 
