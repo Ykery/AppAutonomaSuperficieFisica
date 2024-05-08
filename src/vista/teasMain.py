@@ -496,14 +496,7 @@ class TeasWindow(QWidget):
 
         print(self.teasDACParams)
 
-        
-       
-
-
-
-
 def main():
-
     Conexion.iniciar_bbdd()
     app = QApplication(sys.argv)
     teas_window = TeasWindow()
