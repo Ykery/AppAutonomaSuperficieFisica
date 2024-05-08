@@ -1,7 +1,6 @@
 import sys
 import numpy as np
 import random
-import MySQLdb
 
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
@@ -9,7 +8,8 @@ from PyQt6.QtWidgets import *
 from PyQt6 import Qwt
 from PyQt6.Qwt import *
 
-from dao import *
+from ..modelo.dao import *
+from ..modelo.clases import *
 
 
 class TeasWindow(QWidget):
@@ -502,7 +502,7 @@ class TeasWindow(QWidget):
 
 
 
-if __name__ == "__main__":
+def main():
 
     Conexion.iniciar_bbdd()
     app = QApplication(sys.argv)
