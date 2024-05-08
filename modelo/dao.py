@@ -2,11 +2,13 @@ from clases import *
 
 class ExperimentoDAO():
 
+    # 'experimento' es un objeto de la clase Experimento
     def crear(experimento):
         session = Conexion.getConexion()
         session.add(experimento)
         session.commit()
         session.close()
+        return ExperimentoDAO.obtener_ultimo()
 
     def obtener_por_id(id):
         session = Conexion.getConexion()
@@ -19,6 +21,12 @@ class ExperimentoDAO():
         experimentos = session.query(Experimento).all()
         session.close()
         return experimentos
+    
+    def obtener_ultimo():
+        session = Conexion.getConexion()
+        experimento = session.query(Experimento).order_by(Experimento.id.desc()).first()
+        session.close()
+        return experimento
 
     def actualizar(experimento):
         session = Conexion.getConexion()
@@ -32,6 +40,7 @@ class ExperimentoDAO():
         session.delete(experimento)
         session.commit()
         session.close()
+
 
 class ResultadoTeasDAO():
     
@@ -65,6 +74,7 @@ class ResultadoTeasDAO():
         session.commit()
         session.close()
 
+
 class ResultadoMokeDAO():
     
     def crear(resultado):    
@@ -97,8 +107,10 @@ class ResultadoMokeDAO():
         session.commit()
         session.close()
 
+
 class ConfiguracionTeasDAO():
     
+    # 'configuracion' es un objeto de la clase ConfiguracionTeas
     def crear(configuracion):    
         session = Conexion.getConexion()
         session.add(configuracion)
@@ -128,6 +140,7 @@ class ConfiguracionTeasDAO():
         session.delete(configuracion)
         session.commit()
         session.close()
+
 
 class ConfiguracionMokeDAO():
     

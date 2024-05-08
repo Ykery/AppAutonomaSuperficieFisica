@@ -34,6 +34,7 @@ class Experimento(Base):
     tipo =Column(String(45), nullable=False)
 
     configuracion = {}
+    
     def __repr__(self):
         return f"""Experimento(id={self.id}, 
             descripcion={self.descripcion}, 
@@ -78,7 +79,7 @@ class ResultadoMoke(Base):
 class ConfiguracionTeas(Base):
     __tablename__ = 'configuracion_teas'
     
-    id_experimento = Column(Integer, ForeignKey('experimentos.id'), primary_key=True, nullable=False)
+    id_experimento = Column(Integer, ForeignKey('experimentos.id'), primary_key=True, nullable=False, autoincrement=True )
     dac_input_intensity = Column(String(45), nullable=False)
     dac_teas_voltaje_range = Column(String(45), nullable=False)
     dac_input_temperature = Column(String(45), nullable=False)
@@ -89,16 +90,16 @@ class ConfiguracionTeas(Base):
     aml_sensitivity = Column(String(45), nullable=False)
     aml_presure_units = Column(String(45), nullable=False)
     aml_emission_current = Column(String(45), nullable=False)
-    configuracion_teascol = Column(String(45), nullable=False)
+    #configuracion_teascol = Column(String(45), nullable=False)
     lock_sensitivity = Column(String(45), nullable=False)
     lock_time_constant = Column(String(45), nullable=False)
     integration_time = Column(DECIMAL, nullable=False)
     channeltron_voltage = Column(String(45), nullable=False)
-    description = Column(String(45), nullable=False)
+    #description = Column(String(45), nullable=False)
     
     
     
-    
+    # Metodo para imprimir los atributos de la clase, es el toString de Java
     def __repr__(self):
         return f"""ConfiguracionTeas(id_experimento={self.id_experimento},
             dac_input_intensity={self.dac_input_intensity},
@@ -111,12 +112,10 @@ class ConfiguracionTeas(Base):
             aml_sensitivity={self.aml_sensitivity},
             aml_presure_units={self.aml_presure_units},
             aml_emission_current={self.aml_emission_current},
-            configuracion_teascol={self.configuracion_teascol},
             lock_sensitivity={self.lock_sensitivity},
             lock_time_constant={self.lock_time_constant},
             integration_time={self.integration_time},
-            channeltron_voltage={self.channeltron_voltage},
-            description={self.description})
+            channeltron_voltage={self.channeltron_voltage})
             """
 
 
@@ -140,7 +139,7 @@ class ConfiguracionMoke(Base):
     points_per_loop = Column(DECIMAL, nullable=False)
     number_of_sweeps = Column(DECIMAL, nullable=False)
     geometry = Column(String(45), nullable=False)
-    description = Column(String(45), nullable=True)
+    #description = Column(String(45), nullable=False)
     
     
     
@@ -161,8 +160,7 @@ class ConfiguracionMoke(Base):
             magnetic_field={self.magnetic_field},
             points_per_loop={self.points_per_loop},
             number_of_sweeps={self.number_of_sweeps},
-            geometry={self.geometry},
-            description={self.description})
+            geometry={self.geometry})
             """
 
 
