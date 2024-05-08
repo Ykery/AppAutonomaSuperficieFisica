@@ -1,4 +1,4 @@
-from clases import *
+from .clases import *
 
 class ExperimentoDAO():
 

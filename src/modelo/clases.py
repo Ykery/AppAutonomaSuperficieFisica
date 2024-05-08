@@ -12,7 +12,7 @@ class Base(DeclarativeBase):
 # Clase para crear una conexion a la base de datos
 class Conexion():
     # Crear un motor de base de datos
-    engine = create_engine('mysql://root:root@localhost/aplicacionuam', echo=True)
+    engine = create_engine('mysql://root:1234@localhost/aplicacionuam', echo=True)
 
     def iniciar_bbdd():
         Base.metadata.create_all(Conexion.engine)
