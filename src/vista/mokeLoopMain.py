@@ -52,21 +52,6 @@ class VistaPrincipal(QWidget):
         self.main_layout.addWidget(self.setDataFile(), 5, 0, 1, 3)
         
         self.main_layout.addLayout(buttons_layout, 7, 3, 1, 2)
-    def prueba(self):                              
-        slider2 = Qwt.QwtSlider()
-        slider2.setOrientation( Qt.Orientation.Horizontal )
-        slider2.setScalePosition( Qwt.QwtSlider.ScalePosition.TrailingScale )
-        slider2.setTrough( True )
-        slider2.setGroove( False )
-        slider2.setSpacing( 10)
-        slider2.setHandleSize( QSize( 30, 16 ) )
-        slider2.setScale(0, 10.0) 
-        slider2.setTotalSteps(40) 
-        slider2.setWrapping( False )
-        slider2.setScaleMaxMinor( 8 )
-        pantalla = QGridLayout()
-        self.setLayout(pantalla)
-        pantalla.addWidget(slider2)
     
     def createMokeDACBox(self):
         
