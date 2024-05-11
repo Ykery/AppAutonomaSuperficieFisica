@@ -52,6 +52,13 @@ class VistaPrincipal(QWidget):
         self.main_layout.addWidget(self.setDataFile(), 5, 0, 1, 3)
         
         self.main_layout.addLayout(buttons_layout, 7, 3, 1, 2)
+        
+        #esta parte del codigo ejecuta una funcion cada vez que se cambia el valor de la combobox
+        self.cb_moke_intensity.currentTextChanged.connect(lambda x: print(x))
+        #lamdba declaras una funcion que no tiene nombre que se ejecuta en el momento del evento
+
+    #def prueba1(self, texto):
+    #    print(texto)
     
     def createMokeDACBox(self):
         
@@ -61,7 +68,7 @@ class VistaPrincipal(QWidget):
         gb_MokeDACBox.setChecked(False)
         gb_MokeDACBox.setFont(self.fuenteHelvetica)
 
-        cb_teas = QComboBox()
+        self.cb_moke_intensity = QComboBox()
         cb_teas1 = QComboBox()
         cb_teasVrange = QComboBox()
         cb_dcVrange= QComboBox()
@@ -70,8 +77,9 @@ class VistaPrincipal(QWidget):
         cb_timeFieldDriving = QComboBox()
 
 
-        cb_teas.insertItems(0, self.mokeChannelsDAC)
-        cb_teas.setCurrentIndex(1)
+        self.cb_moke_intensity.insertItems(0, self.mokeChannelsDAC)
+        self.cb_moke_intensity.setCurrentIndex(1)
+        #self.cb_moke_intensity.valueChanged.connect(self.prueba1)
         cb_teasVrange.insertItems(0,self.mokeVRange)
         cb_teasVrange.setCurrentIndex(0)
         cb_teas1.insertItems(0, self.mokeChannelsDAC)
@@ -122,7 +130,7 @@ class VistaPrincipal(QWidget):
         slider_samplingRate.valueChanged.connect(lcd_samplingRateDisplay.display)
 
         layout.addWidget(lb_moke_intensity, 0, 0, 1, 2)
-        layout.addWidget(cb_teas, 1, 0, 1, 2)
+        layout.addWidget(self.cb_moke_intensity, 1, 0, 1, 2)
         layout.addWidget(lb_moke_voltage_range, 0, 2, 1,2)
         layout.addWidget(cb_teasVrange, 1, 2, 1, 2)
         layout.addWidget(lb_moke_dc_level, 2, 0, 1, 2)
@@ -181,18 +189,21 @@ class VistaPrincipal(QWidget):
 
         lb_magnetic = QLabel("Magnetic Field (Oe)")
         knb_magnetic_Knob = Qwt.QwtKnob()
+        knb_magnetic_Knob.setScale(0,600)
         lcd_magnetic_Display = QLCDNumber()
 
         knb_magnetic_Knob.valueChanged.connect(lcd_magnetic_Display.display)
 
         lb_loop = QLabel("Points per loop")
         knb_loop_Knob = Qwt.QwtKnob()
+        knb_loop_Knob.setScale(0,500)
         lcd_loop_Display = QLCDNumber()
 
         knb_loop_Knob.valueChanged.connect(lcd_loop_Display.display)
 
         lb_sweeps = QLabel("Number of sweeps")
         knb_sweeps_Knob = Qwt.QwtKnob()
+        knb_sweeps_Knob.setScale(0,30)
         lcd_sweeps_Display = QLCDNumber()
 
         knb_sweeps_Knob.valueChanged.connect(lcd_sweeps_Display.display)
