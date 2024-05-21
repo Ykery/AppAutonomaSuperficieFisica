@@ -72,28 +72,56 @@ class ExperimentosWindow(QWidget):
         self.le_hasta.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.le_hasta.setDisabled(True)
 
-
-
-        self.btn_desde.clicked.connect(self.control_fechas)
-        self.btn_desde.clicked.connect(self.calendario.hide)
-
-        self.btn_hasta.clicked.connect(self.control_fechas)
-        self.btn_hasta.clicked.connect(self.calendario.hide)
-        
-        
-
-
-
         layout.addWidget(self.btn_desde, 0, 0)
         layout.addWidget(self.btn_hasta, 1, 0)
         layout.addWidget(self.le_desde, 0, 1, 1, 2)
         layout.addWidget(self.le_hasta, 1, 1, 1 ,2)
+
+        # Conectamos los botones con el calendario
+        self.btn_desde.clicked.connect(self.control_fechas)
+        self.btn_hasta.clicked.connect(self.control_fechas)
         
         gb_filtrado_fecha.setLayout(layout)
         return gb_filtrado_fecha
 
+    def lambdarara(self, fecha):
+        return self.mostrar_fecha(fecha, "desde")
+    
+
+    def control_fechas(self):
+
+        self.calendario.show()
+        self.calendario.setGridVisible(True)
+        if self.sender() == self.btn_desde:
+            self.calendario.clicked.connect(self.lambdarara)
+        elif self.sender() == self.btn_hasta:
+            self.calendario.clicked.connect(lambda fecha: self.mostrar_fecha(fecha, "hasta"))
+
+        #self.calendario.clicked.connect(self.mostrar_fecha)
+        self.calendario.clicked.connect(self.calendario.hide)
+        # eliminar el evento de click para que no se ejecute varias veces
+        self.calendario.clicked.connect(self.calendario.clicked.disconnect)
 
 
+        return self.calendario
+    
+
+    def mostrar_fecha(self, fecha, tipo_fecha):
+        #añadir un control de fechas para que no se pueda seleccionar una fecha futura
+        if fecha > QDate.currentDate():
+            fecha = QDate.currentDate()
+
+        if tipo_fecha == "desde":
+            self.le_desde.setText(self.formatear_fecha(fecha))
+        elif tipo_fecha == "hasta":
+            self.le_hasta.setText(self.formatear_fecha(fecha))      
+        
+        #return fecha.toString("dd/MM/yyyy")
+
+
+    def formatear_fecha(self, fecha):
+        return fecha.toString("dd/MM/yyyy")
+    
 
     def crear_zona_acciones(self):
         layout = QGridLayout()
@@ -108,17 +136,7 @@ class ExperimentosWindow(QWidget):
         return layout
 
 
-    def control_fechas(self):
-        self.calendario.setGridVisible(True)
-        self.calendario.setGeometry(100, 100, 200, 200)
-        self.calendario.clicked.connect(self.mostrar_fecha)
-        #self.calendario.clicked.connect(self.calendario.hide)
-        return self.calendario
-    
-    def mostrar_fecha(self, fecha):
-        self.le_desde.setText(fecha.toString("dd/MM/yyyy"))
-        self.le_hasta.setText(fecha.toString("dd/MM/yyyy"))
-        return fecha.toString("dd/MM/yyyy")
+
     
     
     
