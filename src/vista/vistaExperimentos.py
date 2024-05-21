@@ -59,6 +59,15 @@ class ExperimentosWindow(QWidget):
             li_experimento.setSizeHint(QSize(100, 50))
             self.lw_experimentos.addItem(li_experimento)
         
+    def filtrar_por_tipo(self, tipo):
+        self.filtro_tipo = tipo
+        self.cargar_lista_experimentos()
+    def filtrar_desde(self, fecha):
+        self.filtro_fecha_desde = fecha
+        self.cargar_lista_experimentos()
+    def filtrar_hasta(self, fecha):
+        self.filtro_fecha_hasta = fecha
+        self.cargar_lista_experimentos()
     def crear_filtros_tipo_experimento(self):
         #layout = QGridLayout()
         gb_filtrado_tipo_experimento = QGroupBox("Filtrar por tipo experimento")
@@ -66,6 +75,8 @@ class ExperimentosWindow(QWidget):
 
         rb_teas = QRadioButton("TEAS")
         rb_moke = QRadioButton("MOKE")
+        rb_teas.clicked.connect(lambda: self.filtrar_por_tipo("teas"))
+        rb_moke.clicked.connect(lambda: self.filtrar_por_tipo("moke"))
         rb_teas.setChecked(True)
 
         radio_buttons_layout.addWidget(rb_teas, 0, 0, Qt.AlignmentFlag.AlignCenter)
@@ -143,9 +154,10 @@ class ExperimentosWindow(QWidget):
 
         if tipo_fecha == "desde":
             self.le_desde.setText(self.formatear_fecha(fecha))
+            self.filtrar_desde(fecha.toPyDate())
         elif tipo_fecha == "hasta":
             self.le_hasta.setText(self.formatear_fecha(fecha))      
-        
+            self.filtrar_hasta(fecha.toPyDate())
         #return fecha.toString("dd/MM/yyyy")
 
 
