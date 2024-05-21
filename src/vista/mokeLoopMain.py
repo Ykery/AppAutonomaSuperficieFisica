@@ -67,15 +67,16 @@ class VistaPrincipal(QWidget):
         gb_MokeDACBox.setChecked(False)
         gb_MokeDACBox.setFont(self.fuenteHelvetica)
 
+        #Input
         self.cb_moke_intensity = QComboBox()
         self.cb_moke_intensity.insertItems(0, self.mokeChannelsDAC)
         self.cb_moke_intensity.setCurrentIndex(0)
-        self.cb_moke_intensity.currentTextChanged.connect(self.manejar_cb_moke_intensity)
-
+        self.cb_moke_intensity.currentTextChanged.connect(lambda texto: self.control_Input(texto, self.cb_moke_intensity))
+        #Input
         self.cb_moke_dc_level = QComboBox()
         self.cb_moke_dc_level.insertItems(0, self.mokeChannelsDAC)
         self.cb_moke_dc_level.setCurrentIndex(0)
-        self.cb_moke_dc_level.currentTextChanged.connect(self.manejar_cb_moke_dc_level)
+        self.cb_moke_dc_level.currentTextChanged.connect(lambda texto: self.control_Input(texto, self.cb_moke_dc_level))
 
         self.cb_moke_voltage_range = QComboBox()
         self.cb_moke_voltage_range.insertItems(0,self.mokeVRange)
@@ -86,11 +87,11 @@ class VistaPrincipal(QWidget):
         self.cb_dc_level_voltage_range.insertItems(0,self.mokeVRange)
         self.cb_dc_level_voltage_range.setCurrentIndex(0)
         self.cb_dc_level_voltage_range.currentTextChanged.connect(self.manejar_cb_dc_level_voltage_range)
-
+        #Input
         self.cb_temperature = QComboBox()
         self.cb_temperature.insertItems(0,self.mokeChannelsDAC)
         self.cb_temperature.setCurrentIndex(0)
-        self.cb_temperature.currentTextChanged.connect(self.manejar_cb_temeperature)
+        self.cb_temperature.currentTextChanged.connect(lambda texto: self.control_Input(texto, self.cb_temperature))
         
         self.cb_tempVrange = QComboBox()
         self.cb_tempVrange.insertItems(0,self.mokeLockinSensVals)
@@ -377,10 +378,6 @@ class VistaPrincipal(QWidget):
     #funcion que se ejecuta cada vez que se cambia el valor de la combobox de dc level voltage range
     def manejar_cb_dc_level_voltage_range(self, texto):
         self.configuracion.dac_dc_voltage_range = texto
-        print(texto)
-    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de sample temperature
-    def manejar_cb_temeperature(self, texto):
-        self.configuracion.dac_input_temperature = texto
         print(texto)
     #funcion que se ejecuta cada vez que se cambia el valor de la combobox de temperature voltage range
     def manejar_cb_tempVrange(self, texto):
