@@ -161,10 +161,13 @@ class ExperimentosWindow(QWidget):
 
         if tipo_fecha == "desde":
             self.le_desde.setText(self.formatear_fecha(fecha))
+            self.le_desde.setStyleSheet("color: black")
             self.filtrar_desde(fecha.toPyDate())
         elif tipo_fecha == "hasta":
-            self.le_hasta.setText(self.formatear_fecha(fecha))      
-            self.filtrar_hasta(fecha.toPyDate())
+            self.le_hasta.setText(self.formatear_fecha(fecha))
+            self.le_hasta.setStyleSheet("color: black")       
+            self.filtrar_hasta(fecha.toPyDate())  
+         
         #return fecha.toString("dd/MM/yyyy")
 
 
