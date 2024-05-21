@@ -19,9 +19,9 @@ class ExperimentosWindow(QWidget):
         self.main_layout = QGridLayout()
         self.fuenteHelvetica = QFont("Helvetica", 11)
         btn_volver = QPushButton("Volver")
-        self.filter_by_type = None
-        self.filter_date_from = None
-        self.filter_date_to = None
+        self.filtro_tipo = None
+        self.filtro_fecha_desde = None
+        self.filtro_fecha_hasta = None
         self.main_layout.addLayout(self.crear_scroll_area(), 0, 0, 4, 6)
         self.main_layout.addWidget(self.crear_filtros_tipo_experimento(), 4, 0, 1, 2)
         self.main_layout.addWidget(self.crear_filtros_fechas(), 4, 3, 1, 3)
@@ -46,11 +46,11 @@ class ExperimentosWindow(QWidget):
             self.experimentos = ExperimentoDAO.obtener_todos()
         
         for experimento in self.experimentos:
-            if self.filter_by_type != None and experimento.tipo != self.filter_by_type:
+            if self.filtro_tipo != None and experimento.tipo != self.filtro_tipo:
                 continue
-            if self.filter_date_from != None and experimento.fecha_creacion < datetime.combine(self.filter_date_from, datetime.min.time()):
+            if self.filtro_fecha_desde != None and experimento.fecha_creacion < datetime.combine(self.filtro_fecha_desde, datetime.min.time()):
                 continue
-            if self.filter_date_to != None and experimento.fecha_creacion > datetime.combine(self.filter_date_to, datetime.min.time()):
+            if self.filtro_fecha_hasta != None and experimento.fecha_creacion > datetime.combine(self.filtro_fecha_hasta, datetime.max.time()):
                 continue
             nombre_experimento = experimento.rutaCsv.split("/")[-1].split(".")[0]
             li_experimento = QListWidgetItem(nombre_experimento + experimento.tipo)
