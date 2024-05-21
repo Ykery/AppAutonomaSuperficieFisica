@@ -8,12 +8,15 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
 from PyQt6 import Qwt
-from ..modelo.clases import Conexion
+from ..modelo.clases import Conexion, Experimento, ConfiguracionMoke
+
 
 
 class VistaPrincipal(QWidget):
     def __init__(self):
         super().__init__()
+        self.configuracion = ConfiguracionMoke()
+        self.experimento = Experimento()
 
         self.setWindowTitle("MOKE LOOP")
         #self.setContentsMargins(5, 5, 5, 5)
@@ -52,14 +55,22 @@ class VistaPrincipal(QWidget):
         self.main_layout.addWidget(self.setDataFile(), 5, 0, 1, 3)
         
         self.main_layout.addLayout(buttons_layout, 7, 3, 1, 2)
+
+        btn_close.clicked.connect(self.close)
+        
         
         #esta parte del codigo ejecuta una funcion cada vez que se cambia el valor de la combobox
         self.cb_moke_intensity.currentTextChanged.connect(lambda x: print(x))
+        def funcion_prueba(texto):
+            print(texto)
+        # self.cb_moke_intensity.currentTextChanged.connect(funcion_prueba)
         #lamdba declaras una funcion que no tiene nombre que se ejecuta en el momento del evento
+        
 
-    #def prueba1(self, texto):
-    #    print(texto)
+       
+
     
+
     def createMokeDACBox(self):
         
         layout = QGridLayout()
@@ -69,30 +80,39 @@ class VistaPrincipal(QWidget):
         gb_MokeDACBox.setFont(self.fuenteHelvetica)
 
         self.cb_moke_intensity = QComboBox()
-        cb_teas1 = QComboBox()
-        cb_teasVrange = QComboBox()
-        cb_dcVrange= QComboBox()
-        cb_temperature = QComboBox()
-        cb_tempVrange = QComboBox()
-        cb_timeFieldDriving = QComboBox()
-
-
         self.cb_moke_intensity.insertItems(0, self.mokeChannelsDAC)
         self.cb_moke_intensity.setCurrentIndex(0)
-        #self.cb_moke_intensity.valueChanged.connect(self.prueba1)
-        cb_teasVrange.insertItems(0,self.mokeVRange)
-        cb_teasVrange.setCurrentIndex(0)
-        cb_teas1.insertItems(0, self.mokeChannelsDAC)
-        cb_teas1.setCurrentIndex(0)
-        cb_dcVrange.insertItems(0,self.mokeVRange)
-        cb_dcVrange.setCurrentIndex(0)
-        cb_temperature.insertItems(0,self.mokeChannelsDAC)
-        cb_temperature.setCurrentIndex(0)
-        cb_tempVrange.insertItems(0,self.mokeLockinSensVals)
-        cb_tempVrange.setCurrentIndex(0)
-        cb_timeFieldDriving.insertItems(0,self.mokeLockinTimeConsVals)
-        cb_timeFieldDriving.setCurrentIndex(0)
+        self.cb_moke_intensity.currentTextChanged.connect(self.manejar_cb_moke_intensity)
 
+        self.cb_moke_dc_level = QComboBox()
+        self.cb_moke_dc_level.insertItems(0, self.mokeChannelsDAC)
+        self.cb_moke_dc_level.setCurrentIndex(0)
+        self.cb_moke_dc_level.currentTextChanged.connect(self.manejar_cb_moke_dc_level)
+
+        self.cb_moke_voltage_range = QComboBox()
+        self.cb_moke_voltage_range.insertItems(0,self.mokeVRange)
+        self.cb_moke_voltage_range.setCurrentIndex(0)
+        self.cb_moke_voltage_range.currentTextChanged.connect(self.manejar_cb_moke_volage_range)
+
+        self.cb_dc_level_voltage_range= QComboBox()
+        self.cb_dc_level_voltage_range.insertItems(0,self.mokeVRange)
+        self.cb_dc_level_voltage_range.setCurrentIndex(0)
+        self.cb_dc_level_voltage_range.currentTextChanged.connect(self.manejar_cb_dc_level_voltage_range)
+
+        self.cb_temperature = QComboBox()
+        self.cb_temperature.insertItems(0,self.mokeChannelsDAC)
+        self.cb_temperature.setCurrentIndex(0)
+        self.cb_temperature.currentTextChanged.connect(self.manejar_cb_temeperature)
+        
+        self.cb_tempVrange = QComboBox()
+        self.cb_tempVrange.insertItems(0,self.mokeLockinSensVals)
+        self.cb_tempVrange.setCurrentIndex(0)
+        self.cb_tempVrange.currentTextChanged.connect(self.manejar_cb_tempVrange)
+
+        self.cb_timeFieldDriving = QComboBox()
+        self.cb_timeFieldDriving.insertItems(0,self.mokeLockinTimeConsVals)
+        self.cb_timeFieldDriving.setCurrentIndex(0)
+        self.cb_timeFieldDriving.currentTextChanged.connect(self.manejar_cb_timeFieldDriving)
 
         lb_moke_intensity = QLabel("MOKE intensity:")
         lb_moke_voltage_range = QLabel("MOKE Voltage range:")
@@ -100,7 +120,7 @@ class VistaPrincipal(QWidget):
         lb_dc_level_voltage_range = QLabel("DC level Voltage range:")
         lb_sample_temperature = QLabel("Sample temperature:")
         lb_temperature_voltage_range = QLabel("Temperature Voltage range:")
-        lb_field_driving_current = QLabel("Field drivign current:")
+        lb_field_driving_current = QLabel("Field driving current:")
         lb_samplig_rate = QLabel("Sampling Rate (khz):")
 
         #barra
@@ -126,23 +146,23 @@ class VistaPrincipal(QWidget):
 
 
         #Conexion display con la barra
-        slider_samplingRate.valueChanged.connect(self.value_changed_display1)
+        slider_samplingRate.valueChanged.connect(self.manejar_value_sampling_rate)
         slider_samplingRate.valueChanged.connect(lcd_samplingRateDisplay.display)
 
         layout.addWidget(lb_moke_intensity, 0, 0, 1, 2)
         layout.addWidget(self.cb_moke_intensity, 1, 0, 1, 2)
         layout.addWidget(lb_moke_voltage_range, 0, 2, 1,2)
-        layout.addWidget(cb_teasVrange, 1, 2, 1, 2)
+        layout.addWidget(self.cb_moke_voltage_range, 1, 2, 1, 2)
         layout.addWidget(lb_moke_dc_level, 2, 0, 1, 2)
-        layout.addWidget(cb_teas1, 3, 0, 1, 2)
+        layout.addWidget(self.cb_moke_dc_level, 3, 0, 1, 2)
         layout.addWidget(lb_dc_level_voltage_range, 2, 2, 1, 2)
-        layout.addWidget(cb_dcVrange, 3, 2, 1, 2)
+        layout.addWidget(self.cb_dc_level_voltage_range, 3, 2, 1, 2)
         layout.addWidget(lb_sample_temperature, 4, 0, 1, 2)
-        layout.addWidget(cb_temperature, 5, 0, 1, 2)
+        layout.addWidget(self.cb_temperature, 5, 0, 1, 2)
         layout.addWidget(lb_temperature_voltage_range, 4, 2, 1, 2)
-        layout.addWidget(cb_tempVrange, 5, 2, 1, 2)
+        layout.addWidget(self.cb_tempVrange, 5, 2, 1, 2)
         layout.addWidget(lb_field_driving_current, 6, 0, 1, 2)
-        layout.addWidget(cb_timeFieldDriving, 7, 0, 1, 2)
+        layout.addWidget(self.cb_timeFieldDriving, 7, 0, 1, 2)
         layout.addWidget(lb_samplig_rate, 8, 0, 1, 2)
         layout.addWidget(slider_samplingRate, 9, 0, 1, 3)
         layout.addWidget(lcd_samplingRateDisplay, 9, 3, 1, 3)
@@ -154,73 +174,79 @@ class VistaPrincipal(QWidget):
         
         layout = QVBoxLayout()
 
-        gb_group_box = QGroupBox(" Lock-in stting ")
-        gb_group_box.setCheckable(True)
-        gb_group_box.setChecked(False)
+        gb_lock_in_box = QGroupBox(" Lock-in stting ")
+        gb_lock_in_box.setCheckable(True)
+        gb_lock_in_box.setChecked(False)
 
         lb_sensitivity = QLabel("Sensitivity (/div)")
-        cb_sensitivity = QComboBox()
-        cb_sensitivity.insertItems(0, self.mokeVRange)
-        cb_sensitivity.setCurrentIndex(0)
-        
+        self.cb_sensitivity = QComboBox()
+        self.cb_sensitivity.insertItems(0, self.mokeVRange)
+        self.cb_sensitivity.setCurrentIndex(0)
+        self.cb_sensitivity.currentTextChanged.connect(self.manejar_cb_sensitivity)
+
         lb_time = QLabel("Time Constant")
-        cb_time = QComboBox()
-        cb_time.insertItems(0, self.mokeLockinTimeConsVals)
-        cb_time.setCurrentIndex(0)
-        chb = QCheckBox("Check when correct values set")
+        self.cb_time = QComboBox()
+        self.cb_time.insertItems(0, self.mokeLockinTimeConsVals)
+        self.cb_time.setCurrentIndex(0)
+        self.cb_time.currentTextChanged.connect(self.manejar_cb_time_constant)
+
+        chb_verified = QCheckBox("Check when correct values set")
+
 
         layout.addWidget(lb_sensitivity)
-        layout.addWidget(cb_sensitivity)
+        layout.addWidget(self.cb_sensitivity)
         layout.addWidget(lb_time)
-        layout.addWidget(cb_time)
-        layout.addWidget(chb)
+        layout.addWidget(self.cb_time)
+        layout.addWidget(chb_verified)
 
-        gb_group_box.setLayout(layout)
-        return gb_group_box
+        gb_lock_in_box.setLayout(layout)
+        return gb_lock_in_box
     
     def createMokeLoopBox(self):
         layout = QGridLayout()
 
-        gb_group_box =QGroupBox("MOKE loop parameters")
+        gb_moke_loop =QGroupBox("MOKE loop parameters")
         font = QFont()
         font.setBold(True)
-        gb_group_box.setFont(self.fuenteHelvetica)
+        gb_moke_loop.setFont(self.fuenteHelvetica)
 
 
         lb_magnetic = QLabel("Magnetic Field (Oe)")
-        knb_magnetic_Knob = Qwt.QwtKnob()
-        knb_magnetic_Knob.setScale(0,600)
+        self.knb_magnetic_field = Qwt.QwtKnob()
+        self.knb_magnetic_field.setScale(0,600)
         lcd_magnetic_Display = QLCDNumber()
 
-        knb_magnetic_Knob.valueChanged.connect(lcd_magnetic_Display.display)
+        self.knb_magnetic_field.valueChanged.connect(lcd_magnetic_Display.display)
+        self.knb_magnetic_field.valueChanged.connect(self.manejas_magnetic_field)
 
         lb_loop = QLabel("Points per loop")
-        knb_loop_Knob = Qwt.QwtKnob()
-        knb_loop_Knob.setScale(0,500)
+        self.knb_per_loop = Qwt.QwtKnob()
+        self.knb_per_loop.setScale(0,500)
         lcd_loop_Display = QLCDNumber()
 
-        knb_loop_Knob.valueChanged.connect(lcd_loop_Display.display)
+        self.knb_per_loop.valueChanged.connect(lcd_loop_Display.display)
+        self.knb_per_loop.valueChanged.connect(self.manejar_per_loop)
 
         lb_sweeps = QLabel("Number of sweeps")
-        knb_sweeps_Knob = Qwt.QwtKnob()
-        knb_sweeps_Knob.setScale(0,30)
+        self.knb_number_sweeps = Qwt.QwtKnob()
+        self.knb_number_sweeps.setScale(0,30)
         lcd_sweeps_Display = QLCDNumber()
 
-        knb_sweeps_Knob.valueChanged.connect(lcd_sweeps_Display.display)
-
+        self.knb_number_sweeps.valueChanged.connect(lcd_sweeps_Display.display)
+        self.knb_number_sweeps.valueChanged.connect(self.manejar_number_sweeps)
 
         layout.addWidget(lb_magnetic, 0, 0, Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(knb_magnetic_Knob, 1, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.knb_magnetic_field, 1, 0, Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(lcd_magnetic_Display, 2, 0, Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(lb_loop, 3, 0, Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(knb_loop_Knob, 4, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.knb_per_loop, 4, 0, Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(lcd_loop_Display, 5, 0, Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(lb_sweeps, 6, 0, Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(knb_sweeps_Knob, 7, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.knb_number_sweeps, 7, 0, Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(lcd_sweeps_Display, 8, 0, Qt.AlignmentFlag.AlignCenter)
 
-        gb_group_box.setLayout(layout)
-        return gb_group_box
+        gb_moke_loop.setLayout(layout)
+        return gb_moke_loop
         
     def createMokeTimeBox(self):
         layout = QGridLayout()
@@ -230,29 +256,25 @@ class VistaPrincipal(QWidget):
         font.setBold(True)
         gb_MokeTimeBox.setFont(self.fuenteHelvetica)
 
-        lb_dweel_Time_Label = QLabel("Dwell Time (sec)")
-        knb_dweel_Time_Knob = Qwt.QwtKnob()
-        #knb_dweel_Time_Knob.setScale( 100, -100 )
-        #
-        #
-        #
-        # uwu
-        lcd_dweel_Time_Display = QLCDNumber()
+        lb_dweel_time = QLabel("Dwell Time (sec)")
+        self.knb_dweel_time = Qwt.QwtKnob()
+        lcd_dweel_Time = QLCDNumber()
+        self.knb_dweel_time.valueChanged.connect(lcd_dweel_Time.display)
+        self.knb_dweel_time.valueChanged.connect(self.manjar_dwell_time)
 
-        knb_dweel_Time_Knob.valueChanged.connect(lcd_dweel_Time_Display.display)
 
-        lb_iter_Time_Label = QLabel("Integration Time (sec)")
-        knb_iter_Time_Knob = Qwt.QwtKnob()
-        lcd_iter_Time_Display = QLCDNumber()
+        lb_integration_time = QLabel("Integration Time (sec)")
+        self.knb_integration_time = Qwt.QwtKnob()
+        lcd_integration_time = QLCDNumber()
+        self.knb_integration_time.valueChanged.connect(lcd_integration_time.display)
+        self.knb_integration_time.valueChanged.connect(self.manejar_integration_time)
 
-        knb_iter_Time_Knob.valueChanged.connect(lcd_iter_Time_Display.display)
-
-        layout.addWidget(lb_dweel_Time_Label, 0, 0, Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(knb_dweel_Time_Knob, 1, 0, Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(lcd_dweel_Time_Display, 2, 0, Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(lb_iter_Time_Label, 3, 0, Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(knb_iter_Time_Knob, 4, 0, Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(lcd_iter_Time_Display, 5, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(lb_dweel_time, 0, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.knb_dweel_time, 1, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(lcd_dweel_Time, 2, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(lb_integration_time, 3, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.knb_integration_time, 4, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(lcd_integration_time, 5, 0, Qt.AlignmentFlag.AlignCenter)
 
         gb_MokeTimeBox.setLayout(layout)
         return gb_MokeTimeBox
@@ -260,64 +282,140 @@ class VistaPrincipal(QWidget):
     def createLockinThermo(self): 
         layout = QGridLayout()
 
-        gb_lockinThermoBox = QGroupBox("Current lock-in signal level")
-        gb_lockinThermoBox.setFont(self.fuenteHelvetica)
+        gb_lock_in = QGroupBox("Current lock-in signal level")
+        gb_lock_in.setFont(self.fuenteHelvetica)
 
-        thermo_lockinSignal = Qwt.QwtThermo()
-        thermo_lockinSignal.setOrientation(Qt.Orientation.Horizontal)
-        thermo_lockinSignal.setScalePosition(Qwt.QwtThermo.ScalePosition.TrailingScale) 
-
-        layout.addWidget(thermo_lockinSignal)
-        gb_lockinThermoBox.setLayout(layout)
-        return gb_lockinThermoBox
+        thermo_lock_in = Qwt.QwtThermo()
+        thermo_lock_in.setOrientation(Qt.Orientation.Horizontal)
+        thermo_lock_in.setScalePosition(Qwt.QwtThermo.ScalePosition.TrailingScale) 
+        #uwu peniente
+        #
+        #
+        #
+        #uwu
+        layout.addWidget(thermo_lock_in)
+        gb_lock_in.setLayout(layout)
+        return gb_lock_in
       
     def mokeSystemIDBox(self):
         layout = QGridLayout()
-        gb_mokeSystem_IDbox = QGroupBox("Sample/system description")
-        gb_mokeSystem_IDbox.setFont(self.fuenteHelvetica)
+        gb_description = QGroupBox("Sample/system description")
+        gb_description.setFont(self.fuenteHelvetica)
 
-        le_teasSysIDboxLineEdit = QLineEdit()
-
-        layout.addWidget(le_teasSysIDboxLineEdit)
-        gb_mokeSystem_IDbox.setLayout(layout)
-        return gb_mokeSystem_IDbox
+        self.le_description = QLineEdit()
+        self.le_description.textChanged.connect(self.manejar_lb_description)
+        layout.addWidget(self.le_description)
+        gb_description.setLayout(layout)
+        return gb_description
     
     def mokeGeometryBox(self):
         layout = QGridLayout()
 
-        gb_moke_geomery_box = QGroupBox("Moke geometry")
-        gb_moke_geomery_box.setFont(self.fuenteHelvetica)
+        gb_moke_geomery = QGroupBox("Moke geometry")
+        gb_moke_geomery.setFont(self.fuenteHelvetica)
 
-        cb_sensitivity = QComboBox()
-        cb_sensitivity.insertItems(0, self.mokeVRange)
-        cb_sensitivity.setCurrentIndex(0)
+        self.cb_geometry = QComboBox()
+        self.cb_geometry.insertItems(0, self.mokeVRange)
+        self.cb_geometry.setCurrentIndex(0)
+        self.cb_geometry.currentTextChanged.connect(self.manejar_geometry)
 
+        layout.addWidget(self.cb_geometry)
 
-        layout.addWidget(cb_sensitivity)
-
-        gb_moke_geomery_box.setLayout(layout)
-        return gb_moke_geomery_box
+        gb_moke_geomery.setLayout(layout)
+        return gb_moke_geomery
     
     def setDataFile(self):    
         layout = QHBoxLayout()
 
-        gb_dataFileBox = QGroupBox("Datafile selection")
-        gb_dataFileBox.setFont(self.fuenteHelvetica)
+        gb_datafile_selection = QGroupBox("Datafile selection")
+        gb_datafile_selection.setFont(self.fuenteHelvetica)
 
-        le_fileLineEdit = QLineEdit()
+        self.le_datafile = QLineEdit()
 
         #setDataFileName()  --> llama a la función. SIN CREAR AUN
 
-        btn_browseButton = QPushButton("Browse")
+        btn_browse_button = QPushButton("Browse")
 
-        layout.addWidget(le_fileLineEdit)
-        layout.addWidget(btn_browseButton)
+        layout.addWidget(self.le_datafile)
+        self.le_datafile.textChanged.connect(self.manejar_le_datafile)
+        layout.addWidget(btn_browse_button)
 
-        gb_dataFileBox.setLayout(layout)
-        return gb_dataFileBox 
-    def value_changed_display1(self, i):
-        print(i)
-
+        gb_datafile_selection.setLayout(layout)
+        return gb_datafile_selection 
+    
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke intensity
+    def manejar_cb_moke_intensity(self, texto):
+        self.configuracion.dac_input_intensity = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke dc level
+    def manejar_cb_moke_dc_level(self, texto):
+        self.configuracion.dac_dc_level = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke voltage range
+    def manejar_cb_moke_volage_range(self, texto):
+        self.configuracion.dac_voltaje_range = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de dc level voltage range
+    def manejar_cb_dc_level_voltage_range(self, texto):
+        self.configuracion.dac_dc_voltage_range = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de sample temperature
+    def manejar_cb_temeperature(self, texto):
+        self.configuracion.dac_input_temperature = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de temperature voltage range
+    def manejar_cb_tempVrange(self, texto):
+        self.configuracion.dac_temperature_voltaje_range = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de field driving current
+    def manejar_cb_timeFieldDriving(self, texto):
+        self.configuracion.dac_field_driving_current = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la barra de sampling rate
+    def manejar_value_sampling_rate(self, valor):
+        self.configuracion.dac_sampling_rate = valor
+        print(valor)
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de sensitivity
+    def manejar_cb_sensitivity(self, texto):
+        self.configuracion.lock_sensitivity = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de time constant
+    def manejar_cb_time_constant(self, texto):
+        self.configuracion.lock_time_constant = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la barra de magnetic field
+    def manejas_magnetic_field(self, valor):
+        self.configuracion.magnetic_field = valor
+        print(valor)
+    #funcion que se ejecuta cada vez que se cambia el valor de la barra de points per loop
+    def manejar_per_loop(self, valor):
+        self.configuracion.points_per_loop = valor
+        print(valor)
+    #funcion que se ejecuta cada vez que se cambia el valor de la barra de number of sweeps
+    def manejar_number_sweeps(self, valor):
+        self.configuracion.number_of_sweeps = valor
+        print(valor)
+    #funcion que se ejecuta cada vez que se cambia el valor de la barra de dwell time
+    def manjar_dwell_time(self, valor):
+        self.configuracion.dwell_time = valor
+        print(valor)
+    #funcion que se ejecuta cada vez que se cambia el valor de la barra de integration time
+    def manejar_integration_time(self, valor):
+        self.configuracion.integration_time = valor
+        print(valor)
+    #funcion que se ejecuta cada vez que se cambia el valor de la barra de integration time
+    def manejar_lb_description(self, texto):
+        self.experimento.descripcion = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de geometry
+    def manejar_geometry(self, texto):
+        self.configuracion.geometry = texto
+        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la barra de datafile
+    def manejar_le_datafile(self, texto):
+        self.experimento.rutaCsv = texto
+        print(texto)
+    
 
 def main():
     Conexion.iniciar_bbdd()
