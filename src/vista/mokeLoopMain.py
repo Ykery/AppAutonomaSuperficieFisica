@@ -331,14 +331,45 @@ class VistaPrincipal(QWidget):
         gb_datafile_selection.setLayout(layout)
         return gb_datafile_selection 
     
-    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke intensity
-    def manejar_cb_moke_intensity(self, texto):
-        self.configuracion.dac_input_intensity = texto
-        print(texto)
-    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke dc level
-    def manejar_cb_moke_dc_level(self, texto):
-        self.configuracion.dac_dc_level = texto
-        print(texto)
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke intensity, dc level y temperature
+    def mostrar_error(self):
+        # Crear y configurar la ventana de error
+        error_dialog = QMessageBox()
+        error_dialog.setIcon(QMessageBox.Icon.Critical)
+        error_dialog.setWindowTitle("Error de Input")
+        error_dialog.setText("Input selecdionado no valido.")
+        #aumentar tamaño de la letra 
+        error_dialog.setStyleSheet("font: 12pt")
+        error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok) 
+        # Mostrar la ventana de error
+        error_dialog.exec()
+
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke intensity, dc level y temperature
+    def control_Input(self,texto,tipo):
+        if texto == " -- Select -- ":
+            return
+        if tipo == self.cb_moke_intensity:
+            if texto !=  self.cb_moke_dc_level.currentText() and texto != self.cb_temperature.currentText() and texto != self.cb_timeFieldDriving.currentText():
+                self.configuracion.dac_input_intensity = texto
+                print(texto)
+            else:
+                self.mostrar_error()
+                self.cb_moke_intensity.setCurrentIndex(0)
+        if tipo == self.cb_moke_dc_level:
+            if texto != self.cb_moke_intensity.currentText() and texto != self.cb_temperature.currentText() and texto != self.cb_timeFieldDriving.currentText():
+                self.configuracion.dac_dc_level = texto 
+                print(texto)
+            else:
+                self.mostrar_error()
+                self.cb_moke_dc_level.setCurrentIndex(0)
+        if tipo == self.cb_temperature:
+            if texto != self.cb_moke_intensity.currentText() and texto != self.cb_moke_dc_level.currentText() and texto != self.cb_timeFieldDriving.currentText():
+                self.configuracion.dac_input_temperature = texto
+                print(texto)
+            else:
+                self.mostrar_error()
+                self.cb_temperature.setCurrentIndex(0)
+
     #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke voltage range
     def manejar_cb_moke_volage_range(self, texto):
         self.configuracion.dac_voltaje_range = texto
