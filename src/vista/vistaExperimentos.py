@@ -130,7 +130,14 @@ class ExperimentosWindow(QWidget):
     
 
     def mostrar_fecha(self, fecha, tipo_fecha):
-        #añadir un control de fechas para que no se pueda seleccionar una fecha futura
+        
+        #control de fechas para que no se pueda seleccionar una fecha "hasta" anterior a la fecha "desde"
+        if tipo_fecha == "hasta":
+            fecha_desde = QDate.fromString(self.le_desde.text(), "dd/MM/yyyy")
+            if fecha < fecha_desde:
+                fecha = fecha_desde
+
+        #control de fechas para que no se pueda seleccionar una fecha futura
         if fecha > QDate.currentDate():
             fecha = QDate.currentDate()
 
