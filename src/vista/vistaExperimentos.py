@@ -44,7 +44,7 @@ class ExperimentosWindow(QWidget):
         self.lw_experimentos.clear()
         if not self.experimentos:
             self.experimentos = ExperimentoDAO.obtener_todos()
-        
+        num_experimentos_mostrados = 0
         for experimento in self.experimentos:
             if self.filtro_tipo != None and experimento.tipo != self.filtro_tipo:
                 continue
@@ -52,13 +52,20 @@ class ExperimentosWindow(QWidget):
                 continue
             if self.filtro_fecha_hasta != None and experimento.fecha_creacion > datetime.combine(self.filtro_fecha_hasta, datetime.max.time()):
                 continue
+            num_experimentos_mostrados += 1
             nombre_experimento = experimento.rutaCsv.split("/")[-1].split(".")[0]
             li_experimento = QListWidgetItem(nombre_experimento + experimento.tipo)
             li_experimento.setStatusTip(experimento.descripcion)
             li_experimento.setData(Qt.ItemDataRole.UserRole, experimento.id)
             li_experimento.setSizeHint(QSize(100, 50))
             self.lw_experimentos.addItem(li_experimento)
-        
+        if num_experimentos_mostrados == 0:
+            li_experimento = QListWidgetItem("No se encontraron experimentos")
+            li_experimento.setSizeHint(QSize(100, 50))
+            self.lw_experimentos.addItem(li_experimento)
+            self.lw_experimentos.setDisabled(True)
+        else:
+            self.lw_experimentos.setDisabled(False)
     def filtrar_por_tipo(self, tipo):
         self.filtro_tipo = tipo
         self.cargar_lista_experimentos()
