@@ -1,12 +1,13 @@
 import sys
 import numpy as np
 import random
-
+from ..modelo.dao import ExperimentoDAO
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6 import Qwt
 from PyQt6.Qwt import *
+from datetime import datetime
 
 
 class ExperimentosWindow(QWidget):
@@ -14,11 +15,13 @@ class ExperimentosWindow(QWidget):
     def __init__(self, ):
         super().__init__()
         self.setWindowTitle("EXPERIMENTOS REALIZADOS")
-        
+        self.experimentos = None
         self.main_layout = QGridLayout()
         self.fuenteHelvetica = QFont("Helvetica", 11)
         btn_volver = QPushButton("Volver")
-
+        self.filter_by_type = None
+        self.filter_date_from = None
+        self.filter_date_to = None
         self.main_layout.addLayout(self.crear_scroll_area(), 0, 0, 4, 6)
         self.main_layout.addWidget(self.crear_filtros_tipo_experimento(), 4, 0, 1, 2)
         self.main_layout.addWidget(self.crear_filtros_fechas(), 4, 3, 1, 3)
@@ -30,12 +33,32 @@ class ExperimentosWindow(QWidget):
 
     def crear_scroll_area(self):
         layout = QGridLayout()
-        scroll_area_experimentos = QScrollArea()
-        scroll_area_experimentos.setBackgroundRole(QPalette.ColorRole.Dark)
-        layout.addWidget(scroll_area_experimentos, 0, 0, 4, 6)
+        self.lw_experimentos = QListWidget()
+        self.lw_experimentos.setBackgroundRole(QPalette.ColorRole.Midlight)
+        self.lw_experimentos.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.cargar_lista_experimentos()
+        layout.addWidget(self.lw_experimentos, 0, 0, 4, 6)
         return layout    
 
-
+    def cargar_lista_experimentos(self):
+        self.lw_experimentos.clear()
+        if not self.experimentos:
+            self.experimentos = ExperimentoDAO.obtener_todos()
+        
+        for experimento in self.experimentos:
+            if self.filter_by_type != None and experimento.tipo != self.filter_by_type:
+                continue
+            if self.filter_date_from != None and experimento.fecha_creacion < datetime.combine(self.filter_date_from, datetime.min.time()):
+                continue
+            if self.filter_date_to != None and experimento.fecha_creacion > datetime.combine(self.filter_date_to, datetime.min.time()):
+                continue
+            nombre_experimento = experimento.rutaCsv.split("/")[-1].split(".")[0]
+            li_experimento = QListWidgetItem(nombre_experimento + experimento.tipo)
+            li_experimento.setStatusTip(experimento.descripcion)
+            li_experimento.setData(Qt.ItemDataRole.UserRole, experimento.id)
+            li_experimento.setSizeHint(QSize(100, 50))
+            self.lw_experimentos.addItem(li_experimento)
+        
     def crear_filtros_tipo_experimento(self):
         #layout = QGridLayout()
         gb_filtrado_tipo_experimento = QGroupBox("Filtrar por tipo experimento")
