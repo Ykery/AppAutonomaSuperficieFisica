@@ -59,18 +59,6 @@ class VistaPrincipal(QWidget):
         btn_close.clicked.connect(self.close)
         
         
-        #esta parte del codigo ejecuta una funcion cada vez que se cambia el valor de la combobox
-        self.cb_moke_intensity.currentTextChanged.connect(lambda x: print(x))
-        def funcion_prueba(texto):
-            print(texto)
-        # self.cb_moke_intensity.currentTextChanged.connect(funcion_prueba)
-        #lamdba declaras una funcion que no tiene nombre que se ejecuta en el momento del evento
-        
-
-       
-
-    
-
     def createMokeDACBox(self):
         
         layout = QGridLayout()
