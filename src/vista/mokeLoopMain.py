@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import *
 
 from PyQt6 import Qwt
 from ..modelo.clases import Conexion, Experimento, ConfiguracionMoke
-
+from ..modelo.dao import ExperimentoDAO, ConfiguracionMokeDAO
 
 
 class VistaPrincipal(QWidget):
@@ -57,7 +57,7 @@ class VistaPrincipal(QWidget):
         self.main_layout.addLayout(buttons_layout, 7, 3, 1, 2)
 
         btn_close.clicked.connect(self.close)
-        
+        btn_run.clicked.connect(self.run)
         
     def createMokeDACBox(self):
         
@@ -345,6 +345,30 @@ class VistaPrincipal(QWidget):
         # Mostrar la ventana de error
         error_dialog.exec()
 
+    def mostrar_error_ruta_CSV(self):
+        # Crear y configurar la ventana de error
+        error_dialog = QMessageBox()
+        error_dialog.setIcon(QMessageBox.Icon.Critical)
+        error_dialog.setWindowTitle("Error de Datafile")
+        error_dialog.setText("Ingrese un nombre de archivo.")
+        #aumentar tamaño de la letra 
+        error_dialog.setStyleSheet("font: 12pt")
+        error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok) 
+        # Mostrar la ventana de error
+        error_dialog.exec()
+
+    def mostrar_error_faltan_datos(self):
+        # Crear y configurar la ventana de error
+        error_dialog = QMessageBox()
+        error_dialog.setIcon(QMessageBox.Icon.Critical)
+        error_dialog.setWindowTitle("Error de Datos")
+        error_dialog.setText("Ingrese todos los datos necesarios para correr el experimento.")
+        #aumentar tamaño de la letra 
+        error_dialog.setStyleSheet("font: 12pt")
+        error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok) 
+        # Mostrar la ventana de error
+        error_dialog.exec()
+
     #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke intensity, dc level y temperature
     def control_Input(self,texto,tipo):
         if texto == " -- Select -- ":
@@ -370,6 +394,40 @@ class VistaPrincipal(QWidget):
             else:
                 self.mostrar_error()
                 self.cb_temperature.setCurrentIndex(0)
+    #fuincion que se ejecuta para comprobar que todos los datos esten ingresados
+    def control_validar_datos(self):
+        control=True
+        if self.configuracion.dac_input_intensity == None:
+            control=False
+        if self.configuracion.dac_dc_level == None:
+            control=False
+        if self.configuracion.dac_input_temperature == None:
+            control=False
+        if self.configuracion.dac_voltaje_range == None:
+            control=False
+        if self.configuracion.dac_dc_voltage_range == None:
+            control=False
+        if self.configuracion.dac_temperature_voltaje_range == None:
+            control=False
+        if self.configuracion.dac_field_driving_current == None:
+            control=False
+        if self.configuracion.dac_sampling_rate == None:
+            control=False
+        if self.configuracion.lock_sensitivity == None:
+            control=False
+        if self.configuracion.lock_time_constant == None:
+            control=False
+        if self.configuracion.magnetic_field == None:
+            control=False
+        if self.configuracion.points_per_loop == None:
+            control=False
+        if self.configuracion.number_of_sweeps == None:
+            control=False
+        if self.configuracion.dwell_time == None:
+            control=False
+        if self.configuracion.integration_time == None:
+            control=False
+        return control
 
     #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke voltage range
     def manejar_cb_moke_volage_range(self, texto):
@@ -431,7 +489,17 @@ class VistaPrincipal(QWidget):
     def manejar_le_datafile(self, texto):
         self.experimento.rutaCsv = texto
         print(texto)
-    
+    #funcion que se ejecuta al dar click en el boton run
+    def run (self):
+        if self.experimento.rutaCsv== None:
+            self.mostrar_error_ruta_CSV()
+        elif self.control_validar_datos() == False:
+            self.mostrar_error_faltan_datos()
+        else:
+            self.experimento.tipo = "MOKE"
+            self.experimento = ExperimentoDAO.crear(self.experimento)
+            self.configuracion.id_experimento = self.experimento.id
+            ConfiguracionMokeDAO.crear(self.configuracion)
 
 def main():
     Conexion.iniciar_bbdd()
