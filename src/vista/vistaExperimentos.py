@@ -46,7 +46,7 @@ class ExperimentosWindow(QWidget):
             self.experimentos = ExperimentoDAO.obtener_todos()
         num_experimentos_mostrados = 0
         for experimento in self.experimentos:
-            if self.filtro_tipo != None and experimento.tipo != self.filtro_tipo:
+            if self.filtro_tipo != None and experimento.tipo.lower() != self.filtro_tipo.lower():
                 continue
             if self.filtro_fecha_desde != None and experimento.fecha_creacion < datetime.combine(self.filtro_fecha_desde, datetime.min.time()):
                 continue
