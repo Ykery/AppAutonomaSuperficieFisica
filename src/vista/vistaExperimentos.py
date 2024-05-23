@@ -12,7 +12,7 @@ from datetime import datetime
 
 class ExperimentosWindow(QWidget):
     
-    def __init__(self, ):
+    def __init__(self):
         super().__init__()
         self.setWindowTitle("EXPERIMENTOS REALIZADOS")
         self.experimentos = None
@@ -82,12 +82,15 @@ class ExperimentosWindow(QWidget):
 
         rb_teas = QRadioButton("TEAS")
         rb_moke = QRadioButton("MOKE")
+        rb_todos = QRadioButton("Todo")
         rb_teas.clicked.connect(lambda: self.filtrar_por_tipo("teas"))
         rb_moke.clicked.connect(lambda: self.filtrar_por_tipo("moke"))
-        rb_teas.setChecked(True)
+        rb_todos.clicked.connect(lambda: self.filtrar_por_tipo(None))
+        #rb_teas.setChecked(True)
 
         radio_buttons_layout.addWidget(rb_teas, 0, 0, Qt.AlignmentFlag.AlignCenter)
         radio_buttons_layout.addWidget(rb_moke, 0, 1, Qt.AlignmentFlag.AlignCenter)
+        radio_buttons_layout.addWidget(rb_todos, 0, 2, Qt.AlignmentFlag.AlignCenter)
 
         gb_filtrado_tipo_experimento.setLayout(radio_buttons_layout)
         return gb_filtrado_tipo_experimento
