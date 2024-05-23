@@ -437,7 +437,9 @@ class VistaPrincipal(QWidget):
             self.configuracion.points_per_loop == None or \
             self.configuracion.number_of_sweeps == None or \
             self.configuracion.dwell_time == None or \
-            self.configuracion.integration_time == None:
+            self.configuracion.integration_time == None or \
+            self.configuracion.geometry == None:
+
             return False
         return True
 
