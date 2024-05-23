@@ -2,6 +2,7 @@ import sys
 import numpy as np
 from PyQt6 import QtWidgets
 from PyQt6.uic import loadUi
+import os
 
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
@@ -58,7 +59,7 @@ class VistaPrincipal(QWidget):
         
         btn_close.clicked.connect(self.close)
         btn_run.clicked.connect(self.run)
-
+        
         if id_experimento != None:
             self.cargar_configuracion(id_experimento=id_experimento)
         
@@ -161,6 +162,7 @@ class VistaPrincipal(QWidget):
 
         gb_MokeDACBox.setLayout(layout)
         return gb_MokeDACBox
+    
     #lock-in settings 
     def createLockinBox(self):
         
@@ -510,6 +512,7 @@ class VistaPrincipal(QWidget):
             self.experimento = ExperimentoDAO.crear(self.experimento)
             self.configuracion.id_experimento = self.experimento.id
             ConfiguracionMokeDAO.crear(self.configuracion)
+
 
     def cargar_configuracion(self, id_experimento):
 
