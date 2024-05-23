@@ -350,8 +350,9 @@ class VistaPrincipal(QWidget):
         btn_browse_button = QPushButton("Browse")
 
         layout.addWidget(self.le_datafile)
-        self.le_datafile.textChanged.connect(self.manejar_le_datafile)
         layout.addWidget(btn_browse_button)
+        btn_browse_button.clicked.connect(self.open_file_dialog)
+        self.le_datafile.textChanged.connect(self.manejar_le_datafile)
 
         gb_datafile_selection.setLayout(layout)
         return gb_datafile_selection 
