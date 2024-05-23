@@ -377,7 +377,7 @@ class VistaPrincipal(QWidget):
         error_dialog = QMessageBox()
         error_dialog.setIcon(QMessageBox.Icon.Critical)
         error_dialog.setWindowTitle("Error de Datafile")
-        error_dialog.setText("Ingrese un nombre de archivo.")
+        error_dialog.setText("Ingrese la ruta del archivo.")
         #aumentar tamaño de la letra 
         error_dialog.setStyleSheet("font: 12pt")
         error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok) 
