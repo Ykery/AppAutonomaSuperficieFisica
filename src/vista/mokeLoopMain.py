@@ -113,7 +113,7 @@ class VistaPrincipal(QWidget):
         lb_samplig_rate = QLabel("Sampling Rate (khz):")
 
         #barra
-        slider_samplingRate = Qwt.QwtSlider()
+        self.slider_samplingRate = Qwt.QwtSlider()
 
         #DISPLAY
         lcd_samplingRateDisplay = QLCDNumber()
@@ -122,21 +122,21 @@ class VistaPrincipal(QWidget):
         lcd_samplingRateDisplay.display(10)
 
         
-        slider_samplingRate.setOrientation(Qt.Orientation.Horizontal)
-        slider_samplingRate.setScalePosition(Qwt.QwtSlider.ScalePosition.TrailingScale)
-        slider_samplingRate.setTrough(True)
-        slider_samplingRate.setGroove(True)
-        slider_samplingRate.setSpacing(10)
-        slider_samplingRate.setHandleSize(QSize(30, 16))
-        slider_samplingRate.setScale(0, 10.0) 
-        slider_samplingRate.setTotalSteps(100)  
-        slider_samplingRate.setWrapping(False)
-        slider_samplingRate.setScaleMaxMinor(8)
+        self.slider_samplingRate.setOrientation(Qt.Orientation.Horizontal)
+        self.slider_samplingRate.setScalePosition(Qwt.QwtSlider.ScalePosition.TrailingScale)
+        self.slider_samplingRate.setTrough(True)
+        self.slider_samplingRate.setGroove(True)
+        self.slider_samplingRate.setSpacing(10)
+        self.slider_samplingRate.setHandleSize(QSize(30, 16))
+        self.slider_samplingRate.setScale(0, 10.0) 
+        self.slider_samplingRate.setTotalSteps(100)  
+        self.slider_samplingRate.setWrapping(False)
+        self.slider_samplingRate.setScaleMaxMinor(8)
 
 
         #Conexion display con la barra
-        slider_samplingRate.valueChanged.connect(self.manejar_value_sampling_rate)
-        slider_samplingRate.valueChanged.connect(lcd_samplingRateDisplay.display)
+        self.slider_samplingRate.valueChanged.connect(self.manejar_value_sampling_rate)
+        self.slider_samplingRate.valueChanged.connect(lcd_samplingRateDisplay.display)
 
         layout.addWidget(lb_moke_intensity, 0, 0, 1, 2)
         layout.addWidget(self.cb_moke_intensity, 1, 0, 1, 2)
@@ -153,7 +153,7 @@ class VistaPrincipal(QWidget):
         layout.addWidget(lb_field_driving_current, 6, 0, 1, 2)
         layout.addWidget(self.cb_timeFieldDriving, 7, 0, 1, 2)
         layout.addWidget(lb_samplig_rate, 8, 0, 1, 2)
-        layout.addWidget(slider_samplingRate, 9, 0, 1, 3)
+        layout.addWidget(self.slider_samplingRate, 9, 0, 1, 3)
         layout.addWidget(lcd_samplingRateDisplay, 9, 3, 1, 3)
 
         gb_MokeDACBox.setLayout(layout)
