@@ -56,6 +56,12 @@ class ResultadoTeasDAO():
         session.close()
         return resultado
     
+    def obtener_por_id_experimento(id_experimento):
+        session = Conexion.getConexion()
+        resultados = session.query(ResultadoTeas).filter(ResultadoTeas.id_experimento == id_experimento).all()
+        session.close()
+        return resultados
+    
     def obtener_todos():    
         session = Conexion.getConexion()
         resultados = session.query(ResultadoTeas).all()
@@ -88,6 +94,12 @@ class ResultadoMokeDAO():
         resultado = session.query(ResultadoMoke).filter(ResultadoMoke.id_resultado_exp == id).first()
         session.close()
         return resultado
+    
+    def obtener_por_id_experimento(id_experimento):
+        session = Conexion.getConexion()
+        resultados = session.query(ResultadoMoke).filter(ResultadoMoke.id_experimento == id_experimento).all()
+        session.close()
+        return resultados
     
     def obtener_todos():    
         session = Conexion.getConexion()
