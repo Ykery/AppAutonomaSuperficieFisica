@@ -315,7 +315,28 @@ class VistaPrincipal(QWidget):
 
         gb_moke_geomery.setLayout(layout)
         return gb_moke_geomery
-    
+
+    #Abre el sistema de gestor de archivos para seleccionar un archivo
+    def open_file_dialog(self):
+        file = QFileDialog(self)
+        file.setFileMode(QFileDialog.FileMode.AnyFile)
+        file.setViewMode(QFileDialog.ViewMode.List)
+        file.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
+        
+        # Si se escribe una ruta y existe, que apareza en el cuadro de diálogo del sistema de gestor de archivos
+        self.archivo_incio = self.le_datafile.text()
+        if len(self.archivo_incio) != 0 and os.path.exists(self.archivo_incio):
+            file.setDirectory(self.archivo_incio)
+       
+        #Comprobar si el diálogo se cerró con una selección válida de archivo
+        if file.exec():
+            self.nombre_file = file.selectedFiles()[0]
+            self.le_datafile.setText(self.nombre_file)
+
+        file.close()
+        print(file)
+
+
     def setDataFile(self):    
         layout = QHBoxLayout()
 
