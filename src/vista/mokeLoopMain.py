@@ -493,6 +493,9 @@ class VistaPrincipal(QWidget):
         print(valor)
     #funcion que se ejecuta cada vez que se cambia el valor de la barra de integration time
     def manejar_lb_description(self, texto):
+        texto = texto.strip()
+        if texto == "":
+            texto = None
         self.experimento.descripcion = texto
         print(texto)
     #funcion que se ejecuta cada vez que se cambia el valor de la combobox de geometry
