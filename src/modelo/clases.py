@@ -27,8 +27,8 @@ class Experimento(Base):
     __tablename__ = 'experimentos'
    
     id = Column(Integer, autoincrement=True, primary_key=True)
-    descripcion = Column(String(45), nullable=False)
-    rutaCsv = Column(String(45), nullable=False)
+    descripcion = Column(String(255), nullable=True, server_default='---')
+    rutaCsv = Column(String(255), nullable=False)
     # Atributo fecha_creacion autogenerado al insertar un nuevo registro
     fecha_creacion = Column(DateTime, default=sqlalchemy.func.now())
     tipo =Column(String(45), nullable=False)
