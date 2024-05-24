@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import *
 from PyQt6 import Qwt
 from ..modelo.clases import Conexion, Experimento, ConfiguracionMoke
 from ..modelo.dao import ExperimentoDAO, ConfiguracionMokeDAO
+import random   
 
 
 class Display_LCD_modificado(QLCDNumber):
@@ -24,6 +25,17 @@ class Display_LCD_modificado(QLCDNumber):
         self.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
         # Dar un tamaño
         self.setFixedSize(100, 50)
+
+class Thermometer_modificado(Qwt.QwtThermo):
+    def __init__(self):
+        super().__init__()
+        self.setOrientation(Qt.Orientation.Horizontal)
+        self.setScalePosition(Qwt.QwtThermo.ScalePosition.TrailingScale)
+        colorMap = Qwt.QwtLinearColorMap() 
+        colorMap.setColorInterval(Qt.GlobalColor.green, Qt.GlobalColor.red)
+        self.setColorMap(colorMap)
+        self.setAlarmBrush( Qt.GlobalColor.red)
+        self.setAlarmLevel(80) 
 
 
 class VistaPrincipal(QWidget):
@@ -277,14 +289,9 @@ class VistaPrincipal(QWidget):
 
         gb_lock_in = QGroupBox("Current lock-in signal level")
 
-        thermo_lock_in = Qwt.QwtThermo()
-        thermo_lock_in.setOrientation(Qt.Orientation.Horizontal)
-        thermo_lock_in.setScalePosition(Qwt.QwtThermo.ScalePosition.TrailingScale) 
-        #uwu peniente
-        #
-        #
-        #
-        #uwu
+        thermo_lock_in = Thermometer_modificado()
+        thermo_lock_in.setValue(random.randint(0, 100))
+
         layout.addWidget(thermo_lock_in)
         gb_lock_in.setLayout(layout)
         return gb_lock_in

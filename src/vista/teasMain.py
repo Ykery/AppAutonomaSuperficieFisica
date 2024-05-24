@@ -23,6 +23,8 @@ class Display_LCD_modificado(QLCDNumber):
         self.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
         # Dar un tamaño
         self.setFixedSize(100, 50)
+from .mokeLoopMain import Display_LCD_modificado, Thermometer_modificado
+import random
 
 class TeasWindow(QWidget):
     
@@ -313,17 +315,7 @@ class TeasWindow(QWidget):
         gb_lockinThermoBox = QGroupBox("Current lock-in signal level")
         gb_lockinThermoBox.setFont(self.fuenteHelvetica)
 
-        thermo_lockinSignal = Qwt.QwtThermo()
-        thermo_lockinSignal.setOrientation(Qt.Orientation.Horizontal)
-        thermo_lockinSignal.setScalePosition(Qwt.QwtThermo.ScalePosition.TrailingScale)
-        #thermo_lockinSignal.setAlarmEnabled(True)
-        #thermo_lockinSignal.setAlarmLevel(90)
-        colorMap = Qwt.QwtLinearColorMap() 
-        colorMap.setColorInterval(Qt.GlobalColor.green, Qt.GlobalColor.red)
-        thermo_lockinSignal.setColorMap(colorMap)
-        #thermo_lockinSignal.setFillBrush(Qt.GlobalColor.green)
-        thermo_lockinSignal.setAlarmBrush( Qt.GlobalColor.red)
-        thermo_lockinSignal.setAlarmLevel(80)        
+        thermo_lockinSignal = Thermometer_modificado()
         thermo_lockinSignal.setValue(random.randint(0, 100))
         
 
