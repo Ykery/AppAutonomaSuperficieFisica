@@ -339,21 +339,39 @@ class TeasWindow(QWidget):
         return gb_teasSysIDbox  
 
 
+    def open_file_dialog(self):
+        file = QFileDialog(self)
+        file.setFileMode(QFileDialog.FileMode.AnyFile)
+        file.setViewMode(QFileDialog.ViewMode.List)
+        file.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
+        
+        # Si se escribe una ruta y existe, que apareza en el cuadro de diálogo del sistema de gestor de archivos
+        self.archivo_incio = self.le_fileLineEdit.text()
+        if len(self.archivo_incio) != 0 and os.path.exists(self.archivo_incio):
+            file.setDirectory(self.archivo_incio)
+       
+        #Comprobar si el diálogo se cerró con una selección válida de archivo
+        if file.exec():
+            self.nombre_file = file.selectedFiles()[0]
+            self.le_fileLineEdit.setText(self.nombre_file)
+
+        file.close()
+        print(file)
+    
+
     def setDataFile(self):
-
         layout = QHBoxLayout()
-
         gb_dataFileBox = QGroupBox("Datafile selection")
         gb_dataFileBox.setFont(self.fuenteHelvetica)
 
-        le_fileLineEdit = QLineEdit()
-
-        #setDataFileName()  --> llama a la función. SIN CREAR AUN
-
+        self.le_fileLineEdit = QLineEdit()
+        self.le_fileLineEdit.setFont(QFont("Helvetica", 9))
         btn_browseButton = QPushButton("Browse")
 
-        layout.addWidget(le_fileLineEdit)
+        layout.addWidget(self.le_fileLineEdit)
         layout.addWidget(btn_browseButton)
+
+        btn_browseButton.clicked.connect(self.open_file_dialog)
 
         gb_dataFileBox.setLayout(layout)
         return gb_dataFileBox
