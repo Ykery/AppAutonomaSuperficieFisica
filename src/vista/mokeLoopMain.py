@@ -210,7 +210,7 @@ class VistaPrincipal(QWidget):
         lb_magnetic = QLabel("Magnetic Field (Oe)")
         self.knb_magnetic_field = Qwt.QwtKnob()
         self.knb_magnetic_field.setScale(0,600)
-        lcd_magnetic_Display = QLCDNumber()
+        lcd_magnetic_Display = Display_LCD_modificado()
 
         self.knb_magnetic_field.valueChanged.connect(lcd_magnetic_Display.display)
         self.knb_magnetic_field.valueChanged.connect(self.manejas_magnetic_field)
@@ -218,7 +218,7 @@ class VistaPrincipal(QWidget):
         lb_loop = QLabel("Points per loop")
         self.knb_per_loop = Qwt.QwtKnob()
         self.knb_per_loop.setScale(0,500)
-        lcd_loop_Display = QLCDNumber()
+        lcd_loop_Display = Display_LCD_modificado()
 
         self.knb_per_loop.valueChanged.connect(lcd_loop_Display.display)
         self.knb_per_loop.valueChanged.connect(self.manejar_per_loop)
@@ -226,7 +226,7 @@ class VistaPrincipal(QWidget):
         lb_sweeps = QLabel("Number of sweeps")
         self.knb_number_sweeps = Qwt.QwtKnob()
         self.knb_number_sweeps.setScale(0,30)
-        lcd_sweeps_Display = QLCDNumber()
+        lcd_sweeps_Display = Display_LCD_modificado()
 
         self.knb_number_sweeps.valueChanged.connect(lcd_sweeps_Display.display)
         self.knb_number_sweeps.valueChanged.connect(self.manejar_number_sweeps)
@@ -251,14 +251,14 @@ class VistaPrincipal(QWidget):
 
         lb_dweel_time = QLabel("Dwell Time (sec)")
         self.knb_dweel_time = Qwt.QwtKnob()
-        lcd_dweel_Time = QLCDNumber()
+        lcd_dweel_Time = Display_LCD_modificado()
         self.knb_dweel_time.valueChanged.connect(lcd_dweel_Time.display)
         self.knb_dweel_time.valueChanged.connect(self.manjar_dwell_time)
 
 
         lb_integration_time = QLabel("Integration Time (sec)")
         self.knb_integration_time = Qwt.QwtKnob()
-        lcd_integration_time = QLCDNumber()
+        lcd_integration_time = Display_LCD_modificado()
         self.knb_integration_time.valueChanged.connect(lcd_integration_time.display)
         self.knb_integration_time.valueChanged.connect(self.manejar_integration_time)
 
