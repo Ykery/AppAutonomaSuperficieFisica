@@ -10,19 +10,6 @@ from PyQt6.Qwt import *
 
 from ..modelo.dao import *
 from ..modelo.clases import *
-
-
-class Display_LCD_modificado(QLCDNumber):
-    def __init__(self, initial_value=0, digit_count = None):
-        super().__init__()
-        self.setStyleSheet("background-color: white; color: black;")
-        if digit_count:
-            self.setDigitCount(digit_count)
-        self.setSmallDecimalPoint(True)
-        self.display(initial_value)
-        self.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
-        # Dar un tamaño
-        self.setFixedSize(100, 50)
 from .mokeLoopMain import Display_LCD_modificado, Thermometer_modificado
 import random
 
