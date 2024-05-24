@@ -113,21 +113,24 @@ class TeasWindow(QWidget):
         lb_sensLabel = QLabel("Sensitivity (/div)")
         lb_timeConsLabel = QLabel("Time constant")
 
-        cb_lockinTimeCons = QComboBox()
-        cb_lockinSens = QComboBox()
+        self.cb_lockinTimeCons = QComboBox()
+        self.cb_lockinSens = QComboBox()
 
-        cb_lockinTimeCons.insertItems(0, self.scanLockinSensVals)
-        cb_lockinTimeCons.setCurrentIndex(0)
-        cb_lockinSens.insertItems(0, self.scanLockinTimeConsVals)
-        cb_lockinSens.setCurrentIndex(0)
+        self.cb_lockinTimeCons.insertItems(0, self.scanLockinSensVals)
+        self.cb_lockinTimeCons.setCurrentIndex(0)
+        self.cb_lockinTimeCons.currentTextChanged.connect(self.manejar_cb_lockinTimeCons)
+
+        self.cb_lockinSens.insertItems(0, self.scanLockinTimeConsVals)
+        self.cb_lockinSens.setCurrentIndex(0)
+        self.cb_lockinSens.currentTextChanged.connect(self.manejar_cb_lockinSens)
 
         chb_lockincheckBox = QCheckBox("Check when correct values set")
         chb_lockincheckBox.setChecked(False)
 
         layout.addWidget(lb_sensLabel)
-        layout.addWidget(cb_lockinTimeCons)
+        layout.addWidget(self.cb_lockinTimeCons)
         layout.addWidget(lb_timeConsLabel)
-        layout.addWidget(cb_lockinSens)
+        layout.addWidget(self.cb_lockinSens)
         layout.addWidget(chb_lockincheckBox)
 
         gb_teasLockinBox.setLayout(layout)
@@ -148,8 +151,8 @@ class TeasWindow(QWidget):
 
         self.cb_teasVrange = QComboBox()
         self.cb_tempVrange = QComboBox()
-        cb_teas = QComboBox()
-        cb_temperature = QComboBox()
+        self.cb_teas = QComboBox()
+        self.cb_temperature = QComboBox()
         
 
         lb_teasLabel = QLabel("TEAS intensity:")
@@ -162,26 +165,30 @@ class TeasWindow(QWidget):
 
         lcd_samplingRateDisplay = Display_LCD_modificado()
 
-        self.slider_samplingRate.valueChanged.connect(self.value_changed)
+        self.slider_samplingRate.valueChanged.connect(self.manejar_silder_samplingRate)
         self.slider_samplingRate.valueChanged.connect(lcd_samplingRateDisplay.display)
-
+        
         ckb_DACcheckBox = QCheckBox()
         ckb_DACcheckBox.setChecked(False)
 
-        cb_teas.insertItems(0, self.scanChannelsDAC)
-        cb_teas.setCurrentIndex(0)
+        self.cb_teas.insertItems(0, self.scanChannelsDAC)
+        self.cb_teas.setCurrentIndex(0)
+        self.cb_teas.currentIndexChanged.connect(self.manejar_cb_teas)
 
         self.cb_teasVrange.insertItems(0, self.scanVrange)
         self.cb_teasVrange.setCurrentIndex(0)
         self.cb_teasVrange.currentIndexChanged.connect(self.setDACparameters)
+        self.cb_teasVrange.currentTextChanged.connect(self.manejar_cb_teasVrange)
 
-        cb_temperature.insertItems(0, self.scanChannelsDAC)
-        cb_temperature.setCurrentIndex(0)
+        self.cb_temperature.insertItems(0, self.scanChannelsDAC)
+        self.cb_temperature.setCurrentIndex(0)
+        self.cb_temperature.currentIndexChanged.connect(self.manejar_cb_temperature)
 
         self.cb_tempVrange.insertItems(0, self.scanVrange)
         self.cb_tempVrange.setCurrentIndex(0)
         self.cb_tempVrange.currentIndexChanged.connect(self.setDACparameters)
-        
+        self.cb_tempVrange.currentIndexChanged.connect(self.manejar_cb_tempVrange)
+
         self.slider_samplingRate.setOrientation(Qt.Orientation.Horizontal)
         self.slider_samplingRate.setScalePosition(Qwt.QwtSlider.ScalePosition.TrailingScale)
         self.slider_samplingRate.setTrough(True)
@@ -197,17 +204,19 @@ class TeasWindow(QWidget):
         #self.main_layout.addWidget(sampling_rate, 0, 0, 1, 2)
 
         layout.addWidget(lb_teasLabel, 0, 0, 1, 2)
-        layout.addWidget(cb_teas, 1, 0, 1, 2)
+        layout.addWidget(self.cb_teas, 1, 0, 1, 2)
         layout.addWidget(lb_teasVrangeLabel, 0, 2, 1, 2)
         layout.addWidget(self.cb_teasVrange, 1, 2, 1, 2)
         layout.addWidget(lb_temperatureLabel, 2, 0, 1, 2)
-        layout.addWidget(cb_temperature, 3, 0, 1, 2)
+        layout.addWidget(self.cb_temperature, 3, 0, 1, 2)
         layout.addWidget(lb_tempVrangeLabel, 2, 2, 1, 2)
         layout.addWidget(self.cb_tempVrange, 3, 2, 1, 2)
         layout.addWidget(lb_samplingRateLabel, 4, 0, 1, 1)
         layout.addWidget(self.slider_samplingRate, 5, 0, 1, 3)
         layout.addWidget(lcd_samplingRateDisplay, 5, 3, 1, 1)
         layout.addWidget(ckb_DACcheckBox, 6, 0, 1, 1)
+
+        
         
         gb_teasDACbox.setLayout(layout)
         return gb_teasDACbox
@@ -228,42 +237,48 @@ class TeasWindow(QWidget):
         lb_scanVrangeLabel = QLabel("Channel voltage range (V)     ")
         lb_scanSensLabel = QLabel("Gauge sensitivity (1/[Pres]): ")
         lb_scanAMLunitsLabel = QLabel("Pressure gauge units: ")
-        lb_emissionLabel = QLabel("Emission current:")
+        self.lb_emissionLabel = QLabel("Emission current:")
 
-        le_scanSensLineEdit = QLineEdit()
+        self.le_scanSensLineEdit = QLineEdit()
+        self.le_scanSensLineEdit.textChanged.connect(self.manejar_le_scanSensLineEdit)
 
-        rb_scanEmission_1 = QRadioButton("0.5 mA")
-        rb_scanEmission_2 = QRadioButton("5.0 mA")
-        rb_scanEmission_2.setChecked(True)
-
+        self.rb_scanEmission_1 = QRadioButton("0.5 mA")
+        self.rb_scanEmission_2 = QRadioButton("5.0 mA")
+        #rb_scanEmission_2.setChecked(True)
+        self.rb_scanEmission_1.clicked.connect(self.seleccionar_rb_scanEmission)
+        self.rb_scanEmission_2.clicked.connect(self.seleccionar_rb_scanEmission)
+        
         scanEmission_layout = QGridLayout()
-        scanEmission_layout.addWidget(lb_emissionLabel, 0, 0, Qt.AlignmentFlag.AlignCenter)
-        scanEmission_layout.addWidget(rb_scanEmission_1, 2, 0, Qt.AlignmentFlag.AlignCenter)
-        scanEmission_layout.addWidget(rb_scanEmission_2, 3, 0, Qt.AlignmentFlag.AlignCenter)
+        scanEmission_layout.addWidget(self.lb_emissionLabel, 0, 0, Qt.AlignmentFlag.AlignCenter)
+        scanEmission_layout.addWidget(self.rb_scanEmission_1, 2, 0, Qt.AlignmentFlag.AlignCenter)
+        scanEmission_layout.addWidget(self.rb_scanEmission_2, 3, 0, Qt.AlignmentFlag.AlignCenter)
 
 
         self.cb_scanAMLGaugeVrangeComboBox = QComboBox()
-        cb_scanAMLGaugeDACcomboBox = QComboBox()
+        self.cb_scanAMLGaugeDACcomboBox = QComboBox()
         self.cb_scanAMLUnitsComboBox = QComboBox()
 
-        cb_scanAMLGaugeDACcomboBox.insertItems(0, self.scanChannelsDAC)
-        cb_scanAMLGaugeDACcomboBox.setCurrentIndex(0)
+        self.cb_scanAMLGaugeDACcomboBox.insertItems(0, self.scanChannelsDAC)
+        self.cb_scanAMLGaugeDACcomboBox.setCurrentIndex(0)
+        self.cb_scanAMLGaugeDACcomboBox.currentIndexChanged.connect(self.manejar_cb_scanAMLGaugeDACcomboBox)
 
         self.cb_scanAMLGaugeVrangeComboBox.insertItems(0, self.scanVrange)
         self.cb_scanAMLGaugeVrangeComboBox.setCurrentIndex(0)
         self.cb_scanAMLGaugeVrangeComboBox.currentIndexChanged.connect(self.setDACparameters)
+        self.cb_scanAMLGaugeVrangeComboBox.currentIndexChanged.connect(self.manejar_cb_scanAMLGaugeVrangeComboBox)
 
         self.cb_scanAMLUnitsComboBox.insertItems(0, self.unitsAML)
         self.cb_scanAMLUnitsComboBox.setCurrentIndex(0)
+        self.cb_scanAMLUnitsComboBox.currentIndexChanged.connect(self.manejar_cb_scanAMLUnitsComboBox)
 
 
 
         layout.addWidget(lb_scanBoxLabel, 0, 0)
-        layout.addWidget(cb_scanAMLGaugeDACcomboBox, 1, 0)
+        layout.addWidget(self.cb_scanAMLGaugeDACcomboBox, 1, 0)
         layout.addWidget(lb_scanVrangeLabel, 0, 1)
         layout.addWidget(self.cb_scanAMLGaugeVrangeComboBox, 1, 1)
         layout.addWidget(lb_scanSensLabel, 2, 0)
-        layout.addWidget(le_scanSensLineEdit, 3, 0)
+        layout.addWidget(self.le_scanSensLineEdit, 3, 0)
         layout.addWidget(lb_scanAMLunitsLabel, 2, 1)
         layout.addWidget(self.cb_scanAMLUnitsComboBox, 3, 1)
 
@@ -271,8 +286,7 @@ class TeasWindow(QWidget):
 
         gb_scanAMLgaugeBox.setLayout(layout)
         return gb_scanAMLgaugeBox
-        
-
+    
     def createTeasTimeBox(self):
         
         layout = QGridLayout()
@@ -386,6 +400,53 @@ class TeasWindow(QWidget):
         import random
         thermo = Qwt.QwtThermo()
         thermo.setValue(random.randint(0, 100))
+
+
+    def manejar_silder_samplingRate(self, value):
+        self.configuracion.dac_sampling_rate = value
+        print(value)
+    def manejar_cb_teas(self, texto):
+        self.configuracion.dac_input_intensity = texto
+        print(texto)
+    def manejar_cb_teasVrange(self,texto):
+        self.configuracion.dac_teas_voltaje_range = texto
+        print(texto)
+    def manejar_cb_temperature(self, texto):
+        self.configuracion.dac_input_temperature = texto
+        print(texto)
+    def manejar_cb_tempVrange(self, texto):
+        self.configuracion.dac_temperature_voltaje_range = texto
+        print(texto)
+    def manejar_cb_lockinTimeCons(self, texto):
+        self.configuracion.lock_time_constant = texto
+        print(texto)
+    def manejar_cb_lockinSens(self, texto):
+        self.configuracion.lock_sensitivity = texto
+        print(texto)
+    def manejar_le_scanSensLineEdit(self, texto):
+        self.configuracion.aml_sensitivity = texto
+        print(texto)
+    def manejar_cb_scanAMLGaugeVrangeComboBox(self, texto):
+        self.configuracion.aml_voltage_range = texto
+        print(texto)
+    def seleccionar_rb_scanEmission(self):
+        if self.rb_scanEmission_1.isChecked():
+            self.manejar_rb_emision_1()
+        elif self.rb_scanEmission_2.isChecked():
+            self.manejar_rb_emision_2()
+    def manejar_rb_emision_1(self):
+        self.configuracion.aml_emission_current = "0.5 mA"
+        print("0.5 mA")
+    def manejar_rb_emision_2(self):
+        self.configuracion.aml_emission_current = "5.0 mA"
+        print("5.0 mA")
+    def manejar_cb_scanAMLGaugeDACcomboBox(self, texto):
+        self.configuracion.aml_input_pressure = texto
+        print(texto)
+    def manejar_cb_scanAMLUnitsComboBox(self, texto):
+        self.configuracion.aml_presure_units = texto
+        print(texto)
+
 
 
     #función para establecer los parámetros del DAC
