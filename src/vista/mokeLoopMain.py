@@ -13,6 +13,19 @@ from ..modelo.clases import Conexion, Experimento, ConfiguracionMoke
 from ..modelo.dao import ExperimentoDAO, ConfiguracionMokeDAO
 
 
+class Display_LCD_modificado(QLCDNumber):
+    def __init__(self, initial_value=0, digit_count = None):
+        super().__init__()
+        self.setStyleSheet("background-color: white; color: black;")
+        if digit_count:
+            self.setDigitCount(digit_count)
+        self.setSmallDecimalPoint(True)
+        self.display(initial_value)
+        self.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
+        # Dar un tamaño
+        self.setFixedSize(100, 50)
+
+
 class VistaPrincipal(QWidget):
     def __init__(self,id_experimento=None):
         super().__init__()
