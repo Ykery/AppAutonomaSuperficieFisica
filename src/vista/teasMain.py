@@ -12,6 +12,18 @@ from ..modelo.dao import *
 from ..modelo.clases import *
 
 
+class Display_LCD_modificado(QLCDNumber):
+    def __init__(self, initial_value=0, digit_count = None):
+        super().__init__()
+        self.setStyleSheet("background-color: white; color: black;")
+        if digit_count:
+            self.setDigitCount(digit_count)
+        self.setSmallDecimalPoint(True)
+        self.display(initial_value)
+        self.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
+        # Dar un tamaño
+        self.setFixedSize(100, 50)
+
 class TeasWindow(QWidget):
     
     def __init__(self, ):
@@ -158,10 +170,7 @@ class TeasWindow(QWidget):
         
         self.slider_samplingRate = Qwt.QwtSlider()
 
-        lcd_samplingRateDisplay = QLCDNumber() #Creo que el 4 ya establece el número de decimales
-        lcd_samplingRateDisplay.setDigitCount(4)
-        lcd_samplingRateDisplay.setSmallDecimalPoint(True)
-        lcd_samplingRateDisplay.display(10)
+        lcd_samplingRateDisplay = Display_LCD_modificado()
 
         self.slider_samplingRate.valueChanged.connect(self.value_changed)
         self.slider_samplingRate.valueChanged.connect(lcd_samplingRateDisplay.display)
@@ -285,7 +294,7 @@ class TeasWindow(QWidget):
 
         knb_iterTimeKnob = Qwt.QwtKnob()
         lb_iterTimeLabel = QLabel()
-        lcd_iterTimerDisplay = QLCDNumber()
+        lcd_iterTimerDisplay = Display_LCD_modificado()
 
         knb_iterTimeKnob.valueChanged.connect(lcd_iterTimerDisplay.display)
 
