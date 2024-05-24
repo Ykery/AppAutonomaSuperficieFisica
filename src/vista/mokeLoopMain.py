@@ -348,9 +348,6 @@ class VistaPrincipal(QWidget):
         gb_datafile_selection = QGroupBox("Datafile selection")
 
         self.le_datafile = QLineEdit()
-
-        #setDataFileName()  --> llama a la función. SIN CREAR AUN
-
         btn_browse_button = QPushButton("Browse")
 
         layout.addWidget(self.le_datafile)
