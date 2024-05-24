@@ -62,9 +62,7 @@ class TeasWindow(QWidget):
         self.main_layout.addLayout(buttons_layout, 7, 3, 1, 1)
 
 
-        #Se crea el objeto 'configuracion' vacío y el objeto 'experimento' vacío de la clase ConfiguracionTeas y Experimento
-        self.configuracion = ConfiguracionTeas()
-        self.experimento = Experimento()
+
         print(self.configuracion)
                
         btn_run.clicked.connect(self.creaObjetoConfiguracionEinsertaEnBBDD)
