@@ -378,12 +378,6 @@ class TeasWindow(QWidget):
         return gb_dataFileBox
 
 
-    def value_changed(self, i):
-        print(i)
-
-
-
-
     #función para actualizar los datos del termómetro de forma aleatoria, solo para pruebas
     def actualizarDatos(self):
         self.timer = QTimer()
