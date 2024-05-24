@@ -24,7 +24,6 @@ class VistaPrincipal(QWidget):
 
         self.main_layout = QGridLayout()
         self.fuenteHelvetica = QFont("Helvetica", 11)
-
         self.scanVrange = [" -- Select -- ", "20 V", "10 V", "5 V", "4 V", "2.5 V", "2 V", "1.25 V", "1 V"]
         self.scanChannelsDAC = [" -- Select -- ", "Analog Input #1", "Analog Input #2", "Analog Input #3", "Analog Input #4"]
         self.unitsAML = [" -- Select -- ", "mBar", "Pascal", "Torr"]
@@ -38,9 +37,7 @@ class VistaPrincipal(QWidget):
         self.setLayout(self.main_layout)
 
         btn_run = QPushButton("Run")
-        btn_run.setFont(self.fuenteHelvetica)
         btn_close = QPushButton("Close")
-        btn_close.setFont(self.fuenteHelvetica)
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(btn_close)
         buttons_layout.addWidget(btn_run)
@@ -69,7 +66,6 @@ class VistaPrincipal(QWidget):
         gb_MokeDACBox = QGroupBox("DAC channel selection")
         gb_MokeDACBox.setCheckable(True)
         gb_MokeDACBox.setChecked(False)
-        gb_MokeDACBox.setFont(self.fuenteHelvetica)
 
         #Input
         self.cb_moke_intensity = QComboBox()
@@ -120,10 +116,7 @@ class VistaPrincipal(QWidget):
         self.slider_samplingRate = Qwt.QwtSlider()
 
         #DISPLAY
-        lcd_samplingRateDisplay = QLCDNumber()
-        lcd_samplingRateDisplay.setDigitCount(4)
-        lcd_samplingRateDisplay.setSmallDecimalPoint(True)
-        lcd_samplingRateDisplay.display(10)
+        lcd_samplingRateDisplay = Display_LCD_modificado(initial_value=0, digit_count=4)
 
         
         self.slider_samplingRate.setOrientation(Qt.Orientation.Horizontal)
@@ -200,9 +193,6 @@ class VistaPrincipal(QWidget):
         layout = QGridLayout()
 
         gb_moke_loop =QGroupBox("MOKE loop parameters")
-        font = QFont()
-        font.setBold(True)
-        gb_moke_loop.setFont(self.fuenteHelvetica)
 
 
         lb_magnetic = QLabel("Magnetic Field (Oe)")
@@ -246,9 +236,6 @@ class VistaPrincipal(QWidget):
         layout = QGridLayout()
 
         gb_MokeTimeBox =QGroupBox("Time intervals for the experiment")
-        font = QFont()
-        font.setBold(True)
-        gb_MokeTimeBox.setFont(self.fuenteHelvetica)
 
         lb_dweel_time = QLabel("Dwell Time (sec)")
         self.knb_dweel_time = Qwt.QwtKnob()
@@ -277,7 +264,6 @@ class VistaPrincipal(QWidget):
         layout = QGridLayout()
 
         gb_lock_in = QGroupBox("Current lock-in signal level")
-        gb_lock_in.setFont(self.fuenteHelvetica)
 
         thermo_lock_in = Qwt.QwtThermo()
         thermo_lock_in.setOrientation(Qt.Orientation.Horizontal)
@@ -294,7 +280,6 @@ class VistaPrincipal(QWidget):
     def mokeSystemIDBox(self):
         layout = QGridLayout()
         gb_description = QGroupBox("Sample/system description")
-        gb_description.setFont(self.fuenteHelvetica)
 
         self.le_description = QLineEdit()
         self.le_description.textChanged.connect(self.manejar_lb_description)
@@ -306,7 +291,6 @@ class VistaPrincipal(QWidget):
         layout = QGridLayout()
 
         gb_moke_geomery = QGroupBox("Moke geometry")
-        gb_moke_geomery.setFont(self.fuenteHelvetica)
 
         self.cb_geometry = QComboBox()
         self.cb_geometry.insertItems(0, self.mokeVRange)
@@ -343,7 +327,6 @@ class VistaPrincipal(QWidget):
         layout = QHBoxLayout()
 
         gb_datafile_selection = QGroupBox("Datafile selection")
-        gb_datafile_selection.setFont(self.fuenteHelvetica)
 
         self.le_datafile = QLineEdit()
 
