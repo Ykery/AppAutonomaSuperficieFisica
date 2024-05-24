@@ -205,17 +205,14 @@ class Plot( Qwt.QwtPlot):
         self.grid.attach( self )
 
         # axes
-        # self.enableAxis( Qwt.QwtPlot.Axis.yRight )
-        self.setAxisTitle( Qwt.QwtPlot.Axis.xBottom, "Normalized Frequency" )
-        self.setAxisTitle( Qwt.QwtPlot.Axis.yLeft, "Amplitude [dB]" )
-        # self.setAxisTitle( Qwt.QwtPlot.Axis.yRight, "Phase [deg]" )
+        self.setAxisTitle( Qwt.QwtPlot.Axis.xBottom, "Time [sec]" )
+        self.setAxisTitle( Qwt.QwtPlot.Axis.yLeft, "Intensity [arb. un.]" )
 
         self.setAxisMaxMajor( Qwt.QwtPlot.Axis.xBottom, 6 )
         self.setAxisMaxMinor( Qwt.QwtPlot.Axis.xBottom, 9 )
-        # self.setAxisScaleEngine( Qwt.QwtPlot.Axis.xBottom, Qwt.QwtLogScaleEngine() )
 
         # curves
-        self.d_curve1 = Qwt.QwtPlotCurve( "Amplitude" )
+        self.d_curve1 = Qwt.QwtPlotCurve( "Intensity" )
         self.d_curve1.setRenderHint( Qwt.QwtPlotItem.RenderHint.RenderAntialiased )
         self.d_curve1.setPen( Qt.GlobalColor.yellow )
         self.d_curve1.setLegendAttribute( Qwt.QwtPlotCurve.LegendAttribute.LegendShowLine )
