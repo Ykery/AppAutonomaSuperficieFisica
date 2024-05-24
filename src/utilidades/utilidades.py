@@ -75,8 +75,3 @@ def convertir_docx_pdf(docx_path):
     convert(docx_path, PDF_PATH)
     remove(docx_path)
     
-    
-def main():
-    app = QApplication(sys.argv)
-    crear_pdf_experimento(6)
-    sys.exit()
