@@ -24,7 +24,10 @@ class TeasWindow(QWidget):
         #variables generales
         self.teasDACParams = [None] * 6
         self.indicesList = [None] * 6
-        
+
+        #Se crea el objeto 'configuracion' vacío y el objeto 'experimento' vacío de la clase ConfiguracionTeas y Experimento
+        self.configuracion = ConfiguracionTeas()
+        self.experimento = Experimento()
 
         self.main_layout = QGridLayout()
         self.fuenteHelvetica = QFont("Helvetica", 11)
