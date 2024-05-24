@@ -66,7 +66,7 @@ class VistaPrincipal(QWidget):
         self.main_layout.addWidget(self.setDataFile(), 5, 0, 1, 3)
         
         self.main_layout.addLayout(buttons_layout, 7, 3, 1, 2)
-        
+
         btn_close.clicked.connect(self.close)
         btn_run.clicked.connect(self.run)
         
@@ -425,14 +425,8 @@ class VistaPrincipal(QWidget):
             self.configuracion.dac_dc_voltage_range == None or \
             self.configuracion.dac_temperature_voltaje_range == None or \
             self.configuracion.dac_field_driving_current == None or \
-            self.configuracion.dac_sampling_rate == None or \
             self.configuracion.lock_sensitivity == None or \
             self.configuracion.lock_time_constant == None or \
-            self.configuracion.magnetic_field == None or \
-            self.configuracion.points_per_loop == None or \
-            self.configuracion.number_of_sweeps == None or \
-            self.configuracion.dwell_time == None or \
-            self.configuracion.integration_time == None or \
             self.configuracion.geometry == None:
 
             return False
