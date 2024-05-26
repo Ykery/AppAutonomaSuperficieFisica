@@ -131,23 +131,40 @@ class ExperimentosWindow(QWidget):
         #else:
         #    self.lw_experimentos.setDisabled(False)
 
+    
+    def filtrar_lista_experimentos(self):
+        # self.tb_experimentos.clearContents()
+        for index in range(self.tb_experimentos.rowCount()):
+            tipo = self.tb_experimentos.item(index, 0)
+            fecha_creacion = self.tb_experimentos.item(index, 1)
+            if self.filtro_tipo != None and tipo.text().lower() != self.filtro_tipo.lower():
+                self.tb_experimentos.setRowHidden(index, True)
+                continue
+            if self.filtro_fecha_desde != None and datetime.strptime(fecha_creacion.text(), "%d/%m/%Y - %H:%M:%S") < datetime.combine(self.filtro_fecha_desde, datetime.min.time()):
+                self.tb_experimentos.setRowHidden(index, True)
+                continue
+            if self.filtro_fecha_hasta != None and datetime.strptime(fecha_creacion.text(), "%d/%m/%Y - %H:%M:%S") > datetime.combine(self.filtro_fecha_hasta, datetime.max.time()):
+                self.tb_experimentos.setRowHidden(index, True)
+                continue
+            self.tb_experimentos.setRowHidden(index, False)
+            
     def mostrar_id_experimento(self, id_experimento):
         print(str(id_experimento))
 
 
     def filtrar_por_tipo(self, tipo):
         self.filtro_tipo = tipo
-        self.cargar_lista_experimentos()
+        self.filtrar_lista_experimentos()
 
 
     def filtrar_desde(self, fecha):
         self.filtro_fecha_desde = fecha
-        self.cargar_lista_experimentos()
+        self.filtrar_lista_experimentos()
 
 
     def filtrar_hasta(self, fecha):
         self.filtro_fecha_hasta = fecha
-        self.cargar_lista_experimentos()
+        self.filtrar_lista_experimentos()
 
 
     def crear_filtros_tipo_experimento(self):
