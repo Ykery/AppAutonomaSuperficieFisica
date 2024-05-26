@@ -107,6 +107,11 @@ class ExperimentosWindow(QWidget):
             self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 1, QTableWidgetItem(fecha_creacion_experimento))
             self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 2, QTableWidgetItem(descripcion_experimento))
             self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 3, QTableWidgetItem(ruta_experimento))
+            # Añadir el id del experimento como data de toda la fila
+            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 0).setData(Qt.ItemDataRole.UserRole, id_experimento)
+            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 1).setData(Qt.ItemDataRole.UserRole, id_experimento)
+            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 2).setData(Qt.ItemDataRole.UserRole, id_experimento)
+            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 3).setData(Qt.ItemDataRole.UserRole, id_experimento)
             
             #Necesito imprimir por consola el id sólo del experimento que se hace click
         self.tb_experimentos.cellClicked.connect(self.mostrar_id_experimento)
