@@ -1,7 +1,7 @@
 import sys
 import numpy as np
 import random
-
+import os
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
@@ -319,7 +319,6 @@ class TeasWindow(QWidget):
 
         thermo_lockinSignal = Thermometer_modificado()
         thermo_lockinSignal.setValue(random.randint(0, 100))
-        
 
         layout.addWidget(thermo_lockinSignal)
         gb_lockinThermoBox.setLayout(layout)
@@ -390,17 +389,6 @@ class TeasWindow(QWidget):
 
         gb_dataFileBox.setLayout(layout)
         return gb_dataFileBox
-
-
-    #función para actualizar los datos del termómetro de forma aleatoria, solo para pruebas
-    def actualizarDatos(self):
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.actualizarDatos)
-        self.timer.start(100)
-        import random
-        thermo = Qwt.QwtThermo()
-        thermo.setValue(random.randint(0, 100))
-
 
     def manejar_silder_samplingRate(self, value):
         self.configuracion.dac_sampling_rate = value
@@ -558,6 +546,15 @@ class TeasWindow(QWidget):
 
         print(self.teasDACParams)
 
+    #función para actualizar los datos del termómetro de forma aleatoria, solo para pruebas
+    def actualizarDatos(self):
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.actualizarDatos)
+        self.timer.start(100)
+        import random
+        thermo = Qwt.QwtThermo()
+        thermo.setValue(random.randint(0, 100))
+        
 def main():
     Conexion.iniciar_bbdd()
     app = QApplication(sys.argv)
