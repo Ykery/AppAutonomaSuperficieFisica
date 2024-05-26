@@ -34,11 +34,9 @@ class ExperimentosWindow(QWidget):
     def crear_scroll_area(self):
         layout = QGridLayout()
         self.tb_experimentos = QTableWidget(0, 4) 
-        #self.tb_experimentos.setHorizontalHeaderLabels(["Tipo", "Fecha creación", "Descripción", "Nombre/ Ruta"])
-
-        #self.lw_experimentos = QListWidget()
-        #self.lw_experimentos.setBackgroundRole(QPalette.ColorRole.Midlight)
-        #self.lw_experimentos.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.tb_experimentos.setHorizontalHeaderLabels(["Tipo experimento", "Fecha creación", "Descripción", "Nombre/Ruta"])
+        self.tb_experimentos.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.tb_experimentos.itemClicked.connect(lambda x: print(x.data(Qt.ItemDataRole.UserRole)))
         self.cargar_lista_experimentos()
 
         layout.addWidget(self.tb_experimentos, 0, 0, 4, 6)
@@ -63,80 +61,26 @@ class ExperimentosWindow(QWidget):
         self.tb_experimentos.setGridStyle(Qt.PenStyle.SolidLine)
         self.tb_experimentos.setWordWrap(True)
         self.tb_experimentos.setCornerButtonEnabled(False)
-
-
-
-
-        #layout.addWidget(self.lw_experimentos, 0, 0, 4, 6)
         return layout    
 
 
     def cargar_lista_experimentos(self):
-        #self.tb_experimentos.clearContents()
-        self.tb_experimentos.setRowCount(0)
-        self.tb_experimentos.setHorizontalHeaderLabels(["Tipo experimento", "Fecha creación", "Descripción", "Nombre/Ruta"])
-        self.tb_experimentos.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
-
         if not self.experimentos:
             self.experimentos = ExperimentoDAO.obtener_todos()
-        num_experimentos_mostrados = 0
-
-        #self.lw_experimentos.clear()
-        if not self.experimentos:
-            self.experimentos = ExperimentoDAO.obtener_todos()
-        num_experimentos_mostrados = 0
 
         for experimento in self.experimentos:
-            if self.filtro_tipo != None and experimento.tipo.lower() != self.filtro_tipo.lower():
-                continue
-            if self.filtro_fecha_desde != None and experimento.fecha_creacion < datetime.combine(self.filtro_fecha_desde, datetime.min.time()):
-                continue
-            if self.filtro_fecha_hasta != None and experimento.fecha_creacion > datetime.combine(self.filtro_fecha_hasta, datetime.max.time()):
-                continue
-            num_experimentos_mostrados += 1
-            
-            nombre_experimento = experimento.rutaCsv.split("/")[-1].split(".")[0]
-            id_experimento = experimento.id
-            tipo_experimento = experimento.tipo
-            fecha_creacion_experimento = experimento.fecha_creacion.strftime("%d/%m/%Y - %H:%M:%S")
-            descripcion_experimento = experimento.descripcion
-            ruta_experimento = experimento.rutaCsv
-
             self.tb_experimentos.insertRow(self.tb_experimentos.rowCount())
-            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 0, QTableWidgetItem(tipo_experimento))
-            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 1, QTableWidgetItem(fecha_creacion_experimento))
-            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 2, QTableWidgetItem(descripcion_experimento))
-            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 3, QTableWidgetItem(ruta_experimento))
+            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 0, QTableWidgetItem(experimento.tipo))
+            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 1, QTableWidgetItem(experimento.fecha_creacion.strftime("%d/%m/%Y - %H:%M:%S")))
+            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 2, QTableWidgetItem(experimento.descripcion))
+            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 3, QTableWidgetItem(experimento.rutaCsv))
             # Añadir el id del experimento como data de toda la fila
-            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 0).setData(Qt.ItemDataRole.UserRole, id_experimento)
-            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 1).setData(Qt.ItemDataRole.UserRole, id_experimento)
-            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 2).setData(Qt.ItemDataRole.UserRole, id_experimento)
-            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 3).setData(Qt.ItemDataRole.UserRole, id_experimento)
-            
-            #Necesito imprimir por consola el id sólo del experimento que se hace click
-        self.tb_experimentos.cellClicked.connect(self.mostrar_id_experimento)
+            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 0).setData(Qt.ItemDataRole.UserRole, experimento.id)
+            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 1).setData(Qt.ItemDataRole.UserRole, experimento.id)
+            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 2).setData(Qt.ItemDataRole.UserRole, experimento.id)
+            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 3).setData(Qt.ItemDataRole.UserRole, experimento.id)
             
             
-
-            
-
-
-
-            #li_experimento = QListWidgetItem(nombre_experimento + experimento.tipo)
-            #li_experimento.setStatusTip(experimento.descripcion)
-            #li_experimento.setData(Qt.ItemDataRole.UserRole, experimento.id)
-            #li_experimento.setSizeHint(QSize(100, 50))
-            #self.lw_experimentos.addItem(li_experimento)
-            
-        #if num_experimentos_mostrados == 0:
-        #    li_experimento = QListWidgetItem("No se encontraron experimentos")
-        #    li_experimento.setSizeHint(QSize(100, 50))
-        #    self.lw_experimentos.addItem(li_experimento)
-        #    self.lw_experimentos.setDisabled(True)
-        #else:
-        #    self.lw_experimentos.setDisabled(False)
-
-    
     def filtrar_lista_experimentos(self):
         # self.tb_experimentos.clearContents()
         for index in range(self.tb_experimentos.rowCount()):
