@@ -296,14 +296,15 @@ class TeasWindow(QWidget):
         #font.setBold(True)
         gb_teasTimeBox.setFont(self.fuenteHelvetica)
 
-        knb_iterTimeKnob = Qwt.QwtKnob()
+        self.knb_iterTimeKnob = Qwt.QwtKnob()
         lb_iterTimeLabel = QLabel()
         lcd_iterTimerDisplay = Display_LCD_modificado()
 
-        knb_iterTimeKnob.valueChanged.connect(lcd_iterTimerDisplay.display)
+        self.knb_iterTimeKnob.valueChanged.connect(lcd_iterTimerDisplay.display)
+        self.knb_iterTimeKnob.valueChanged.connect(self.manejar_knb_iterTimeKnob)
 
         layout.addWidget(lb_iterTimeLabel, 0, 0, Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(knb_iterTimeKnob, 1, 0, Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.knb_iterTimeKnob, 1, 0, Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(lcd_iterTimerDisplay, 2, 0, Qt.AlignmentFlag.AlignCenter)
 
         gb_teasTimeBox.setLayout(layout)
@@ -329,14 +330,15 @@ class TeasWindow(QWidget):
 
         layout = QGridLayout()
 
-        gb_teasChanneltronBox = QGroupBox("Channeltron bias voltage (V)")
-        gb_teasChanneltronBox.setFont(self.fuenteHelvetica)
+        self.gb_teasChanneltronBox = QGroupBox("Channeltron bias voltage (V)")
+        self.gb_teasChanneltronBox.setFont(self.fuenteHelvetica)
 
-        le_teasChanneltronLineEdit = QLineEdit()
+        self.le_teasChanneltronLineEdit = QLineEdit()
+        self.le_teasChanneltronLineEdit.textChanged.connect(self.manejar_le_teasChanneltronLineEdit)
 
-        layout.addWidget(le_teasChanneltronLineEdit)
-        gb_teasChanneltronBox.setLayout(layout)
-        return gb_teasChanneltronBox
+        layout.addWidget(self.le_teasChanneltronLineEdit)
+        self.gb_teasChanneltronBox.setLayout(layout)
+        return self.gb_teasChanneltronBox
 
 
     def teasSystemIDBox(self):
@@ -346,9 +348,10 @@ class TeasWindow(QWidget):
         gb_teasSysIDbox = QGroupBox("Sample/system description")
         gb_teasSysIDbox.setFont(self.fuenteHelvetica)
 
-        le_teasSysIDboxLineEdit = QLineEdit()
+        self.le_teasSysIDboxLineEdit = QLineEdit()
+        self.le_teasSysIDboxLineEdit.textChanged.connect(self.manejar_le_teasSysIDboxLineEdit)
 
-        layout.addWidget(le_teasSysIDboxLineEdit)
+        layout.addWidget(self.le_teasSysIDboxLineEdit)
         gb_teasSysIDbox.setLayout(layout)
         return gb_teasSysIDbox  
 
@@ -386,6 +389,7 @@ class TeasWindow(QWidget):
         layout.addWidget(btn_browseButton)
 
         btn_browseButton.clicked.connect(self.open_file_dialog)
+        self.le_fileLineEdit.textChanged.connect(self.manejar_le_fileLineEdit)
 
         gb_dataFileBox.setLayout(layout)
         return gb_dataFileBox
@@ -434,6 +438,19 @@ class TeasWindow(QWidget):
     def manejar_cb_scanAMLUnitsComboBox(self, texto):
         self.configuracion.aml_presure_units = texto
         print(texto)
+    def manejar_knb_iterTimeKnob(self, value):
+        self.configuracion.integration_time = value
+        print(value)
+    def manejar_le_teasChanneltronLineEdit(self, texto):
+        self.configuracion.channeltron_voltage = texto
+        print(texto)
+    def manejar_le_teasSysIDboxLineEdit(self, texto):
+        self.experimento.descripcion = texto
+        print(texto)
+    def manejar_le_fileLineEdit(self, texto):
+        self.experimento.rutaCsv = texto
+        print(texto)
+    
 
 
 
