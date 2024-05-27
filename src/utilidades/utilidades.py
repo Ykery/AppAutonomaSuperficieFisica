@@ -87,5 +87,5 @@ def pedir_ruta_exportar_pdf(parent, id_experimento):
     pdf_path = QFileDialog.getSaveFileName(parent, "Guardar PDF", "", "PDF Files (*.pdf)")
     if pdf_path[0] == "":
         return
-    hilo = Thread(target=exportar_mostrar_pdf, args=(IsADirectoryError, pdf_path[0])) # pdf_path[0] es la ruta del pdf
+    hilo = Thread(target=exportar_mostrar_pdf, args=(id_experimento, pdf_path[0])) # pdf_path[0] es la ruta del pdf
     hilo.start()
