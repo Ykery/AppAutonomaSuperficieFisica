@@ -238,7 +238,12 @@ class TeasGraph( QWidget ):
         self.d_panner = Qwt.QwtPlotPanner( self.d_plot.canvas() )
         self.d_panner.setMouseButton( Qt.MouseButton.MiddleButton )
 
-
+        self.d_picker = Qwt.QwtPlotPicker( 2,0,
+            Qwt.QwtPlotPicker.RubberBand.CrossRubberBand, Qwt.QwtPicker.DisplayMode.AlwaysOn, self.d_plot.canvas() )
+        self.d_picker.setStateMachine( Qwt.QwtPickerDragPointMachine() )
+        self.d_picker.setRubberBandPen( QColor( Qt.GlobalColor.green ) )
+        self.d_picker.setRubberBand( Qwt.QwtPicker.RubberBand.CrossRubberBand )
+        self.d_picker.setTrackerPen( QColor( Qt.GlobalColor.white ) )
 
         self.toolBar = QToolBar( self )
         
