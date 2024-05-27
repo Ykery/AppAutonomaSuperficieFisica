@@ -62,46 +62,80 @@ class TeasWindow(QWidget):
         self.main_layout.addWidget(self.setDataFile(), 6, 2, 1, 2)
         self.main_layout.addLayout(buttons_layout, 7, 3, 1, 1)
 
-
-
         print(self.configuracion)
                
-        btn_run.clicked.connect(self.creaObjetoConfiguracionEinsertaEnBBDD)
+        btn_run.clicked.connect(self.run)
+        btn_close.clicked.connect(self.close)
 
     #Función que crea los objetos experimento y configuración y lo inserta en la BBDD
-    def creaObjetoConfiguracionEinsertaEnBBDD(self):
+    def run(self):
+        if not self.experimento.rutaCsv:
+            self.mostrar_error_ruta_CSV()
+        elif not self.control_validar_datos():
+            self.mostrar_error_faltan_datos()
+        else:
+            self.experimento.tipo = "TEAS"
+            self.experimento = ExperimentoDAO.crear(self.experimento)
+            self.configuracion.id_experimento = self.experimento.id
+            ConfiguracionTeasDAO.crear(self.configuracion)
+        #print(self.configuracion)
+    
+    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke intensity, dc level y temperature
+    def mostrar_error(self):
+        # Crear y configurar la ventana de error
+        error_dialog = QMessageBox()
+        error_dialog.setIcon(QMessageBox.Icon.Critical)
+        error_dialog.setWindowTitle("Error de Input")
+        error_dialog.setText("Input selecdionado no valido.")
+        #aumentar tamaño de la letra 
+        error_dialog.setStyleSheet("font: 12pt")
+        error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok) 
+        # Mostrar la ventana de error
+        error_dialog.exec()
 
-        self.experimento.rutaCsv = "C:/Users/Usuario/Desktop/TEAS/TEAS.csv"
-        self.experimento.descripcion = "TEAS experiment"
-        self.experimento.tipo = "TEAS"
-        print(" ------------------------------------------------------------ ")
-        self.experimento = ExperimentoDAO.crear(self.experimento)
-        print(" ------------------------------------------------------------ ")
-        print(self.experimento)
-        
-        
+    
+    def mostrar_error_ruta_CSV(self):
+        # Crear y configurar la ventana de error
+        error_dialog = QMessageBox()
+        error_dialog.setIcon(QMessageBox.Icon.Critical)
+        error_dialog.setWindowTitle("Error de Datafile")
+        error_dialog.setText("Ingrese la ruta del archivo.")
+        #aumentar tamaño de la letra 
+        error_dialog.setStyleSheet("font: 12pt")
+        error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok) 
+        # Mostrar la ventana de error
+        error_dialog.exec()
 
-        self.configuracion.id_experimento = self.experimento.id
-        self.configuracion.dac_input_intensity = self.cb_teasVrange.currentText()
-        self.configuracion.dac_teas_voltaje_range = self.cb_teasVrange.currentText()
-        self.configuracion.dac_input_temperature = self.cb_tempVrange.currentText()
-        self.configuracion.dac_temperature_voltaje_range = self.cb_tempVrange.currentText()
-        self.configuracion.dac_sampling_rate = self.slider_samplingRate.value()
-        self.configuracion.aml_input_pressure = self.cb_scanAMLGaugeVrangeComboBox.currentText()
-        self.configuracion.aml_voltage_range = self.cb_scanAMLGaugeVrangeComboBox.currentText()
-        self.configuracion.aml_sensitivity = "1"
-        self.configuracion.aml_presure_units = self.cb_scanAMLUnitsComboBox.currentText()
-        self.configuracion.aml_emission_current = "5.0 mA"
-        self.configuracion.lock_sensitivity = "1"
-        self.configuracion.lock_time_constant = "1 msec"
-        self.configuracion.integration_time = 0.1
-        self.configuracion.channeltron_voltage = "0.0"
-        
-        print(self.configuracion)
-        ConfiguracionTeasDAO.crear(self.configuracion)
+    def mostrar_error_faltan_datos(self):
+        # Crear y configurar la ventana de error
+        error_dialog = QMessageBox()
+        error_dialog.setIcon(QMessageBox.Icon.Critical)
+        error_dialog.setWindowTitle("Error de Datos")
+        error_dialog.setText("Ingrese todos los datos necesarios para correr el experimento.")
+        #aumentar tamaño de la letra 
+        error_dialog.setStyleSheet("font: 12pt")
+        error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok) 
+        # Mostrar la ventana de error
+        error_dialog.exec()
 
-        
-
+    #función que controla si todos los datos necesarios para correr el experimento están ingresados
+    def control_validar_datos(self):
+        if  self.configuracion.dac_input_intensity == None or \
+            self.configuracion.dac_teas_voltaje_range == None or \
+            self.configuracion.dac_input_temperature == None or \
+            self.configuracion.dac_temperature_voltaje_range == None or \
+            self.configuracion.dac_sampling_rate == None or \
+            self.configuracion.aml_input_pressure == None or \
+            self.configuracion.aml_sensitivity == None or \
+            self.configuracion.aml_presure_units == None or \
+            self.configuracion.aml_emission_current == None or \
+            self.configuracion.lock_sensitivity == None or\
+            self.configuracion.lock_time_constant == None or \
+            self.configuracion.integration_time == None or \
+            self.configuracion.channeltron_voltage == None:
+            return False
+        return True    
+    
     def createTeasLockinBox(self):
 
         layout = QVBoxLayout()
