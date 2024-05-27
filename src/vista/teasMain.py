@@ -306,7 +306,7 @@ class TeasWindow(QWidget):
 
         self.cb_scanAMLUnitsComboBox.insertItems(0, self.unitsAML)
         self.cb_scanAMLUnitsComboBox.setCurrentIndex(0)
-        self.cb_scanAMLUnitsComboBox.currentIndexChanged.connect(self.manejar_cb_scanAMLUnitsComboBox)
+        self.cb_scanAMLUnitsComboBox.currentTextChanged.connect(self.manejar_cb_scanAMLUnitsComboBox)
 
 
 
@@ -484,6 +484,7 @@ class TeasWindow(QWidget):
             return
         if texto!= self.cb_temperature.currentText() and texto!=self.cb_scanAMLGaugeDACcomboBox.currentText(): 
             self.configuracion.dac_input_intensity = texto 
+            print(texto)
         else:
             self.error_input(self.cb_teas)
 
@@ -491,7 +492,8 @@ class TeasWindow(QWidget):
         if texto == " -- Select -- ":
             return
         if texto!= self.cb_temperature.currentText() and texto!=self.cb_teas.currentText(): 
-            self.configuracion.dac_input_intensity = texto 
+            self.configuracion.aml_input_pressure = texto
+            print(texto)
         else:
             self.error_input(self.cb_scanAMLGaugeDACcomboBox)
             
@@ -500,6 +502,7 @@ class TeasWindow(QWidget):
             return
         if texto!= self.cb_scanAMLGaugeDACcomboBox.currentText() and texto!=self.cb_teas.currentText(): 
             self.configuracion.dac_input_temperature = texto
+            print(texto)
         else:
             self.error_input(self.cb_temperature)
 
