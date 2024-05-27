@@ -38,14 +38,21 @@ class ExperimentosWindow(QWidget):
         self.tb_experimentos = QTableWidget(0, 4) 
         self.tb_experimentos.setHorizontalHeaderLabels(["Tipo experimento", "Fecha creación", "Descripción", "Nombre/Ruta"])
         self.tb_experimentos.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+
         self.tb_experimentos.itemClicked.connect(lambda x: self.seleccionar_experimento(x.data(Qt.ItemDataRole.UserRole)))
+    
+        indices_tabla = self.tb_experimentos.verticalHeader()
+        indices_tabla.sectionClicked.connect(self.manejar_indices_tabla)
+
         self.cargar_lista_experimentos()
 
         layout.addWidget(self.tb_experimentos, 0, 0, 4, 6)
 
         ultima_columna = self.tb_experimentos.horizontalHeader()
+
         for i in range(self.tb_experimentos.columnCount() - 1):
             ultima_columna.setSectionResizeMode(i, QHeaderView.ResizeMode.ResizeToContents)
+
         ultima_columna.setSectionResizeMode(self.tb_experimentos.columnCount() - 1, QHeaderView.ResizeMode.Stretch)
         
         self.tb_experimentos.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
@@ -53,7 +60,6 @@ class ExperimentosWindow(QWidget):
         self.tb_experimentos.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.tb_experimentos.horizontalHeader().setStretchLastSection(True)
         
-
         self.tb_experimentos.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.tb_experimentos.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.tb_experimentos.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
@@ -67,24 +73,31 @@ class ExperimentosWindow(QWidget):
 
 
     def cargar_lista_experimentos(self):
+        
         if not self.experimentos:
             self.experimentos = ExperimentoDAO.obtener_todos()
 
         for experimento in self.experimentos:
-            self.tb_experimentos.insertRow(self.tb_experimentos.rowCount())
-            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 0, QTableWidgetItem(experimento.tipo))
-            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 1, QTableWidgetItem(experimento.fecha_creacion.strftime("%d/%m/%Y - %H:%M:%S")))
-            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 2, QTableWidgetItem(experimento.descripcion))
-            self.tb_experimentos.setItem(self.tb_experimentos.rowCount() - 1, 3, QTableWidgetItem(experimento.rutaCsv))
-            # Añadir el id del experimento como data de toda la fila
-            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 0).setData(Qt.ItemDataRole.UserRole, experimento.id)
-            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 1).setData(Qt.ItemDataRole.UserRole, experimento.id)
-            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 2).setData(Qt.ItemDataRole.UserRole, experimento.id)
-            self.tb_experimentos.item(self.tb_experimentos.rowCount() - 1, 3).setData(Qt.ItemDataRole.UserRole, experimento.id)
+            row = self.tb_experimentos.rowCount()
+            self.tb_experimentos.insertRow(row)
+            self.tb_experimentos.setItem(row, 0, QTableWidgetItem(experimento.tipo))
+            self.tb_experimentos.setItem(row, 1, QTableWidgetItem(experimento.fecha_creacion.strftime("%d/%m/%Y - %H:%M:%S")))
+            self.tb_experimentos.setItem(row, 2, QTableWidgetItem(experimento.descripcion))
+            self.tb_experimentos.setItem(row, 3, QTableWidgetItem(experimento.rutaCsv))
             
-            
+            # Añadir el id del experimento como data en toda la fila
+            for col in range(self.tb_experimentos.columnCount()):
+                self.tb_experimentos.item(row, col).setData(Qt.ItemDataRole.UserRole, experimento.id )# Obtener el id del experimento seleccionado
+
+
+    def manejar_indices_tabla(self, row):
+        experiment_id = None
+        item = self.tb_experimentos.item(row, 0)
+        experiment_id = item.data(Qt.ItemDataRole.UserRole)
+        self.seleccionar_experimento(experiment_id)
+        
+
     def filtrar_lista_experimentos(self):
-        # self.tb_experimentos.clearContents()
         for index in range(self.tb_experimentos.rowCount()):
             tipo = self.tb_experimentos.item(index, 0)
             fecha_creacion = self.tb_experimentos.item(index, 1)
@@ -98,13 +111,15 @@ class ExperimentosWindow(QWidget):
                 self.tb_experimentos.setRowHidden(index, True)
                 continue
             self.tb_experimentos.setRowHidden(index, False)
-            
+
+
     def mostrar_id_experimento(self, id_experimento):
         print(str(id_experimento))
 
 
     def seleccionar_experimento(self, id_experimento):
         self.experimento_seleccionado = id_experimento
+        print(f"Experimento seleccionado: {self.experimento_seleccionado}")
 
 
     def verificar_experimento_seleccionado(self):
@@ -181,6 +196,7 @@ class ExperimentosWindow(QWidget):
         
         gb_filtrado_fecha.setLayout(layout)
         return gb_filtrado_fecha
+
 
     def lambdarara(self, fecha):
         return self.mostrar_fecha(fecha, "desde")
