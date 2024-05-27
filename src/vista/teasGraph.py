@@ -331,9 +331,7 @@ class MainWindow( QWidget ):
             renderer.renderTo( self.d_plot, printer )
 
     def exportDocument(self):
-        print("Not implemented")
-        #renderer = Qwt.QwtPlotRenderer()
-        #renderer.exportTo( self.d_plot, "bode.pdf" )
+        pedir_ruta_exportar_pdf(self, self.id_experimento)
 
     def enableZoomMode( self, on ):
         if on:
