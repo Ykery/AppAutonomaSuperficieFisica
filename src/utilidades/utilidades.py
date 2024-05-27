@@ -10,9 +10,9 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import QBuffer, QIODevice
 
-def crear_pdf_experimento(id):
+def crear_pdf_experimento(id, pdf_path):
     docx_path = crear_docx_experimento(id)
-    convertir_docx_pdf(docx_path)
+    convertir_docx_pdf(docx_path, pdf_path)
 
 def crear_docx_experimento(id, docx_path = "./experimento.docx"): 
     # Definir la ruta por defecto para crear el documento en la carpeta raiz del proyecto
@@ -69,8 +69,7 @@ def crear_docx_experimento(id, docx_path = "./experimento.docx"):
     doc.save(docx_path)
     return docx_path
 
-def convertir_docx_pdf(docx_path):
-    PDF_PATH = docx_path.replace(".docx", ".pdf")
-    convert(docx_path, PDF_PATH)
+def convertir_docx_pdf(docx_path, pdf_path):
+    convert(docx_path, pdf_path)
     remove(docx_path)
     
