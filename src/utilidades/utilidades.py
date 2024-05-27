@@ -14,11 +14,10 @@ def crear_pdf_experimento(id):
     docx_path = crear_docx_experimento(id)
     convertir_docx_pdf(docx_path)
 
-def crear_docx_experimento(id): 
+def crear_docx_experimento(id, docx_path = "./experimento.docx"): 
     # Definir la ruta por defecto para crear el documento en la carpeta raiz del proyecto
-    BASE_DIR = "./"
-    NAME_DOC = "experimento.docx"
     TEMPLATE_PATH = "src/resources/plantilla_experimento.docx"
+    
     # Obtener el experimento de la base de datos
     experimento = ExperimentoDAO.obtener_por_id(id)    
     # Si no existe el experimento, retornar False
@@ -67,8 +66,8 @@ def crear_docx_experimento(id):
     context["grafica_exp"] = inline_image
     doc.render(context)
     # Save doc to pdf
-    doc.save(BASE_DIR + NAME_DOC)
-    return BASE_DIR + NAME_DOC
+    doc.save(docx_path)
+    return docx_path
 
 def convertir_docx_pdf(docx_path):
     PDF_PATH = docx_path.replace(".docx", ".pdf")
