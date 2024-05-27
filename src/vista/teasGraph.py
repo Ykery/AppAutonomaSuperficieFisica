@@ -244,12 +244,23 @@ class MainWindow( QWidget ):
 
         self.toolBar = QToolBar( self )
         
+        self.paused = False
+        self.btnPause = QToolButton( self.toolBar )
+        self.btnPause.setText( "Pause" )
+        self.btnPause.setIcon( QIcon(QPixmap( pause_xpm ) ))
+        self.btnPause.setCheckable( True )
+        self.btnPause.setMinimumWidth( 60 )
+        self.btnPause.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
+        self.toolBar.addWidget( self.btnPause )
+        self.btnPause.toggled.connect(self.pause)
+
         self.btnZoom = QToolButton( self.toolBar )
         self.btnZoom.setText( "Zoom" )
         self.btnZoom.setIcon( QIcon(QPixmap( zoom_xpm ) ))
         self.btnZoom.setCheckable( True )
         self.btnZoom.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
         self.toolBar.addWidget( self.btnZoom )
+        
         self.btnZoom.toggled.connect(self.enableZoomMode)
 
         self.btnPrint = QToolButton( self.toolBar )
@@ -289,12 +300,19 @@ class MainWindow( QWidget ):
         print(self.datay)
 
 
+    def pause(self):
+        self.paused = not self.paused
+        self.btnPause.setText("Resume" if self.paused else "Pause")
+        self.btnPause.setIcon( QIcon(QPixmap( play_xpm ) ) if self.paused else QIcon(QPixmap( pause_xpm )))
 
     def actualizarDatos(self):
-        self.datax.append(self.datax[-1]+1)
-        self.datay.append(np.random.rand(1)[0])
+        if self.paused:
+            return
+        if not self.load_results:
+            self.datay.append(np.random.rand(1000)[0])
+            self.datax.append(self.datax[-1]+1)
         self.datapoints_number.setText("Number of datapoints: " + str(len(self.datay)))
-        self.d_plot.showData(self.datax, self.datay, [3,3,3,3,3],len(self.datay))
+        self.d_plot.showData(self.datax, self.datay)
 
     def mprint(self):
         printer = QPrinter()
