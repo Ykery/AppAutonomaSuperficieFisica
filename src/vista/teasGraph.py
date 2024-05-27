@@ -299,9 +299,11 @@ class TeasGraph( QWidget ):
         self.layout.addWidget( self.bottom_bar )
         self.zooming = False
         self.enableZoomMode( False )
-        print(self.datax)
-        print(self.datay)
-
+        if self.load_results:
+            self.paused = True
+            self.mostrar_btn_pause()
+            self.btnPause.setEnabled(False)
+            self.actualizarDatos()
 
     def pause(self):
         self.paused = not self.paused
@@ -316,6 +318,12 @@ class TeasGraph( QWidget ):
         if not self.load_results and not self.paused:
             self.datay.append(np.random.rand(1000)[0])
             self.datax.append(self.datax[-1]+1)
+            # Persistir los datos
+            resultado = ResultadoTeas()
+            resultado.id_experimento = self.id_experimento
+            resultado.time = self.datax[-1]
+            resultado.intensity = self.datay[-1]
+            ResultadoTeasDAO.crear(resultado)
         self.datapoints_number.setText("Number of datapoints: " + str(len(self.datay)))
         self.d_plot.showData(self.datax, self.datay)
 
@@ -435,6 +443,11 @@ class TeasGraph( QWidget ):
         self.timer = QTimer()
         self.timer.timeout.connect(self.actualizarDatos)
         self.timer.start(100)
+        
+        if self.load_results:
+            self.paused = True
+            self.mostrar_btn_pause()
+            self.btnPause.setEnabled(False)
 
 
 def main():
