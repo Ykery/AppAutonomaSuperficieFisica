@@ -197,7 +197,7 @@ class Zoomer(Qwt.QwtPlotZoomer):
         self.setMousePattern( Qwt.QwtEventPattern.MousePatternCode.MouseSelect2, Qt.MouseButton.NoButton )
         
 
-class MainWindow( QWidget ):
+class TeasGraph( QWidget ):
     def __init__(self, id, load_results = False, *args):
         QMainWindow.__init__(self, *args) 
         layout = QVBoxLayout(self)
@@ -435,7 +435,7 @@ class MainWindow( QWidget ):
 
 def main():
     a = QApplication(sys.argv)
-    m = MainWindow(3, False)
+    m = TeasGraph(3, False)
     m.resize( 540, 400 )
     m.show()
 
