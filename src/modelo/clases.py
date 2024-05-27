@@ -49,8 +49,8 @@ class ResultadoTeas(Base):
     
     id_resultado_exp = Column(Integer, autoincrement=True, primary_key=True)
     id_experimento = Column(Integer, ForeignKey('experimentos.id'), nullable=False)
-    time = Column(DECIMAL, nullable=False)
-    intensity = Column(DECIMAL, nullable=False)
+    time = Column(DECIMAL(precision=10, scale=2), nullable=False)
+    intensity = Column(DECIMAL(precision=10, scale=2), nullable=False)
     
     def __repr__(self):
         return f"""ResultadoTeas(id_resultado_exp={self.id_resultado_exp},
@@ -65,8 +65,8 @@ class ResultadoMoke(Base):
     
     id_resultado_exp = Column(Integer, autoincrement=True, primary_key=True)
     id_experimento = Column(Integer, ForeignKey('experimentos.id'), nullable=False)
-    magnetic_field = Column(DECIMAL, nullable=False)
-    intensity = Column(DECIMAL, nullable=False)
+    magnetic_field = Column(DECIMAL(precision=10, scale=2), nullable=False)
+    intensity = Column(DECIMAL(precision=10, scale=2), nullable=False)
     
     def __repr__(self):
         return f"""ResultadoMoke(id_resultado_exp={self.id_resultado_exp},
@@ -84,7 +84,7 @@ class ConfiguracionTeas(Base):
     dac_teas_voltaje_range = Column(String(45), nullable=False)
     dac_input_temperature = Column(String(45), nullable=False)
     dac_temperature_voltaje_range = Column(String(45), nullable=False)
-    dac_sampling_rate = Column(DECIMAL, nullable=False)
+    dac_sampling_rate = Column(DECIMAL(precision=10, scale=2), nullable=False)
     aml_input_pressure = Column(String(45), nullable=False)
     aml_voltage_range = Column(String(45), nullable=False)
     aml_sensitivity = Column(String(45), nullable=False)
@@ -93,7 +93,7 @@ class ConfiguracionTeas(Base):
     #configuracion_teascol = Column(String(45), nullable=False)
     lock_sensitivity = Column(String(45), nullable=False)
     lock_time_constant = Column(String(45), nullable=False)
-    integration_time = Column(DECIMAL, nullable=False)
+    integration_time = Column(DECIMAL(precision=10, scale=2), nullable=False)
     channeltron_voltage = Column(String(45), nullable=False)
     #description = Column(String(45), nullable=False)
     
@@ -127,17 +127,17 @@ class ConfiguracionMoke(Base):
     dac_voltaje_range = Column(String(45), nullable=False)
     dac_input_temperature = Column(String(45), nullable=False)
     dac_temperature_voltaje_range = Column(String(45), nullable=False)
-    dac_sampling_rate = Column(DECIMAL, nullable=False, default=0)
+    dac_sampling_rate = Column(DECIMAL(precision=10, scale=2), nullable=False, default=0)
     dac_dc_level = Column(String(45), nullable=False)
     dac_dc_voltage_range = Column(String(45), nullable=False)
     dac_field_driving_current = Column(String(45), nullable=False)
     lock_sensitivity = Column(String(45), nullable=False)
     lock_time_constant = Column(String(45), nullable=False)
-    integration_time = Column(DECIMAL, nullable=False, default=0)
-    dwell_time = Column(DECIMAL, nullable=False, default=0)
-    magnetic_field = Column(DECIMAL, nullable=False, default=0)
-    points_per_loop = Column(DECIMAL, nullable=False, default=0)
-    number_of_sweeps = Column(DECIMAL, nullable=False, default=0)
+    integration_time = Column(DECIMAL(precision=10, scale=2), nullable=False, default=0)
+    dwell_time = Column(DECIMAL(precision=10, scale=2), nullable=False, default=0)
+    magnetic_field = Column(DECIMAL(precision=10, scale=2), nullable=False, default=0)
+    points_per_loop = Column(DECIMAL(precision=10, scale=2), nullable=False, default=0)
+    number_of_sweeps = Column(DECIMAL(precision=10, scale=2), nullable=False, default=0)
     geometry = Column(String(45), nullable=False)
     #description = Column(String(45), nullable=False)
     
