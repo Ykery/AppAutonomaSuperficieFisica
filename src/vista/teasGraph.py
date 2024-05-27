@@ -207,21 +207,19 @@ class TeasGraph( QWidget ):
         
         self.id_experimento = id
         self.tiempo = datetime.now()
-        frequency = np.arange(100).tolist()
-        amplitude = np.random.rand(100).tolist()
-        if csv:
+        if self.load_results:
+            resultados_cargados = ResultadoTeasDAO.obtener_por_id_experimento(self.id_experimento)
             self.datax = []
             self.datay = []
-            for x in csv:
-                self.datax.append(x[0])
-            for x in csv:
-                self.datay.append(x[1])
+            for resultado in resultados_cargados:
+                self.datax.append(resultado.time)
+                self.datay.append(resultado.intensity)
         else:
-            self.datax = frequency
-            self.datay = amplitude
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.actualizarDatos)
-        self.timer.start(100)
+            self.datax = [0]
+            self.datay = [0]
+            self.timer = QTimer()
+            self.timer.timeout.connect(self.actualizarDatos)
+            self.timer.start(100)
         
         self.d_plot = Plot( self )
         
