@@ -206,6 +206,7 @@ class TeasGraph( QWidget ):
         layout.setContentsMargins( 0, 0, 0, 0 )
         
         self.id_experimento = id
+        self.load_results = load_results
         self.tiempo = datetime.now()
         if self.load_results:
             resultados_cargados = ResultadoTeasDAO.obtener_por_id_experimento(self.id_experimento)
