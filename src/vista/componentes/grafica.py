@@ -3,14 +3,14 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
 class Plot( Qwt.QwtPlot):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, color = QColor( "MidnightBlue" )):
         Qwt.QwtPlot.__init__(self, parent)
         self.setAutoReplot( False )
         self.setTitle( "TEAS Timescan" )
         canvas = Qwt.QwtPlotCanvas()
         canvas.setBorderRadius( 10 )
         self.setCanvas( canvas )
-        self.setCanvasBackground( QColor( "MidnightBlue" ) )
+        self.setCanvasBackground( color )
         # legend
         legend = Qwt.QwtLegend()
         self.insertLegend( legend, Qwt.QwtPlot.LegendPosition.BottomLegend )
