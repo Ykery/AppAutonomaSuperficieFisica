@@ -292,10 +292,9 @@ class TeasGraph( QWidget ):
         bottom_bar_layout.addWidget( QLabel("#rutadelarchivo"))
         self.bottom_bar.setLayout(bottom_bar_layout)
 
-        layout.addWidget( self.toolBar )
-        layout.addWidget( self.d_plot )
-        layout.addWidget( self.bottom_bar )
-
+        self.layout.addWidget( self.toolBar )
+        self.layout.addWidget( self.d_plot )
+        self.layout.addWidget( self.bottom_bar )
         self.zooming = False
         self.enableZoomMode( False )
         print(self.datax)
