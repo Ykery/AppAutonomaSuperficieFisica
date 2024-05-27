@@ -13,6 +13,7 @@ from ..modelo.clases import *
 from .mokeLoopMain import Display_LCD_modificado, Thermometer_modificado
 import random
 
+
 class TeasWindow(QWidget):
     
     def __init__(self, ):
@@ -188,6 +189,8 @@ class TeasWindow(QWidget):
         self.cb_tempVrange.setCurrentIndex(0)
         self.cb_tempVrange.currentIndexChanged.connect(self.setDACparameters)
         self.cb_tempVrange.currentIndexChanged.connect(self.manejar_cb_tempVrange)
+ 
+
 
         self.slider_samplingRate.setOrientation(Qt.Orientation.Horizontal)
         self.slider_samplingRate.setScalePosition(Qwt.QwtSlider.ScalePosition.TrailingScale)
