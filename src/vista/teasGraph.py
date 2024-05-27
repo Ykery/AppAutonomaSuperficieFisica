@@ -198,12 +198,13 @@ class Zoomer(Qwt.QwtPlotZoomer):
         
 
 class MainWindow( QWidget ):
-    def __init__(self, csv = None, configuracion = None, *args):
+    def __init__(self, id, load_results = False, *args):
         QMainWindow.__init__(self, *args) 
         layout = QVBoxLayout(self)
         layout.setSpacing( 0 )
         layout.setContentsMargins( 0, 0, 0, 0 )
         
+        self.id_experimento = id
         self.tiempo = datetime.now()
         frequency = np.arange(100).tolist()
         amplitude = np.random.rand(100).tolist()
