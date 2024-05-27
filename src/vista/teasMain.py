@@ -207,8 +207,7 @@ class TeasWindow(QWidget):
         ckb_DACcheckBox.setChecked(False)
 
         self.cb_teas.insertItems(0, self.scanChannelsDAC)
-        self.cb_teas.setCurrentIndex(0)
-        self.cb_teas.currentIndexChanged.connect(self.manejar_cb_teas)
+        self.cb_teas.currentTextChanged.connect(lambda texto: self.manejar_cb_teas(texto))
 
         self.cb_teasVrange.insertItems(0, self.scanVrange)
         self.cb_teasVrange.setCurrentIndex(0)
@@ -217,7 +216,8 @@ class TeasWindow(QWidget):
 
         self.cb_temperature.insertItems(0, self.scanChannelsDAC)
         self.cb_temperature.setCurrentIndex(0)
-        self.cb_temperature.currentIndexChanged.connect(self.manejar_cb_temperature)
+        self.cb_temperature.currentTextChanged.connect(lambda texto: self.manejar_cb_temperature(texto))
+
 
         self.cb_tempVrange.insertItems(0, self.scanVrange)
         self.cb_tempVrange.setCurrentIndex(0)
@@ -297,7 +297,7 @@ class TeasWindow(QWidget):
 
         self.cb_scanAMLGaugeDACcomboBox.insertItems(0, self.scanChannelsDAC)
         self.cb_scanAMLGaugeDACcomboBox.setCurrentIndex(0)
-        self.cb_scanAMLGaugeDACcomboBox.currentIndexChanged.connect(self.manejar_cb_scanAMLGaugeDACcomboBox)
+        self.cb_scanAMLGaugeDACcomboBox.currentTextChanged.connect(lambda texto: self.manejar_cb_scanAMLGaugeDACcomboBox(texto))
 
         self.cb_scanAMLGaugeVrangeComboBox.insertItems(0, self.scanVrange)
         self.cb_scanAMLGaugeVrangeComboBox.setCurrentIndex(0)
@@ -478,9 +478,36 @@ class TeasWindow(QWidget):
     def manejar_le_fileLineEdit(self, texto):
         self.experimento.rutaCsv = texto
         print(texto)
-    
 
+    def manejar_cb_teas(self,texto):
+        if texto == " -- Select -- ":
+            return
+        if texto!= self.cb_temperature.currentText() and texto!=self.cb_scanAMLGaugeDACcomboBox.currentText(): 
+            self.configuracion.dac_input_intensity = texto 
+        else:
+            self.error_input(self.cb_teas)
 
+    def manejar_cb_scanAMLGaugeDACcomboBox(self,texto):
+        if texto == " -- Select -- ":
+            return
+        if texto!= self.cb_temperature.currentText() and texto!=self.cb_teas.currentText(): 
+            self.configuracion.dac_input_intensity = texto 
+        else:
+            self.error_input(self.cb_scanAMLGaugeDACcomboBox)
+            
+    def manejar_cb_temperature(self,texto):
+        if texto == " -- Select -- ":
+            return
+        if texto!= self.cb_scanAMLGaugeDACcomboBox.currentText() and texto!=self.cb_teas.currentText(): 
+            self.configuracion.dac_input_temperature = texto
+        else:
+            self.error_input(self.cb_temperature)
+
+    def error_input(self,combobox):
+        self.mostrar_error()
+        combobox.setCurrentIndex(0)
+
+                
 
     #función para establecer los parámetros del DAC
     def setDACparameters(self):
