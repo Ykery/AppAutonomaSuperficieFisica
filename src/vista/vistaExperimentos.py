@@ -9,7 +9,7 @@ from PyQt6 import Qwt
 from PyQt6.Qwt import *
 from datetime import datetime
 from threading import Thread
-from ..utilidades.utilidades import crear_pdf_experimento, mostrar_pdf
+from ..utilidades.utilidades import pedir_ruta_exportar_pdf
 
 class ExperimentosWindow(QWidget):
     
@@ -251,15 +251,8 @@ class ExperimentosWindow(QWidget):
         # Preguntar la ruta donde guardar el pdf
         if not self.verificar_experimento_seleccionado():
             return
-        pdf_path = QFileDialog.getSaveFileName(self, "Guardar PDF", "", "PDF Files (*.pdf)")
-        if pdf_path[0] == "":
-            return
-        hilo = Thread(target=exportar_mostrar_pdf, args=(self.experimento_seleccionado, pdf_path[0])) # pdf_path[0] es la ruta del pdf
-        hilo.start()
+        pedir_ruta_exportar_pdf(self, self.experimento_seleccionado)
         
-def exportar_mostrar_pdf(id_experimento, pdf_path):
-    crear_pdf_experimento(id_experimento, pdf_path)
-    mostrar_pdf(pdf_path)
 
     
     

@@ -9,6 +9,8 @@ from PyQt6 import Qwt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import QBuffer, QIODevice
+from PyQt6.QtWidgets import QFileDialog
+from threading import Thread
 
 def crear_pdf_experimento(id, pdf_path):
     docx_path = crear_docx_experimento(id)
@@ -76,3 +78,14 @@ def convertir_docx_pdf(docx_path, pdf_path):
 def mostrar_pdf(path):
     import os
     os.system("start " + path)
+
+def exportar_mostrar_pdf(id_experimento, pdf_path):
+    crear_pdf_experimento(id_experimento, pdf_path)
+    mostrar_pdf(pdf_path)
+    
+def pedir_ruta_exportar_pdf(parent, id_experimento):
+    pdf_path = QFileDialog.getSaveFileName(parent, "Guardar PDF", "", "PDF Files (*.pdf)")
+    if pdf_path[0] == "":
+        return
+    hilo = Thread(target=exportar_mostrar_pdf, args=(IsADirectoryError, pdf_path[0])) # pdf_path[0] es la ruta del pdf
+    hilo.start()
