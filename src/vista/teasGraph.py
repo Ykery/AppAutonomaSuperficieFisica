@@ -254,6 +254,7 @@ class TeasGraph( QWidget ):
         self.btnPause.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
         self.toolBar.addWidget( self.btnPause )
         self.btnPause.toggled.connect(self.pause)
+        self.mostrar_btn_pause()
 
         self.btnZoom = QToolButton( self.toolBar )
         self.btnZoom.setText( "Zoom" )
@@ -303,13 +304,15 @@ class TeasGraph( QWidget ):
 
     def pause(self):
         self.paused = not self.paused
+        self.mostrar_btn_pause()
+        
+    def mostrar_btn_pause(self):
         self.btnPause.setText("Resume" if self.paused else "Pause")
         self.btnPause.setIcon( QIcon(QPixmap( play_xpm ) ) if self.paused else QIcon(QPixmap( pause_xpm )))
+        
 
     def actualizarDatos(self):
-        if self.paused:
-            return
-        if not self.load_results:
+        if not self.load_results and not self.paused:
             self.datay.append(np.random.rand(1000)[0])
             self.datax.append(self.datax[-1]+1)
         self.datapoints_number.setText("Number of datapoints: " + str(len(self.datay)))
@@ -377,7 +380,6 @@ class TeasGraph( QWidget ):
 
         self.toolBar = QToolBar( self )
         
-        self.paused = False
         self.btnPause = QToolButton( self.toolBar )
         self.btnPause.setText( "Pause" )
         self.btnPause.setIcon( QIcon(QPixmap( pause_xpm ) ))
@@ -386,7 +388,8 @@ class TeasGraph( QWidget ):
         self.btnPause.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
         self.toolBar.addWidget( self.btnPause )
         self.btnPause.toggled.connect(self.pause)
-
+        self.mostrar_btn_pause()
+        
         self.btnZoom = QToolButton( self.toolBar )
         self.btnZoom.setText( "Zoom" )
         self.btnZoom.setIcon( QIcon(QPixmap( zoom_xpm ) ))
