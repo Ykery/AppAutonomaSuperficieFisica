@@ -22,6 +22,7 @@ class ExperimentosWindow(QWidget):
         self.filtro_tipo = None
         self.filtro_fecha_desde = None
         self.filtro_fecha_hasta = None
+        self.experimento_seleccionado = None
         self.main_layout.addLayout(self.crear_scroll_area(), 0, 0, 4, 6)
         self.main_layout.addWidget(self.crear_filtros_tipo_experimento(), 4, 0, 1, 2)
         self.main_layout.addWidget(self.crear_filtros_fechas(), 4, 3, 1, 3)
@@ -36,7 +37,7 @@ class ExperimentosWindow(QWidget):
         self.tb_experimentos = QTableWidget(0, 4) 
         self.tb_experimentos.setHorizontalHeaderLabels(["Tipo experimento", "Fecha creación", "Descripción", "Nombre/Ruta"])
         self.tb_experimentos.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
-        self.tb_experimentos.itemClicked.connect(lambda x: print(x.data(Qt.ItemDataRole.UserRole)))
+        self.tb_experimentos.itemClicked.connect(lambda x: self.seleccionar_experimento(x.data(Qt.ItemDataRole.UserRole)))
         self.cargar_lista_experimentos()
 
         layout.addWidget(self.tb_experimentos, 0, 0, 4, 6)
@@ -100,6 +101,9 @@ class ExperimentosWindow(QWidget):
     def mostrar_id_experimento(self, id_experimento):
         print(str(id_experimento))
 
+
+    def seleccionar_experimento(self, id_experimento):
+        self.experimento_seleccionado = id_experimento
 
     def filtrar_por_tipo(self, tipo):
         self.filtro_tipo = tipo
