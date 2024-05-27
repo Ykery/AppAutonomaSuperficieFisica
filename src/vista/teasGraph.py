@@ -11,6 +11,7 @@ from PyQt6.QtCore import Qt,  QSize, QTimer
 from PyQt6.QtGui import QColor,  QPixmap, QFont,  QIcon
 from PyQt6.QtWidgets import QMainWindow,  QWidget,  QToolBar,  QToolButton,  QHBoxLayout, QVBoxLayout,  QLabel,  QApplication, QPushButton, QSplitter
 from PyQt6.QtPrintSupport import QPrintDialog, QPrinter
+from ..utilidades.utilidades import pedir_ruta_exportar_pdf
 from .componentes.grafica import Plot
  
 
