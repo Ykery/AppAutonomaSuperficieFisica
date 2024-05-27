@@ -93,12 +93,12 @@ class VistaPrincipal(QWidget):
         self.cb_moke_intensity = QComboBox()
         self.cb_moke_intensity.insertItems(0, self.mokeChannelsDAC)
         self.cb_moke_intensity.setCurrentIndex(0)
-        self.cb_moke_intensity.currentTextChanged.connect(lambda texto: self.control_Input(texto, self.cb_moke_intensity))
+        self.cb_moke_intensity.currentTextChanged.connect(lambda texto: self.manejar_cb_moke_intensity(texto))
         #Input
         self.cb_moke_dc_level = QComboBox()
         self.cb_moke_dc_level.insertItems(0, self.mokeChannelsDAC)
         self.cb_moke_dc_level.setCurrentIndex(0)
-        self.cb_moke_dc_level.currentTextChanged.connect(lambda texto: self.control_Input(texto, self.cb_moke_dc_level))
+        self.cb_moke_dc_level.currentTextChanged.connect(lambda texto: self.manejar_cb_moke_dc_level(texto))
 
         self.cb_moke_voltage_range = QComboBox()
         self.cb_moke_voltage_range.insertItems(0,self.mokeVRange)
@@ -113,7 +113,7 @@ class VistaPrincipal(QWidget):
         self.cb_temperature = QComboBox()
         self.cb_temperature.insertItems(0,self.mokeChannelsDAC)
         self.cb_temperature.setCurrentIndex(0)
-        self.cb_temperature.currentTextChanged.connect(lambda texto: self.control_Input(texto, self.cb_temperature))
+        self.cb_temperature.currentTextChanged.connect(lambda texto: self.manejar_cb_temperature(texto))
         
         self.cb_tempVrange = QComboBox()
         self.cb_tempVrange.insertItems(0,self.mokeLockinSensVals)
@@ -355,9 +355,16 @@ class VistaPrincipal(QWidget):
         gb_datafile_selection.setLayout(layout)
         return gb_datafile_selection 
     
+     #función para actualizar los datos del termómetro de forma aleatoria, solo para pruebas
+    def termo_dato_aleatorio(self):
+        import random
+        numero = random.randint(0, 100)
+        return numero
+    
     #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke intensity, dc level y temperature
     def mostrar_error(self):
         # Crear y configurar la ventana de error
+        #error_dialog = QMessageBox().warning(self, "Error de Input", "Input selecdionado no valido.")
         error_dialog = QMessageBox()
         error_dialog.setIcon(QMessageBox.Icon.Critical)
         error_dialog.setWindowTitle("Error de Input")
@@ -392,31 +399,10 @@ class VistaPrincipal(QWidget):
         # Mostrar la ventana de error
         error_dialog.exec()
 
-    #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke intensity, dc level y temperature
-    def control_Input(self,texto,tipo):
-        if texto == " -- Select -- ":
-            return
-        if tipo == self.cb_moke_intensity:
-            if texto !=  self.cb_moke_dc_level.currentText() and texto != self.cb_temperature.currentText() and texto != self.cb_timeFieldDriving.currentText():
-                self.configuracion.dac_input_intensity = texto
-                print(texto)
-            else:
-                self.mostrar_error()
-                self.cb_moke_intensity.setCurrentIndex(0)
-        if tipo == self.cb_moke_dc_level:
-            if texto != self.cb_moke_intensity.currentText() and texto != self.cb_temperature.currentText() and texto != self.cb_timeFieldDriving.currentText():
-                self.configuracion.dac_dc_level = texto 
-                print(texto)
-            else:
-                self.mostrar_error()
-                self.cb_moke_dc_level.setCurrentIndex(0)
-        if tipo == self.cb_temperature:
-            if texto != self.cb_moke_intensity.currentText() and texto != self.cb_moke_dc_level.currentText() and texto != self.cb_timeFieldDriving.currentText():
-                self.configuracion.dac_input_temperature = texto
-                print(texto)
-            else:
-                self.mostrar_error()
-                self.cb_temperature.setCurrentIndex(0)
+    def error_input(self,combobox):
+        self.mostrar_error()
+        combobox.setCurrentIndex(0)
+
     #fuincion que se ejecuta para comprobar que todos los datos esten ingresados
     def control_validar_datos(self):
         if  self.configuracion.dac_input_intensity == None or \
@@ -496,6 +482,30 @@ class VistaPrincipal(QWidget):
     def manejar_le_datafile(self, texto):
         self.experimento.rutaCsv = texto
         print(texto)
+    def manejar_cb_moke_intensity(self, texto):
+        if texto == " -- Select -- ":
+            return
+        if texto !=  self.cb_moke_dc_level.currentText() and texto != self.cb_temperature.currentText() and texto != self.cb_timeFieldDriving.currentText():
+            self.configuracion.dac_input_intensity = texto
+            print(texto)
+        else:
+            self.error_input(self.cb_moke_intensity)
+    def manejar_cb_moke_dc_level(self, texto):
+        if texto == " -- Select -- ":
+            return
+        if texto != self.cb_moke_intensity.currentText() and texto != self.cb_temperature.currentText() and texto != self.cb_timeFieldDriving.currentText():
+            self.configuracion.dac_dc_level = texto 
+            print(texto)
+        else:
+            self.error_input(self.cb_moke_dc_level)       
+    def manejar_cb_temperature(self, texto):
+        if texto == " -- Select -- ":
+            return
+        if texto != self.cb_moke_intensity.currentText() and texto != self.cb_moke_dc_level.currentText() and texto != self.cb_timeFieldDriving.currentText():
+            self.configuracion.dac_input_temperature = texto
+            print(texto)
+        else:
+            self.error_input(self.cb_temperature)
     #funcion que se ejecuta al dar click en el boton run
     def run (self):
         if self.experimento.rutaCsv== None:
