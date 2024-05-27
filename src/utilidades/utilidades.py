@@ -1,5 +1,5 @@
 from ..modelo.dao import ExperimentoDAO, ConfiguracionTeasDAO, ConfiguracionMokeDAO, ResultadoTeasDAO, ResultadoMokeDAO
-from ..vista.teasGraph import Plot
+from ..vista.componentes.grafica import Plot
 from docxtpl import DocxTemplate, InlineImage
 from docx2pdf import convert
 from os import remove
