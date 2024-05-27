@@ -228,16 +228,13 @@ class TeasGraph( QWidget ):
         self.d_plot.setContentsMargins( margin, margin, margin, 0 )
         self.setContextMenuPolicy( Qt.ContextMenuPolicy.NoContextMenu )
 
-        self.d_zoomer=[None,None]
-        #self.d_zoomer[0] = Zoomer( Qwt.QwtPlot.Axis.xBottom, Qwt.QwtPlot.Axis.yLeft, self.d_plot.canvas() )
-        self.d_zoomer[0] = Zoomer( 2,0, self.d_plot.canvas() )
-        self.d_zoomer[0].setRubberBand( Qwt.QwtPicker.RubberBand.RectRubberBand )
-        self.d_zoomer[0].setRubberBandPen( QColor( Qt.GlobalColor.green ) )
-        self.d_zoomer[0].setTrackerMode( Qwt.QwtPicker.DisplayMode.ActiveOnly )
-        self.d_zoomer[0].setTrackerPen( QColor( Qt.GlobalColor.white ) )
+        self.d_zoomer = Zoomer( 2,0, self.d_plot.canvas() )
+        self.d_zoomer.setRubberBand( Qwt.QwtPicker.RubberBand.RectRubberBand )
+        self.d_zoomer.setRubberBandPen( QColor( Qt.GlobalColor.green ) )
+        self.d_zoomer.setTrackerMode( Qwt.QwtPicker.DisplayMode.ActiveOnly )
+        self.d_zoomer.setTrackerPen( QColor( Qt.GlobalColor.white ) )
+        self.d_zoomer.setZoomBase( True )
 
-        # self.d_zoomer[1] = Zoomer( Qwt.QwtPlot.Axis.xTop, Qwt.QwtPlot.Axis.yRight, self.d_plot.canvas() )
-        self.d_zoomer[1] = Zoomer( 3, 1, self.d_plot.canvas() )
         self.d_panner = Qwt.QwtPlotPanner( self.d_plot.canvas() )
         self.d_panner.setMouseButton( Qt.MouseButton.MiddleButton )
 
