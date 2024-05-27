@@ -435,15 +435,7 @@ class MainWindow( QWidget ):
 
 def main():
     a = QApplication(sys.argv)
-    fichero = open("mockData.csv", "r")
-    datos = fichero.readlines() # ["x,y", "0,0.2885515512807122", "1,0.45635354359464864", ....]
-    fichero.close()
-    cabecera = datos.pop(0) # "x,y"
-    for i in range(len(datos)):
-        datos[i] = datos[i].split(",") # ["0", "0.2885515512807122"]
-        datos[i] = [float(datos[i][0]), float(datos[i][1])] # [0, 0.2885515512807122]
-    configuracion = None
-    m = MainWindow(datos, configuracion)
+    m = MainWindow(3, False)
     m.resize( 540, 400 )
     m.show()
 
