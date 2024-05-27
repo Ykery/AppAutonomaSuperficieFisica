@@ -72,4 +72,7 @@ def crear_docx_experimento(id, docx_path = "./experimento.docx"):
 def convertir_docx_pdf(docx_path, pdf_path):
     convert(docx_path, pdf_path)
     remove(docx_path)
-    
+
+def mostrar_pdf(path):
+    import os
+    os.system("start " + path)
