@@ -107,7 +107,7 @@ class ExperimentosWindow(QWidget):
 
 
     def verificar_experimento_seleccionado(self):
-        if self.experimento_seleccionado == None:
+        if not self.experimento_seleccionado:
             QMessageBox.warning(self, "Error", "No se ha seleccionado ningún experimento", QMessageBox.StandardButton.Ok)
             return False
         return True
