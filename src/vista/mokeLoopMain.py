@@ -368,7 +368,7 @@ class VistaPrincipal(QWidget):
         error_dialog = QMessageBox()
         error_dialog.setIcon(QMessageBox.Icon.Critical)
         error_dialog.setWindowTitle("Error de Input")
-        error_dialog.setText("Input selecdionado no valido.")
+        error_dialog.setText("Input selecionado no valido.")
         #aumentar tamaño de la letra 
         error_dialog.setStyleSheet("font: 12pt")
         error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok) 
