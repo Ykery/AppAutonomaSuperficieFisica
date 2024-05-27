@@ -242,13 +242,11 @@ class Plot( Qwt.QwtPlot):
         # self.d_marker2.attach( self )
         self.setAutoReplot( True )
 
-    def showData(self,  frequency, amplitude, phase, count ):
-        self.d_curve1.setSamples( frequency, amplitude)
-        # self.d_curve2.setSamples( frequency, phase)
-        
-    def exportChart(self):
-        renderer = Qwt.QwtPlotRenderer()
-        renderer.exportTo( self, "chart.pdf" )
+    def showData(self, x, y):
+        self.d_curve1.setSamples(x, y)
+        # Cambiar el eje x para que sea logaritmico y empezar en 0
+        # self.d_curve2.setSamples( time, phase)
+
 
 
 class Zoomer(Qwt.QwtPlotZoomer):
