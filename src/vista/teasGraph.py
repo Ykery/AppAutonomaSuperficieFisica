@@ -201,9 +201,9 @@ class Zoomer(Qwt.QwtPlotZoomer):
 class TeasGraph( QWidget ):
     def __init__(self, id, load_results = False, *args):
         QMainWindow.__init__(self, *args) 
-        layout = QVBoxLayout(self)
-        layout.setSpacing( 0 )
-        layout.setContentsMargins( 0, 0, 0, 0 )
+        self.layout = QVBoxLayout(self)
+        self.layout.setSpacing( 0 )
+        self.layout.setContentsMargins( 0, 0, 0, 0 )
         
         self.id_experimento = id
         self.load_results = load_results
