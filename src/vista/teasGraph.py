@@ -317,12 +317,7 @@ class MainWindow( QWidget ):
 
     def mprint(self):
         printer = QPrinter()
-        docName = "Humm" #self.d_plot.title().text()w
-        #if ( not docName.isEmpty() ):
-        #docName.replace ( QRegExp ( QString.fromLatin1 ( "\n" ) ), tr ( " -- " ) )
-        printer.setDocName ( docName )
-
-        printer.setCreator( "Bode example" )
+        printer.setCreator( "UAM app" )
         
 
         dialog = QPrintDialog( printer )
