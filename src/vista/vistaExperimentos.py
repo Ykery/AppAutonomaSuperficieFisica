@@ -105,6 +105,14 @@ class ExperimentosWindow(QWidget):
     def seleccionar_experimento(self, id_experimento):
         self.experimento_seleccionado = id_experimento
 
+
+    def verificar_experimento_seleccionado(self):
+        if self.experimento_seleccionado == None:
+            QMessageBox.warning(self, "Error", "No se ha seleccionado ningún experimento", QMessageBox.StandardButton.Ok)
+            return False
+        return True
+
+
     def filtrar_por_tipo(self, tipo):
         self.filtro_tipo = tipo
         self.filtrar_lista_experimentos()
