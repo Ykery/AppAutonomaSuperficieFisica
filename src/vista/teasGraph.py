@@ -5,7 +5,8 @@ import math
 #import Qwt
 from PyQt6 import Qwt
 import numpy as np
-
+from ..modelo.dao import ResultadoTeasDAO
+from ..modelo.clases import ResultadoTeas
 from datetime import datetime
 from PyQt6.QtCore import Qt,  QSize, QTimer
 from PyQt6.QtGui import QColor,  QPixmap, QFont,  QIcon
