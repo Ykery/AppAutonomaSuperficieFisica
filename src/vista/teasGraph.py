@@ -511,9 +511,24 @@ class TeasGraph( QWidget ):
             self.btnPause.setEnabled(False)
 
 
+    def closeEvent(self, event):
+        reply = QMessageBox.warning(self, 'Warning', "¿Estás seguro que deseas salir y terminar el experimento?", 
+                                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
+                                 QMessageBox.StandardButton.No)
+
+        if reply == QMessageBox.StandardButton.Yes:
+            event.accept()
+            self.timer.stop()
+            self.d_plot.deleteLater()
+            self.toolBar.deleteLater()
+            self.bottom_bar.deleteLater()
+            self.deleteLater()
+        else:
+            event.ignore()
+
 def main():
     a = QApplication(sys.argv)
-    m = TeasGraph(3, False)
+    m = TeasGraph(1, True)
     m.resize( 540, 400 )
     m.show()
 
