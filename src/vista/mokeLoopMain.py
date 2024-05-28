@@ -82,6 +82,9 @@ class VistaPrincipal(QWidget):
         btn_close.clicked.connect(self.close)
         btn_run.clicked.connect(self.run)
         
+        if id_experimento != None:
+            self.cargar_configuracion(id_experimento=id_experimento)
+        
     def createMokeDACBox(self):
         
         layout = QGridLayout()
