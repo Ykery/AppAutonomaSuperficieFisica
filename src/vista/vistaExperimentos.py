@@ -265,7 +265,7 @@ class ExperimentosWindow(QWidget):
         btn_configuraciones = QPushButton("Cargar configuraciones")
         
         btn_exportar.clicked.connect(self.manejar_exportar_pdf)
-        btn_configuraciones.clicked.connect(self.cargarconfiguraciones)
+        btn_configuraciones.clicked.connect(self.cargar_figuraciones)
         
         layout.addWidget(btn_exportar, 0, 0, 1, 2)    
         layout.addWidget(btn_visualizar, 0, 2, 1, 2)
@@ -279,7 +279,7 @@ class ExperimentosWindow(QWidget):
             return
         pedir_ruta_exportar_pdf(self, self.experimento_seleccionado)
 
-    def cargarconfiguraciones(self):
+    def cargar_figuraciones(self):
         # Preguntar la ruta donde guardar el pdf
         if not self.verificar_experimento_seleccionado():
             return   
