@@ -11,6 +11,7 @@ from PyQt6.Qwt import *
 from ..modelo.dao import *
 from ..modelo.clases import *
 from .mokeLoopMain import Display_LCD_modificado, Thermometer_modificado
+from .teasGraph import TeasGraph
 import random
 
 
@@ -83,6 +84,7 @@ class TeasWindow(QWidget):
             self.experimento = ExperimentoDAO.crear(self.experimento)
             self.configuracion.id_experimento = self.experimento.id
             ConfiguracionTeasDAO.crear(self.configuracion)
+            self.abrir_pantalla_grafica()
         #print(self.configuracion)
     
     #funcion que se ejecuta cada vez que se cambia el valor de la combobox de moke intensity, dc level y temperature
@@ -672,6 +674,13 @@ class TeasWindow(QWidget):
         import random
         thermo = Qwt.QwtThermo()
         thermo.setValue(random.randint(0, 100))
+        
+        
+    def abrir_pantalla_grafica(self):
+        self.hide()
+        self.grafica = TeasGraph(self.experimento.id)
+        self.grafica.show()
+        
         
 def main():
     Conexion.iniciar_bbdd()
