@@ -70,15 +70,6 @@ class MenuInicio(QWidget):
         new_window.show()
         print(self.child_window)
 
-
-    def closeEvent(self, event):
-        # Cerrar todas las ventanas hijas cuando se cierre la ventana principal
-        if self.child_window:
-            self.child_window.close()
-        event.accept()
-
-    
-
 def main():
     app = QApplication(sys.argv)
     window = MenuInicio()
