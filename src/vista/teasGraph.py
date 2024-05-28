@@ -101,6 +101,40 @@ pause_xpm = ["32 32 2 1",
 "    .......          .......    ",
 "    .......          .......    ",
 "    .......          .......    "]
+mark_xpm = ["32 32 2 1",
+"  c None",
+". c black",
+"                                ",
+"                                ",
+"                                ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"             ......             ",
+"                                ",
+"                                ",
+"                                "]
 print_xpm = ["32 32 12 1",
     "a c #ffffff",
     "h c #ffff00",
@@ -266,6 +300,14 @@ class TeasGraph( QWidget ):
         self.btnZoom.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
         self.toolBar.addWidget( self.btnZoom )
         
+        self.btnMark = QToolButton( self.toolBar )
+        self.btnMark.setText( "Añadir marcador" )
+        self.btnMark.setIcon( QIcon(QPixmap( mark_xpm ) ))
+        self.btnMark.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
+        self.toolBar.addWidget( self.btnMark )
+        self.btnMark.clicked.connect(self.manejar_anadir_marcador)
+        
+        
         self.btnZoom.toggled.connect(self.enableZoomMode)
 
         self.btnPrint = QToolButton( self.toolBar )
@@ -314,6 +356,21 @@ class TeasGraph( QWidget ):
         self.btnPause.setText("Resume" if self.paused else "Pause")
         self.btnPause.setIcon( QIcon(QPixmap( play_xpm ) ) if self.paused else QIcon(QPixmap( pause_xpm )))
         
+
+    def manejar_anadir_marcador(self):
+        valor_x = self.datax[-1]
+        
+        text, ok = QInputDialog.getText(self, 'Entrada de texto', 'Ingrese su texto:')
+        if ok:
+            marcador = Marcador()
+            marcador.eje_x_id = valor_x
+            marcador.id_experimento = self.experimento.id
+            marcador.descripcion = text
+            try:
+                MarcadorDAO.crear(marcador)
+            except Exception as e:
+                QMessageBox.critical(self, "Error", str(e))
+
 
     def actualizarDatos(self):
         if not self.load_results and not self.paused:
