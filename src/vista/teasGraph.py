@@ -252,6 +252,7 @@ class TeasGraph( QWidget ):
                 self.datax.append(resultado.time)
                 self.datay.append(resultado.intensity)
         else:
+            escribir_csv(self.experimento.rutaCsv, "time", "intensity")
             self.datax = [0]
             self.datay = [0]
             self.timer = QTimer()
@@ -382,6 +383,7 @@ class TeasGraph( QWidget ):
             resultado.id_experimento = self.experimento.id
             resultado.time = self.datax[-1]
             resultado.intensity = self.datay[-1]
+            escribir_csv(self.experimento.rutaCsv, resultado.time, resultado.intensity)
             ResultadoTeasDAO.crear(resultado)
         self.datapoints_number.setText("Number of datapoints: " + str(len(self.datay)))
         self.d_plot.showData(self.datax, self.datay)
