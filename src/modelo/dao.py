@@ -202,6 +202,12 @@ class MarcadorDAO():
         session.close()
         return marcador
     
+    def obtener_por_id_experimento(id_experimento):
+        session = Conexion.getConexion()
+        marcadores = session.query(Marcador).filter(Marcador.id_experimento == id_experimento).all()
+        session.close()
+        return marcadores
+    
     def obtener_todos():    
         session = Conexion.getConexion()
         marcadores = session.query(Marcador).all()

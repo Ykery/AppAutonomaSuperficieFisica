@@ -1,4 +1,4 @@
-from ..modelo.dao import ExperimentoDAO, ConfiguracionTeasDAO, ConfiguracionMokeDAO, ResultadoTeasDAO, ResultadoMokeDAO
+from ..modelo.dao import ExperimentoDAO, ConfiguracionTeasDAO, ConfiguracionMokeDAO, ResultadoTeasDAO, ResultadoMokeDAO, MarcadorDAO
 from ..vista.componentes.grafica import Plot
 from docxtpl import DocxTemplate, InlineImage
 from docx2pdf import convert
