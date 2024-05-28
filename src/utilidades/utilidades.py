@@ -25,6 +25,7 @@ def crear_docx_experimento(id, docx_path = "./experimento.docx"):
     # Si no existe el experimento, retornar False
     if experimento is None:
         return False
+    marcadores = MarcadorDAO.obtener_por_id_experimento(experimento.id)
     datos_x = []
     datos_y = []
     configuracion = ""
@@ -66,6 +67,7 @@ def crear_docx_experimento(id, docx_path = "./experimento.docx"):
     context["descripcion_exp"] = experimento.descripcion
     context["configuracion_exp"] = str(configuracion)
     context["grafica_exp"] = inline_image
+    context["marcadores_exp"] = marcadores
     doc.render(context)
     # Save doc to pdf
     doc.save(docx_path)
