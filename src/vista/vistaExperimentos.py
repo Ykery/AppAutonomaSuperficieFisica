@@ -10,6 +10,10 @@ from PyQt6.Qwt import *
 from datetime import datetime
 from threading import Thread
 from ..utilidades.utilidades import pedir_ruta_exportar_pdf
+from . import teasMain
+from . import mokeLoopMain
+from src.vista.mokeLoopMain import VistaPrincipal
+from src.vista.menuInicio import MenuInicio, teasGraph
 
 class ExperimentosWindow(QWidget):
     
@@ -265,7 +269,8 @@ class ExperimentosWindow(QWidget):
         btn_configuraciones = QPushButton("Cargar configuraciones")
         
         btn_exportar.clicked.connect(self.manejar_exportar_pdf)
-        btn_configuraciones.clicked.connect(self.cargar_figuraciones)
+        btn_visualizar.clicked.connect(self.visualizar_resultados)
+        btn_configuraciones.clicked.connect(self.cargar_configuraciones)
         
         layout.addWidget(btn_exportar, 0, 0, 1, 2)    
         layout.addWidget(btn_visualizar, 0, 2, 1, 2)
@@ -279,19 +284,30 @@ class ExperimentosWindow(QWidget):
             return
         pedir_ruta_exportar_pdf(self, self.experimento_seleccionado)
 
-    def cargar_figuraciones(self):
+    def cargar_configuraciones(self):
         # Preguntar la ruta donde guardar el pdf
         if not self.verificar_experimento_seleccionado():
             return   
         if ExperimentoDAO.obtener_por_id(self.experimento_seleccionado).tipo.lower() == "teas":
-            self.abrir_configuracion(teasMain.TeasWindow(self.experimento_seleccionado))
+            self.abrir_nueva_ventana(teasMain.TeasWindow(self.experimento_seleccionado))
         elif ExperimentoDAO.obtener_por_id(self.experimento_seleccionado).tipo.lower() == "moke":
-            self.abrir_configuracion(VistaPrincipal(self.experimento_seleccionado))
+            self.abrir_nueva_ventana(VistaPrincipal(self.experimento_seleccionado))
+
+
+    def visualizar_resultados(self):
+        # Preguntar la ruta donde guardar el pdf
+        if not self.verificar_experimento_seleccionado():
+            return   
+        if ExperimentoDAO.obtener_por_id(self.experimento_seleccionado).tipo.lower() == "teas":
+            self.abrir_nueva_ventana(teasGraph.TeasGraph(self.experimento_seleccionado, True))
+        elif ExperimentoDAO.obtener_por_id(self.experimento_seleccionado).tipo.lower() == "moke":
+            # NOT IMPLEMENTED
+            # self.abrir_nueva_ventana(mokeGraph.MokeGraph(self.experimento_seleccionado, True))
+            pass
     
-    def abrir_configuracion(self, window_instance):
-        window_instance.show()
+    def abrir_nueva_ventana(self, nueva_ventana):
+        nueva_ventana.show()
         self.close()
-        print(self.child_window)   
 
 
 def main():
