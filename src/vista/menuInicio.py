@@ -28,10 +28,6 @@ class MenuInicio(QWidget):
 
         self.child_window = None
 
-        self.teasMain = None
-        self.moke = None
-        self.experimentos = None
-
         lb_label = QLabel("Elija una opción:")
         btn_teas = QPushButton("Realizar Experimento TEAS TimeScan")
         btn_moke = QPushButton("Realizar Experimento MOKE Loop")
@@ -55,6 +51,7 @@ class MenuInicio(QWidget):
         layout.addWidget(linea) 
         layout.addWidget(btn_quit)
 
+        # Si se borra la ventana principal, se cierra la aplicación
         btn_quit.clicked.connect(QApplication.instance().quit)
 
         btn_teas.clicked.connect(lambda: self.open_child_window(teasMain.TeasWindow))
@@ -81,54 +78,6 @@ class MenuInicio(QWidget):
         event.accept()
 
     
-    def abrir_teas(self):
-        cont = 0
-        self.teasMain = teasMain.TeasWindow()
-        self.teasMain.show()
-        cont += 1
-        self.moke = None
-        self.experimentos = None
-
-
-        print("teas -> " + str(cont))
-        
-
-
-    def abrir_moke(self):
-        cont = 0
-        self.moke = mokeLoopMain.VistaPrincipal()
-        self.moke.show()
-        cont += 1
-        self.teasMain = None
-        self.experimentos = None
-        if cont == 2:
-            self.moke = None
-
-        print("moke -> " + str(cont))
-        
-        
-
-
-    def abrir_experimentos(self):
-        cont = 0
-        self.experimentos = vistaExperimentos.ExperimentosWindow()
-        self.experimentos.show()
-        cont += 1
-        self.teasMain = None
-        self.moke = None
-        if cont == 2:
-            self.experimentos = None
-        
-        print("experimentos -> " + str(cont))
-
-
-        
-
-
-
-
-
-
 
 def main():
     app = QApplication(sys.argv)
