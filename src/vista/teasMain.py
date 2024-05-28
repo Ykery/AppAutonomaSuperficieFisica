@@ -16,8 +16,12 @@ import random
 
 class TeasWindow(QWidget):
     
-    def __init__(self, ):
+    def __init__(self,id_experimento= None):
         super().__init__()
+        #Se crea el objeto 'configuracion' vacío y el objeto 'experimento' vacío de la clase ConfiguracionTeas y Experimento
+        self.configuracion = ConfiguracionTeas()
+        self.experimento = Experimento()
+
 
         self.setWindowTitle("TEAS MANAGEMENT")
         #self.setContentsMargins(10, 10, 10, 10)
@@ -26,9 +30,6 @@ class TeasWindow(QWidget):
         self.teasDACParams = [None] * 6
         self.indicesList = [None] * 6
 
-        #Se crea el objeto 'configuracion' vacío y el objeto 'experimento' vacío de la clase ConfiguracionTeas y Experimento
-        self.configuracion = ConfiguracionTeas()
-        self.experimento = Experimento()
 
         self.main_layout = QGridLayout()
         self.fuenteHelvetica = QFont("Helvetica", 11)
@@ -66,6 +67,10 @@ class TeasWindow(QWidget):
                
         btn_run.clicked.connect(self.run)
         btn_close.clicked.connect(self.close)
+
+        if id_experimento != None:
+            self.cargar_configuracion(id_experimento=id_experimento)
+
 
     #Función que crea los objetos experimento y configuración y lo inserta en la BBDD
     def run(self):
@@ -519,7 +524,36 @@ class TeasWindow(QWidget):
         self.mostrar_error()
         combobox.setCurrentIndex(0)
 
-                
+    def cargar_configuracion(self, id_experimento):
+        
+        experimento_cargado = ExperimentoDAO.obtener_por_id(id_experimento)
+
+        configuracion_cargada = ConfiguracionTeasDAO.obtener_por_id(id_experimento)
+        if configuracion_cargada == None:
+            return
+
+        self.cb_teas.setCurrentText(configuracion_cargada.dac_input_intensity)
+        self.cb_teasVrange.setCurrentText(configuracion_cargada.dac_teas_voltaje_range)
+        self.cb_temperature.setCurrentText(configuracion_cargada.dac_input_temperature)
+        self.cb_tempVrange.setCurrentText(configuracion_cargada.dac_temperature_voltaje_range)
+        self.slider_samplingRate.setValue(configuracion_cargada.dac_sampling_rate)
+        self.cb_scanAMLGaugeDACcomboBox.setCurrentText(configuracion_cargada.aml_input_pressure)
+        self.cb_scanAMLGaugeVrangeComboBox.setCurrentText(configuracion_cargada.aml_voltage_range)
+        self.le_scanSensLineEdit.setText(configuracion_cargada.aml_sensitivity)
+        self.cb_scanAMLUnitsComboBox.setCurrentText(configuracion_cargada.aml_presure_units)
+        if configuracion_cargada.aml_emission_current == "0.5 mA":
+            self.rb_scanEmission_1.setChecked(True)
+            self.configuracion.aml_emission_current = "0.5 mA"
+        if configuracion_cargada.aml_emission_current == "5.0 mA":
+            self.rb_scanEmission_2.setChecked(True)
+            self.configuracion.aml_emission_current = "5.0 mA"
+        self.knb_iterTimeKnob.setValue(configuracion_cargada.integration_time)
+        self.le_teasChanneltronLineEdit.setText(configuracion_cargada.channeltron_voltage)
+        self.le_teasSysIDboxLineEdit.setText(experimento_cargado.descripcion)
+        self.le_fileLineEdit.setText(experimento_cargado.rutaCsv)
+        self.cb_lockinTimeCons.setCurrentText(configuracion_cargada.lock_time_constant)
+        self.cb_lockinSens.setCurrentText(configuracion_cargada.lock_sensitivity)
+              
 
     #función para establecer los parámetros del DAC
     def setDACparameters(self):
