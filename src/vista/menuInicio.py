@@ -70,6 +70,7 @@ class MenuInicio(QWidget):
         new_window.show()
         print(self.child_window)
 
+
 def main():
     app = QApplication(sys.argv)
     window = MenuInicio()

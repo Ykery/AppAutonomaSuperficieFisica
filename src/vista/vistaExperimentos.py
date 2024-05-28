@@ -31,7 +31,16 @@ class ExperimentosWindow(QWidget):
         self.main_layout.addWidget(btn_volver, 7, 5, 1, 1)
         
         self.setLayout(self.main_layout)
+        btn_volver.clicked.connect(self.volver)
 
+
+    def volver(self):   
+        self.close()
+        menu_inicio = MenuInicio()
+        menu_inicio.show()
+
+    def cerrar_ventana(self):
+        self.close()
 
     def crear_scroll_area(self):
         layout = QGridLayout()
