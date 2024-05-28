@@ -527,6 +527,8 @@ class VistaPrincipal(QWidget):
         experimento_cargado = ExperimentoDAO.obtener_por_id(id_experimento)
 
         configuracion_cargada = ConfiguracionMokeDAO.obtener_por_id(id_experimento)
+        if configuracion_cargada == None:
+            return
 
         self.le_description.setText(experimento_cargado.descripcion)
         self.le_datafile.setText(experimento_cargado.rutaCsv)
