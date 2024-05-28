@@ -522,6 +522,31 @@ class VistaPrincipal(QWidget):
             ConfiguracionMokeDAO.crear(self.configuracion)
 
 
+    def cargar_configuracion(self, id_experimento):
+
+        experimento_cargado = ExperimentoDAO.obtener_por_id(id_experimento)
+
+        configuracion_cargada = ConfiguracionMokeDAO.obtener_por_id(id_experimento)
+
+        self.le_description.setText(experimento_cargado.descripcion)
+        self.le_datafile.setText(experimento_cargado.rutaCsv)
+        self.cb_moke_intensity.setCurrentText(configuracion_cargada.dac_input_intensity)
+        self.cb_moke_voltage_range.setCurrentText(configuracion_cargada.dac_voltaje_range)
+        self.cb_moke_dc_level.setCurrentText(configuracion_cargada.dac_dc_level)
+        self.cb_dc_level_voltage_range.setCurrentText(configuracion_cargada.dac_dc_voltage_range)
+        self.cb_temperature.setCurrentText(configuracion_cargada.dac_input_temperature)
+        self.cb_tempVrange.setCurrentText(configuracion_cargada.dac_temperature_voltaje_range)
+        self.cb_timeFieldDriving.setCurrentText(configuracion_cargada.dac_field_driving_current)
+        self.cb_sensitivity.setCurrentText(configuracion_cargada.lock_sensitivity)
+        self.cb_time.setCurrentText(configuracion_cargada.lock_time_constant)
+        self.knb_magnetic_field.setValue(configuracion_cargada.magnetic_field)
+        self.knb_per_loop.setValue(configuracion_cargada.points_per_loop)
+        self.knb_number_sweeps.setValue(configuracion_cargada.number_of_sweeps)
+        self.knb_dweel_time.setValue(configuracion_cargada.dwell_time)
+        self.knb_integration_time.setValue(configuracion_cargada.integration_time)
+        self.cb_geometry.setCurrentText(configuracion_cargada.geometry)
+        self.slider_samplingRate.setValue(configuracion_cargada.dac_sampling_rate)
+
 
 def main():
     Conexion.iniciar_bbdd()

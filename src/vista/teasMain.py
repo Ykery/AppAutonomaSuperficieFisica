@@ -434,8 +434,14 @@ class TeasWindow(QWidget):
     def manejar_silder_samplingRate(self, value):
         self.configuracion.dac_sampling_rate = value
         print(value)
+    def manejar_cb_teas(self, texto):
+        self.configuracion.dac_input_intensity = texto
+        print(texto)
     def manejar_cb_teasVrange(self,texto):
         self.configuracion.dac_teas_voltaje_range = texto
+        print(texto)
+    def manejar_cb_temperature(self, texto):
+        self.configuracion.dac_input_temperature = texto
         print(texto)
     def manejar_cb_tempVrange(self, texto):
         self.configuracion.dac_temperature_voltaje_range = texto
@@ -463,6 +469,9 @@ class TeasWindow(QWidget):
     def manejar_rb_emision_2(self):
         self.configuracion.aml_emission_current = "5.0 mA"
         print("5.0 mA")
+    def manejar_cb_scanAMLGaugeDACcomboBox(self, texto):
+        self.configuracion.aml_input_pressure = texto
+        print(texto)
     def manejar_cb_scanAMLUnitsComboBox(self, texto):
         self.configuracion.aml_presure_units = texto
         print(texto)
