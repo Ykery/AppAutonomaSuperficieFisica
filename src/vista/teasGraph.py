@@ -239,12 +239,13 @@ class TeasGraph( QWidget ):
         self.layout = QVBoxLayout(self)
         self.layout.setSpacing( 0 )
         self.layout.setContentsMargins( 0, 0, 0, 0 )
-        
-        self.id_experimento = id
+        self.experimento = ExperimentoDAO.obtener_por_id(id)
+        if self.experimento is None:
+            raise ValueError("El experimento con id " + str(id) + " no existe") 
         self.load_results = load_results
         self.tiempo = datetime.now()
         if self.load_results:
-            resultados_cargados = ResultadoTeasDAO.obtener_por_id_experimento(self.id_experimento)
+            resultados_cargados = ResultadoTeasDAO.obtener_por_id_experimento(self.experimento.id)
             self.datax = []
             self.datay = []
             for resultado in resultados_cargados:
@@ -334,7 +335,7 @@ class TeasGraph( QWidget ):
         self.datapoints_number = QLabel("Number of datapoints: 0")
         bottom_bar_layout.addWidget( self.datapoints_number )
         bottom_bar_layout.addWidget( QSplitter() )
-        bottom_bar_layout.addWidget( QLabel("#rutadelarchivo"))
+        bottom_bar_layout.addWidget( QLabel(self.experimento.rutaCsv))
         self.bottom_bar.setLayout(bottom_bar_layout)
 
         self.layout.addWidget( self.toolBar )
@@ -378,7 +379,7 @@ class TeasGraph( QWidget ):
             self.datax.append(self.datax[-1]+1)
             # Persistir los datos
             resultado = ResultadoTeas()
-            resultado.id_experimento = self.id_experimento
+            resultado.id_experimento = self.experimento.id
             resultado.time = self.datax[-1]
             resultado.intensity = self.datay[-1]
             ResultadoTeasDAO.crear(resultado)
@@ -401,7 +402,7 @@ class TeasGraph( QWidget ):
             renderer.renderTo( self.d_plot, printer )
 
     def exportDocument(self):
-        pedir_ruta_exportar_pdf(self, self.id_experimento)
+        pedir_ruta_exportar_pdf(self, self.experimento.id)
 
     def enableZoomMode( self, on ):
         if on:
@@ -490,7 +491,7 @@ class TeasGraph( QWidget ):
         self.datapoints_number = QLabel("Number of datapoints: 0")
         bottom_bar_layout.addWidget( self.datapoints_number )
         bottom_bar_layout.addWidget( QSplitter() )
-        bottom_bar_layout.addWidget( QLabel("#rutadelarchivo"))
+        bottom_bar_layout.addWidget( QLabel(self.experimento.rutaCsv))
         self.bottom_bar.setLayout(bottom_bar_layout)
 
         self.layout.addWidget( self.toolBar )
