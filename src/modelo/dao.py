@@ -187,3 +187,35 @@ class ConfiguracionMokeDAO():
         session.close()
 
 
+class MarcadorDAO():
+    
+    def crear(marcador):    
+        session = Conexion.getConexion()
+        session.add(marcador)
+        session.commit()
+        #session.refresh(marcador)
+        session.close()
+    
+    def obtener_por_id(id):    
+        session = Conexion.getConexion()
+        marcador = session.query(Marcador).filter(Marcador.id == id).first()
+        session.close()
+        return marcador
+    
+    def obtener_todos():    
+        session = Conexion.getConexion()
+        marcadores = session.query(Marcador).all()
+        session.close()
+        return marcadores
+    
+    def actualizar(marcador):    
+        session = Conexion.getConexion()
+        session.add(marcador)
+        session.commit()
+        session.close()
+    
+    def eliminar(marcador):    
+        session = Conexion.getConexion()
+        session.delete(marcador)
+        session.commit()
+        session.close()
