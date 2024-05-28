@@ -227,7 +227,7 @@ class TeasWindow(QWidget):
         self.cb_tempVrange.insertItems(0, self.scanVrange)
         self.cb_tempVrange.setCurrentIndex(0)
         self.cb_tempVrange.currentIndexChanged.connect(self.setDACparameters)
-        self.cb_tempVrange.currentIndexChanged.connect(self.manejar_cb_tempVrange)
+        self.cb_tempVrange.currentTextChanged.connect(self.manejar_cb_tempVrange)
  
 
 
@@ -307,7 +307,7 @@ class TeasWindow(QWidget):
         self.cb_scanAMLGaugeVrangeComboBox.insertItems(0, self.scanVrange)
         self.cb_scanAMLGaugeVrangeComboBox.setCurrentIndex(0)
         self.cb_scanAMLGaugeVrangeComboBox.currentIndexChanged.connect(self.setDACparameters)
-        self.cb_scanAMLGaugeVrangeComboBox.currentIndexChanged.connect(self.manejar_cb_scanAMLGaugeVrangeComboBox)
+        self.cb_scanAMLGaugeVrangeComboBox.currentTextChanged.connect(self.manejar_cb_scanAMLGaugeVrangeComboBox)
 
         self.cb_scanAMLUnitsComboBox.insertItems(0, self.unitsAML)
         self.cb_scanAMLUnitsComboBox.setCurrentIndex(0)
