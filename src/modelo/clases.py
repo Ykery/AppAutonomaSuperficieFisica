@@ -164,4 +164,18 @@ class ConfiguracionMoke(Base):
             """
 
 
+class Marcador(Base):
+    __tablename__ = 'marcadores'
+   
+    # 'eje_x_id' y 'id_experimento' son claves primarias compuestas
+    eje_x_id = Column(Integer, primary_key=True, nullable=False)
+    id_experimento = Column(Integer, ForeignKey('experimentos.id'), primary_key=True, nullable=False)
+    descripcion = Column(String(255), nullable=False)    
+
+   
+    def __repr__(self):
+        return f"""Marcadores(eje_x_id={self.eje_x_id},
+            id_experimento={self.id_experimento},
+            descripcion={self.descripcion})
+            """
 
