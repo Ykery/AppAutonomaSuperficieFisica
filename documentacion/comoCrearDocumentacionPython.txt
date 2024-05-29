@@ -1,0 +1,215 @@
+Paso 1: Crear un Proyecto Python
+
+Primero, crea un directorio para tu proyecto y dentro de él, crea un archivo Python con una clase y métodos documentados usando docstrings.
+
+Estructura del proyecto:
+
+my_project/
+│
+├── my_module.py
+└── docs/
+
+Contenido de my_module.py:
+
+python
+
+class MenuInicio(QWidget):
+    """
+    Clase que representa el menú de inicio de la aplicación.
+
+    Attributes:
+        child_window (QWidget): Ventana secundaria actualmente abierta.
+        fuenteHelvetica (QFont): Fuente utilizada en los widgets.
+    """
+
+    def __init__(self):
+        """
+        Inicializa la ventana principal del menú de inicio.
+        """
+        super().__init__()
+        self.setWindowTitle("Menu Inicio")
+        self.setFixedSize(400, 300)
+        self.fuenteHelvetica = QFont("Helvetica", 11)
+        
+        layout = QVBoxLayout()
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.setSpacing(25)
+        self.setLayout(layout)
+
+        self.child_window = None
+
+        # Definir colores pastel
+        color_fondo = "#F0F0F0"
+        color_boton_teas = "#A8D5E2"
+        color_boton_moke = "#F7CAC9"
+        color_boton_experimentos = "#FFDAC1"
+        color_boton_quit = "#FF6F61"
+
+        # Aplicar estilo general
+        self.setStyleSheet(f"""
+            background-color: {color_fondo};
+        """)
+        
+        lb_label = QLabel("Elija una opción:")
+        lb_label.setFont(self.fuenteHelvetica)
+        lb_label.setStyleSheet("color: #333333;")
+
+        btn_teas = QPushButton("Realizar Experimento TEAS TimeScan")
+        btn_teas.setFont(self.fuenteHelvetica)
+        btn_teas.setStyleSheet(f"""
+            background-color: {color_boton_teas};
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+        """)
+
+        btn_moke = QPushButton("Realizar Experimento MOKE Loop")
+        btn_moke.setFont(self.fuenteHelvetica)
+        btn_moke.setStyleSheet(f"""
+            background-color: {color_boton_moke};
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+        """)
+
+        btn_experimentos = QPushButton("Ver Experimentos Realizados")
+        btn_experimentos.setFont(self.fuenteHelvetica)
+        btn_experimentos.setStyleSheet(f"""
+            background-color: {color_boton_experimentos};
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+        """)
+
+        linea = QFrame()
+        linea.setFrameShape(QFrame.Shape.HLine)
+        linea.setStyleSheet("color: #CCCCCC;")
+
+        btn_quit = QPushButton("QUIT")
+        btn_quit.setFont(self.fuenteHelvetica)
+        btn_quit.setStyleSheet(f"""
+            background-color: {color_boton_quit};
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+        """)
+
+        layout.addWidget(lb_label)
+        layout.addWidget(btn_teas)
+        layout.addWidget(btn_moke)
+        layout.addWidget(btn_experimentos)
+        layout.addWidget(linea) 
+        layout.addWidget(btn_quit)
+
+        # Si se borra la ventana principal, se cierra la aplicación
+        btn_quit.clicked.connect(QApplication.instance().quit)
+
+        btn_teas.clicked.connect(lambda: self.open_child_window(teasMain.TeasWindow))
+        btn_moke.clicked.connect(lambda: self.open_child_window(mokeLoopMain.VistaPrincipal))
+        btn_experimentos.clicked.connect(lambda: self.open_child_window(vistaExperimentos.ExperimentosWindow))
+
+    def open_child_window(self, window_class):
+        """
+        Abre una nueva ventana secundaria.
+
+        Args:
+            window_class (QWidget): Clase de la ventana secundaria a abrir.
+        """
+        if self.child_window is not None:
+            self.child_window.close()
+        self.child_window = window_class()
+        self.child_window.show()
+
+Paso 2: Configurar Sphinx
+
+Instala Sphinx si no lo has hecho aún:
+
+sh
+
+pip install sphinx
+
+Crea un directorio docs dentro de tu proyecto y navega a él:
+
+sh
+
+mkdir docs
+cd docs
+
+Inicializa Sphinx en el directorio docs:
+
+sh
+
+sphinx-quickstart
+
+Sigue las instrucciones en pantalla para configurar Sphinx. Aquí hay algunas configuraciones recomendadas:
+
+    Separar build y source: Yes
+    Project name: MyProject
+    Author name(s): Your Name
+    Project release: 0.1
+    Create Makefile: Yes
+    Create Windows command file: Yes
+
+Paso 3: Configurar conf.py
+
+Abre el archivo docs/source/conf.py y edita las configuraciones necesarias. Asegúrate de agregar sphinx.ext.autodoc a la lista de extensiones:
+
+python
+
+# Añadir 'sphinx.ext.autodoc' a las extensiones
+extensions = [
+    'sphinx.ext.autodoc',
+]
+
+# Agregar el directorio del proyecto a sys.path
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../..'))
+
+Paso 4: Crear un Archivo RST para el Módulo
+
+Dentro del directorio docs/source, crea un archivo llamado my_module.rst con el siguiente contenido:
+
+rst
+
+my_module module
+================
+
+.. automodule:: my_module
+    :members:
+
+Paso 5: Editar index.rst
+
+Asegúrate de que index.rst incluya una referencia a my_module.rst. El archivo index.rst debería verse así:
+
+rst
+
+Welcome to MyProject's documentation!
+=====================================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   my_module
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+Paso 6: Generar la Documentación
+
+Regresa al directorio docs y genera la documentación en formato HTML:
+
+sh
+
+make html
+
+Esto generará la documentación en el directorio docs/build/html. Abre el archivo index.html en un navegador para ver la documentación generada.
+Resumen
+
+Has configurado un proyecto Python documentado usando docstrings y Sphinx. Ahora tienes una documentación técnica generada automáticamente, similar a Javadoc en Java. Puedes agregar más docstrings a tus clases y métodos, y regenerar la documentación cuando lo necesi
