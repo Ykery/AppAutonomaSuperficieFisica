@@ -13,7 +13,7 @@ from PyQt6.QtGui import QColor,  QPixmap, QIcon, QFont
 from PyQt6.QtWidgets import QMainWindow,  QWidget,  QToolBar,  QToolButton,  QHBoxLayout, QVBoxLayout,  QLabel,  QApplication, QInputDialog, QSplitter, QSizePolicy
 from PyQt6.QtPrintSupport import QPrintDialog, QPrinter
 from ..utilidades.utilidades import pedir_ruta_exportar_pdf, escribir_csv
-from .componentes.grafica import Plot
+from .componentes.grafica import Plot, Zoomer
 from PyQt6.QtWidgets import QMessageBox
 from ..modelo.clases import Marcador
  
@@ -262,14 +262,6 @@ finish_xpm = ["32 32 2 1",
               
 
 
-class Zoomer(Qwt.QwtPlotZoomer):
-    def __init__(self, xAxis, yAxis, canvas ):
-        Qwt.QwtPlotZoomer.__init__(self, xAxis, yAxis, canvas )
-        self.setTrackerMode( Qwt.QwtPicker.DisplayMode.AlwaysOff )
-        self.setRubberBand( Qwt.QwtPicker.RubberBand.NoRubberBand )
-        # Disable zoom out
-        self.setMousePattern( Qwt.QwtEventPattern.MousePatternCode.MouseSelect2, Qt.MouseButton.NoButton )
-        
 
 class TeasGraph( QWidget ):
     def __init__(self, id, load_results = False, *args):
@@ -305,11 +297,6 @@ class TeasGraph( QWidget ):
         self.setContextMenuPolicy( Qt.ContextMenuPolicy.NoContextMenu )
 
         self.d_zoomer = Zoomer( 2,0, self.d_plot.canvas() )
-        self.d_zoomer.setRubberBand( Qwt.QwtPicker.RubberBand.RectRubberBand )
-        self.d_zoomer.setRubberBandPen( QColor( Qt.GlobalColor.green ) )
-        self.d_zoomer.setTrackerMode( Qwt.QwtPicker.DisplayMode.ActiveOnly )
-        self.d_zoomer.setTrackerPen( QColor( Qt.GlobalColor.white ) )
-        self.d_zoomer.setZoomBase( True )
 
         self.d_panner = Qwt.QwtPlotPanner( self.d_plot.canvas() )
         self.d_panner.setMouseButton( Qt.MouseButton.MiddleButton )
