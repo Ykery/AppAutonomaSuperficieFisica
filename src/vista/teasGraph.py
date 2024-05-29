@@ -265,7 +265,7 @@ finish_xpm = ["32 32 2 1",
 
 class TeasGraph( QWidget ):
     def __init__(self, id, load_results = False, *args):
-        QMainWindow.__init__(self, *args) 
+        QWidget.__init__(self, *args) 
         self.layout = QVBoxLayout(self)
         self.layout.setSpacing( 0 )
         self.layout.setContentsMargins( 0, 0, 0, 0 )
