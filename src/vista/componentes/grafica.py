@@ -51,3 +51,18 @@ class Plot( Qwt.QwtPlot):
         self.d_curve1.setSamples(x, y)
         # Cambiar el eje x para que sea logaritmico y empezar en 0
         # self.d_curve2.setSamples( time, phase)
+
+
+class Zoomer(Qwt.QwtPlotZoomer):
+    def __init__(self, xAxis, yAxis, canvas ):
+        Qwt.QwtPlotZoomer.__init__(self, xAxis, yAxis, canvas )
+        self.setTrackerMode( Qwt.QwtPicker.DisplayMode.AlwaysOff )
+        self.setRubberBand( Qwt.QwtPicker.RubberBand.NoRubberBand )
+        # Disable zoom out
+        self.setMousePattern( Qwt.QwtEventPattern.MousePatternCode.MouseSelect2, Qt.MouseButton.NoButton )
+        self.setRubberBand( Qwt.QwtPicker.RubberBand.RectRubberBand )
+        self.setRubberBandPen( QColor( Qt.GlobalColor.green ) )
+        self.setTrackerMode( Qwt.QwtPicker.DisplayMode.ActiveOnly )
+        self.setTrackerPen( QColor( Qt.GlobalColor.white ) )
+        self.setZoomBase( True )
+        
