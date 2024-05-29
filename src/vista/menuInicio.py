@@ -22,13 +22,23 @@ class MenuInicio(QWidget):
         super().__init__()
         self.setWindowTitle("Menu Inicio")
         self.fuenteHelvetica = QFont("Helvetica", 11)
+        self.setStyleSheet("background-color: rgb(176, 213, 212);" "color: black;") # Estilo de la ventana
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.setSpacing(25)
+        layout.setContentsMargins(30, 30, 30, 30)
+        
         self.setLayout(layout)
 
         self.child_window = None
-
+        self.lb_hora_actual= QLCDNumber()
+        self.lb_hora_actual.setFixedSize(100, 50)
+        self.lb_hora_actual.setDigitCount(5)
+        self.lb_hora_actual.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
+        self.lb_hora_actual.setStyleSheet(" color: black")
+        self.lb_dia_actual = QLabel("")
+        self.lb_dia_actual.setFont(self.fuenteHelvetica)
+        self.lb_dia_actual.setStyleSheet(" color: black")
         lb_label = QLabel("Elija una opción:")
         btn_teas = QPushButton("Realizar Experimento TEAS TimeScan")
         btn_moke = QPushButton("Realizar Experimento MOKE Loop")
