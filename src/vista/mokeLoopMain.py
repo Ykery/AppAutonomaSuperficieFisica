@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import *
 from PyQt6 import Qwt
 from ..modelo.clases import Conexion, Experimento, ConfiguracionMoke
 from ..modelo.dao import ExperimentoDAO, ConfiguracionMokeDAO
+from .mokeGraph import MokeGraph
 import random   
 
 
@@ -531,6 +532,7 @@ class VistaPrincipal(QWidget):
             self.experimento = ExperimentoDAO.crear(self.experimento)
             self.configuracion.id_experimento = self.experimento.id
             ConfiguracionMokeDAO.crear(self.configuracion)
+            self.abrir_pantalla_grafica()
 
 
     def cargar_configuracion(self, id_experimento):
@@ -560,6 +562,11 @@ class VistaPrincipal(QWidget):
         self.cb_geometry.setCurrentText(configuracion_cargada.geometry)
         self.slider_samplingRate.setValue(configuracion_cargada.dac_sampling_rate)
 
+
+    def abrir_pantalla_grafica(self):
+        self.hide()
+        self.grafica = MokeGraph(self.experimento.id)
+        self.grafica.show()
 
 def main():
     Conexion.iniciar_bbdd()
