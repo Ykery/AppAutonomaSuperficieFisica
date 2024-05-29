@@ -18,7 +18,7 @@ import random
 class Display_LCD_modificado(QLCDNumber):
     def __init__(self, initial_value=0, digit_count = None):
         super().__init__()
-        self.setStyleSheet("background-color: white; color: black;")
+        self.setStyleSheet("background-color: rgb(200, 255, 255); color: black;")
         if digit_count:
             self.setDigitCount(digit_count)
         self.setSmallDecimalPoint(True)
@@ -26,6 +26,12 @@ class Display_LCD_modificado(QLCDNumber):
         self.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
         # Dar un tamaño
         self.setFixedSize(100, 50)
+class QComboBox_modificado(QComboBox):
+    def __init__(self):
+        super().__init__()
+        self.setStyleSheet("background-color: rgb(200, 255, 255); color: black;")
+        self.insertItems(0, [" -- Select -- "])
+        self.setCurrentIndex(0)
 
 class Thermometer_modificado(Qwt.QwtThermo):
     def __init__(self):
@@ -56,7 +62,7 @@ class VistaPrincipal(QWidget):
         super().__init__()
         self.configuracion = ConfiguracionMoke()
         self.experimento = Experimento()
-
+        self.setStyleSheet("background-color: rgb(176, 213, 212); color: black;")
         self.setWindowTitle("MOKE LOOP")
         #self.setContentsMargins(5, 5, 5, 5)
 
@@ -106,37 +112,37 @@ class VistaPrincipal(QWidget):
         gb_MokeDACBox.setChecked(False)
 
         #Input
-        self.cb_moke_intensity = QComboBox()
+        self.cb_moke_intensity = QComboBox_modificado()
         self.cb_moke_intensity.insertItems(0, self.mokeChannelsDAC)
         self.cb_moke_intensity.setCurrentIndex(0)
         self.cb_moke_intensity.currentTextChanged.connect(lambda texto: self.manejar_cb_moke_intensity(texto))
         #Input
-        self.cb_moke_dc_level = QComboBox()
+        self.cb_moke_dc_level = QComboBox_modificado()
         self.cb_moke_dc_level.insertItems(0, self.mokeChannelsDAC)
         self.cb_moke_dc_level.setCurrentIndex(0)
         self.cb_moke_dc_level.currentTextChanged.connect(lambda texto: self.manejar_cb_moke_dc_level(texto))
 
-        self.cb_moke_voltage_range = QComboBox()
+        self.cb_moke_voltage_range = QComboBox_modificado()
         self.cb_moke_voltage_range.insertItems(0,self.mokeVRange)
         self.cb_moke_voltage_range.setCurrentIndex(0)
         self.cb_moke_voltage_range.currentTextChanged.connect(self.manejar_cb_moke_volage_range)
 
-        self.cb_dc_level_voltage_range= QComboBox()
+        self.cb_dc_level_voltage_range= QComboBox_modificado()
         self.cb_dc_level_voltage_range.insertItems(0,self.mokeVRange)
         self.cb_dc_level_voltage_range.setCurrentIndex(0)
         self.cb_dc_level_voltage_range.currentTextChanged.connect(self.manejar_cb_dc_level_voltage_range)
         #Input
-        self.cb_temperature = QComboBox()
+        self.cb_temperature = QComboBox_modificado()
         self.cb_temperature.insertItems(0,self.mokeChannelsDAC)
         self.cb_temperature.setCurrentIndex(0)
         self.cb_temperature.currentTextChanged.connect(lambda texto: self.manejar_cb_temperature(texto))
         
-        self.cb_tempVrange = QComboBox()
+        self.cb_tempVrange = QComboBox_modificado()
         self.cb_tempVrange.insertItems(0,self.mokeLockinSensVals)
         self.cb_tempVrange.setCurrentIndex(0)
         self.cb_tempVrange.currentTextChanged.connect(self.manejar_cb_tempVrange)
 
-        self.cb_timeFieldDriving = QComboBox()
+        self.cb_timeFieldDriving = QComboBox_modificado()
         self.cb_timeFieldDriving.insertItems(0,self.mokeLockinTimeConsVals)
         self.cb_timeFieldDriving.setCurrentIndex(0)
         self.cb_timeFieldDriving.currentTextChanged.connect(self.manejar_cb_timeFieldDriving)
@@ -203,13 +209,13 @@ class VistaPrincipal(QWidget):
         gb_lock_in_box.setChecked(False)
 
         lb_sensitivity = QLabel("Sensitivity (/div)")
-        self.cb_sensitivity = QComboBox()
+        self.cb_sensitivity = QComboBox_modificado()
         self.cb_sensitivity.insertItems(0, self.mokeVRange)
         self.cb_sensitivity.setCurrentIndex(0)
         self.cb_sensitivity.currentTextChanged.connect(self.manejar_cb_sensitivity)
 
         lb_time = QLabel("Time Constant")
-        self.cb_time = QComboBox()
+        self.cb_time = QComboBox_modificado()
         self.cb_time.insertItems(0, self.mokeLockinTimeConsVals)
         self.cb_time.setCurrentIndex(0)
         self.cb_time.currentTextChanged.connect(self.manejar_cb_time_constant)
@@ -323,7 +329,7 @@ class VistaPrincipal(QWidget):
 
         gb_moke_geomery = QGroupBox("Moke geometry")
 
-        self.cb_geometry = QComboBox()
+        self.cb_geometry = QComboBox_modificado()
         self.cb_geometry.insertItems(0, self.mokeVRange)
         self.cb_geometry.setCurrentIndex(0)
         self.cb_geometry.currentTextChanged.connect(self.manejar_geometry)
