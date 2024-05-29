@@ -13,7 +13,8 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6 import Qwt
 from PyQt6.Qwt import *
-
+import time
+from datetime import date
 
 
 class MenuInicio(QWidget):
@@ -44,6 +45,8 @@ class MenuInicio(QWidget):
         btn_experimentos.setFont(self.fuenteHelvetica)
         btn_quit.setFont(self.fuenteHelvetica)
 
+        layout.addWidget(self.lb_dia_actual)
+        layout.addWidget(self.lb_hora_actual)
         layout.addWidget(lb_label)
         layout.addWidget(btn_teas)
         layout.addWidget(btn_moke)
@@ -51,6 +54,8 @@ class MenuInicio(QWidget):
         layout.addWidget(linea) 
         layout.addWidget(btn_quit)
 
+        self.actualizar_hora()
+        self.get_dia()
         # Si se borra la ventana principal, se cierra la aplicación
         btn_quit.clicked.connect(QApplication.instance().quit)
 
@@ -70,6 +75,17 @@ class MenuInicio(QWidget):
         new_window.show()
         print(self.child_window)
 
+    def actualizar_hora(self):
+        hora = time.strftime("%H:%M:%S")
+        self.lb_hora_actual.display(hora)
+
+        QTimer.singleShot(200, self.actualizar_hora)
+
+    def get_dia(self):
+        hoy = date.today()
+        d1 = hoy.strftime("%d/%m/%Y")
+        self.lb_dia_actual.setText(d1)
+    
 
 def main():
     app = QApplication(sys.argv)
