@@ -512,6 +512,7 @@ class TeasGraph( QWidget ):
             self.paused = True
             self.mostrar_btn_pause()
             self.btnPause.setEnabled(False)
+            self.btnMark.setEnabled(False)
 
 
     def closeEvent(self, event):
