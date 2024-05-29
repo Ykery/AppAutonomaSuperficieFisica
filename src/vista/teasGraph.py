@@ -515,9 +515,12 @@ class TeasGraph( QWidget ):
 
 
     def closeEvent(self, event):
+        if self.load_results:
+            event.accept()
+            return
         reply = QMessageBox.warning(self, 'Warning', "¿Estás seguro que deseas salir y terminar el experimento?", 
-                                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
-                                 QMessageBox.StandardButton.No)
+                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, 
+                                QMessageBox.StandardButton.No)
 
         if reply == QMessageBox.StandardButton.Yes:
             event.accept()
