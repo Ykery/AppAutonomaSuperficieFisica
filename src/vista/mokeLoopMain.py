@@ -35,7 +35,19 @@ class Thermometer_modificado(Qwt.QwtThermo):
         colorMap.setColorInterval(Qt.GlobalColor.green, Qt.GlobalColor.red)
         self.setColorMap(colorMap)
         self.setAlarmBrush( Qt.GlobalColor.red)
-        self.setAlarmLevel(80) 
+        self.setAlarmLevel(80)
+        self.valor_inicial=random.randint(0, 100)
+
+        self.setValue(Thermometer_modificado.numero_flutuante(self.valor_inicial,4))
+        self.temporizador=QTimer() 
+        self.temporizador.timeout.connect(lambda: self.setValue(Thermometer_modificado.numero_flutuante(self.valor_inicial,5)))
+        self.temporizador.start(50)
+
+    def numero_flutuante(numero,numero2):
+        x=random.uniform(-numero2,numero2) + numero
+        x_redondeado = round(x, 2)
+        return x_redondeado
+        
 
 
 class VistaPrincipal(QWidget):
@@ -290,7 +302,6 @@ class VistaPrincipal(QWidget):
         gb_lock_in = QGroupBox("Current lock-in signal level")
 
         thermo_lock_in = Thermometer_modificado()
-        thermo_lock_in.setValue(random.randint(0, 100))
 
         layout.addWidget(thermo_lock_in)
         gb_lock_in.setLayout(layout)
