@@ -305,7 +305,8 @@ class ExperimentosWindow(QWidget):
             pass
     
     def abrir_nueva_ventana(self, nueva_ventana):
-        nueva_ventana.show()
+        self.nuevaVentana = nueva_ventana
+        self.nuevaVentana.show()
         self.close()
 
 
