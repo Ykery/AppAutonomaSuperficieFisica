@@ -404,6 +404,11 @@ class TeasGraph( QWidget ):
 
     def pause(self):
         self.paused = not self.paused
+        marcador = Marcador()
+        marcador.eje_x_id = self.datax[-1]
+        marcador.id_experimento = self.experimento.id
+        marcador.descripcion = "Paused" if self.paused else "Resumed"
+        MarcadorDAO.crear(marcador)
         self.mostrar_btn_pause()
         
     def mostrar_btn_pause(self):
