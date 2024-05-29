@@ -12,8 +12,8 @@ from threading import Thread
 from ..utilidades.utilidades import pedir_ruta_exportar_pdf
 from . import teasMain
 from . import mokeLoopMain
-from src.vista.mokeLoopMain import VistaPrincipal
-from src.vista.menuInicio import MenuInicio, teasGraph
+from ..vista.mokeLoopMain import VistaPrincipal
+from ..vista import teasGraph
 
 class ExperimentosWindow(QWidget):
     
