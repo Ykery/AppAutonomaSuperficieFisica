@@ -295,10 +295,11 @@ class ExperimentosWindow(QWidget):
     def visualizar_resultados(self):
         # Preguntar la ruta donde guardar el pdf
         if not self.verificar_experimento_seleccionado():
-            return   
-        if ExperimentoDAO.obtener_por_id(self.experimento_seleccionado).tipo.lower() == "teas":
+            return  
+        experimento = ExperimentoDAO.obtener_por_id(self.experimento_seleccionado)
+        if experimento.tipo.lower() == "teas":
             self.abrir_nueva_ventana(teasGraph.TeasGraph(self.experimento_seleccionado, True))
-        elif ExperimentoDAO.obtener_por_id(self.experimento_seleccionado).tipo.lower() == "moke":
+        elif experimento.tipo.lower() == "moke":
             # NOT IMPLEMENTED
             # self.abrir_nueva_ventana(mokeGraph.MokeGraph(self.experimento_seleccionado, True))
             pass
