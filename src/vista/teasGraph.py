@@ -278,6 +278,7 @@ class TeasGraph( QWidget ):
         self.layout.setSpacing( 0 )
         self.layout.setContentsMargins( 0, 0, 0, 0 )
         self.experimento = ExperimentoDAO.obtener_por_id(id)
+        self.finished = False
         if self.experimento is None:
             raise ValueError("El experimento con id " + str(id) + " no existe") 
         self.load_results = load_results
@@ -364,12 +365,12 @@ class TeasGraph( QWidget ):
         self.toolBar.addWidget( self.btnExport )        
         self.btnExport.clicked.connect(self.exportDocument)
 
-        self.btnExport = QToolButton( self.toolBar )
-        self.btnExport.setText( "FInish" )
-        self.btnExport.setIcon( QIcon(QPixmap( finish_xpm ) ) )
-        self.btnExport.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
-        self.toolBar.addWidget( self.btnExport )        
-        self.btnExport.clicked.connect(self.finish_experiment)
+        self.btnFinish = QToolButton( self.toolBar )
+        self.btnFinish.setText( "FInish" )
+        self.btnFinish.setIcon( QIcon(QPixmap( finish_xpm ) ) )
+        self.btnFinish.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
+        self.toolBar.addWidget( self.btnFinish )        
+        self.btnFinish.clicked.connect(self.finish_experiment)
 
         self.toolBar.addSeparator()
         
@@ -409,6 +410,7 @@ class TeasGraph( QWidget ):
         self.btnMark.setEnabled(False)
         self.btnFinish.setEnabled(False)
         self.lb_estado.setText("Finished")
+        self.finished = True
 
 
     def pause(self):
@@ -581,7 +583,7 @@ class TeasGraph( QWidget ):
 
 
     def closeEvent(self, event):
-        if self.load_results:
+        if self.load_results or self.finished:
             event.accept()
             return
         reply = QMessageBox.warning(self, 'Warning', "¿Estás seguro que deseas salir y terminar el experimento?", 
