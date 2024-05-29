@@ -138,8 +138,10 @@ class TeasWindow(QWidget):
             self.configuracion.aml_emission_current == None or \
             self.configuracion.lock_sensitivity == None or\
             self.configuracion.lock_time_constant == None or \
-            self.configuracion.integration_time == None or \
             self.configuracion.channeltron_voltage == None:
+            #self.configuracion.integration_time == None or \
+            #self.configuracion.dac_sampling_rate == None or \
+
             return False
         return True    
     

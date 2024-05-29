@@ -84,7 +84,7 @@ class ConfiguracionTeas(Base):
     dac_teas_voltaje_range = Column(String(45), nullable=False)
     dac_input_temperature = Column(String(45), nullable=False)
     dac_temperature_voltaje_range = Column(String(45), nullable=False)
-    dac_sampling_rate = Column(DECIMAL(precision=10, scale=2), nullable=False)
+    dac_sampling_rate = Column(DECIMAL(precision=10, scale=2), nullable=False, default=0)
     aml_input_pressure = Column(String(45), nullable=False)
     aml_voltage_range = Column(String(45), nullable=False)
     aml_sensitivity = Column(String(45), nullable=False)
@@ -93,7 +93,7 @@ class ConfiguracionTeas(Base):
     #configuracion_teascol = Column(String(45), nullable=False)
     lock_sensitivity = Column(String(45), nullable=False)
     lock_time_constant = Column(String(45), nullable=False)
-    integration_time = Column(DECIMAL(precision=10, scale=2), nullable=False)
+    integration_time = Column(DECIMAL(precision=10, scale=2), nullable=False, default=0)
     channeltron_voltage = Column(String(45), nullable=False)
     #description = Column(String(45), nullable=False)
     
