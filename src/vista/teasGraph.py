@@ -474,10 +474,7 @@ class TeasGraph( QWidget ):
         self.d_zoomer.zoom( 0 )
 
     def recargar_grafica(self):
-        # Remove layout and create a new one
         self.d_plot.deleteLater()
-        self.toolBar.deleteLater()
-        self.bottom_bar.deleteLater()
         self.setLayout(QVBoxLayout(self))      
         self.layout.setSpacing( 0 )
         self.layout.setContentsMargins( 0, 0, 0, 0 )
@@ -489,11 +486,6 @@ class TeasGraph( QWidget ):
         self.setContextMenuPolicy( Qt.ContextMenuPolicy.NoContextMenu )
 
         self.d_zoomer = Zoomer( 2,0, self.d_plot.canvas() )
-        self.d_zoomer.setRubberBand( Qwt.QwtPicker.RubberBand.RectRubberBand )
-        self.d_zoomer.setRubberBandPen( QColor( Qt.GlobalColor.green ) )
-        self.d_zoomer.setTrackerMode( Qwt.QwtPicker.DisplayMode.ActiveOnly )
-        self.d_zoomer.setTrackerPen( QColor( Qt.GlobalColor.white ) )
-        self.d_zoomer.setZoomBase( True )
 
         self.d_panner = Qwt.QwtPlotPanner( self.d_plot.canvas() )
         self.d_panner.setMouseButton( Qt.MouseButton.MiddleButton )
@@ -504,54 +496,6 @@ class TeasGraph( QWidget ):
         self.d_picker.setRubberBandPen( QColor( Qt.GlobalColor.green ) )
         self.d_picker.setRubberBand( Qwt.QwtPicker.RubberBand.CrossRubberBand )
         self.d_picker.setTrackerPen( QColor( Qt.GlobalColor.white ) )
-
-        self.toolBar = QToolBar( self )
-        
-        self.btnPause = QToolButton( self.toolBar )
-        self.btnPause.setText( "Pause" )
-        self.btnPause.setIcon( QIcon(QPixmap( pause_xpm ) ))
-        self.btnPause.setCheckable( True )
-        self.btnPause.setMinimumWidth( 60 )
-        self.btnPause.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
-        self.toolBar.addWidget( self.btnPause )
-        self.btnPause.toggled.connect(self.pause)
-        self.mostrar_btn_pause()
-        
-        self.btnZoom = QToolButton( self.toolBar )
-        self.btnZoom.setText( "Zoom" )
-        self.btnZoom.setIcon( QIcon(QPixmap( zoom_xpm ) ))
-        self.btnZoom.setCheckable( True )
-        self.btnZoom.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
-        self.toolBar.addWidget( self.btnZoom )
-        
-        self.btnZoom.toggled.connect(self.enableZoomMode)
-
-        self.btnPrint = QToolButton( self.toolBar )
-        self.btnPrint.setText( "Print" )
-        self.btnPrint.setIcon( QIcon(QPixmap( print_xpm ) ) )
-        self.btnPrint.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
-        self.toolBar.addWidget( self.btnPrint )        
-        self.btnPrint.clicked.connect(self.mprint)
-
-        self.btnExport = QToolButton( self.toolBar )
-        self.btnExport.setText( "Export" )
-        self.btnExport.setIcon( QIcon(QPixmap( print_xpm ) ) )
-        self.btnExport.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
-        self.toolBar.addWidget( self.btnExport )        
-        self.btnExport.clicked.connect(self.exportDocument)
-
-        self.toolBar.addSeparator()
-
-        self.bottom_bar = QWidget( self )
-        bottom_bar_layout = QHBoxLayout()
-        bottom_bar_layout.setDirection( QHBoxLayout.Direction.LeftToRight )
-        bottom_bar_layout.addWidget( QLabel("Time: "))
-        bottom_bar_layout.addWidget( QSplitter() )
-        self.datapoints_number = QLabel("Number of datapoints: 0")
-        bottom_bar_layout.addWidget( self.datapoints_number )
-        bottom_bar_layout.addWidget( QSplitter() )
-        bottom_bar_layout.addWidget( QLabel(self.experimento.rutaCsv))
-        self.bottom_bar.setLayout(bottom_bar_layout)
 
         self.layout.addWidget( self.toolBar )
         self.layout.addWidget( self.d_plot )
