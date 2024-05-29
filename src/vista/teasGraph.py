@@ -9,8 +9,8 @@ from ..modelo.dao import ResultadoTeasDAO, ExperimentoDAO, MarcadorDAO
 from ..modelo.clases import ResultadoTeas
 from datetime import datetime
 from PyQt6.QtCore import Qt,  QSize, QTimer
-from PyQt6.QtGui import QColor,  QPixmap, QIcon
-from PyQt6.QtWidgets import QMainWindow,  QWidget,  QToolBar,  QToolButton,  QHBoxLayout, QVBoxLayout,  QLabel,  QApplication, QInputDialog, QSplitter
+from PyQt6.QtGui import QColor,  QPixmap, QIcon, QFont
+from PyQt6.QtWidgets import QMainWindow,  QWidget,  QToolBar,  QToolButton,  QHBoxLayout, QVBoxLayout,  QLabel,  QApplication, QInputDialog, QSplitter, QSizePolicy
 from PyQt6.QtPrintSupport import QPrintDialog, QPrinter
 from ..utilidades.utilidades import pedir_ruta_exportar_pdf, escribir_csv
 from .componentes.grafica import Plot
@@ -372,6 +372,13 @@ class TeasGraph( QWidget ):
         self.btnExport.clicked.connect(self.finish_experiment)
 
         self.toolBar.addSeparator()
+        
+        self.lb_estado = QLabel("Paused" if self.paused else "Running")
+        self.lb_estado.setAlignment( Qt.AlignmentFlag.AlignCenter)
+        self.lb_estado.setFont( QFont("Helvetica", 14) )
+        self.lb_estado.setMinimumWidth( 100 )
+        self.lb_estado.setSizePolicy( QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Minimum )
+        self.toolBar.addWidget( self.lb_estado )
 
         self.bottom_bar = QWidget( self )
         bottom_bar_layout = QHBoxLayout()
@@ -400,6 +407,8 @@ class TeasGraph( QWidget ):
         self.timer.stop()
         self.btnPause.setEnabled(False)
         self.btnMark.setEnabled(False)
+        self.btnFinish.setEnabled(False)
+        self.lb_estado.setText("Finished")
 
 
     def pause(self):
@@ -409,6 +418,8 @@ class TeasGraph( QWidget ):
         marcador.id_experimento = self.experimento.id
         marcador.descripcion = "Paused" if self.paused else "Resumed"
         MarcadorDAO.crear(marcador)
+        self.lb_estado.setText("Paused" if self.paused else "Running")
+        
         self.mostrar_btn_pause()
         
     def mostrar_btn_pause(self):
