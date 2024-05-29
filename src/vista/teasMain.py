@@ -10,7 +10,7 @@ from PyQt6.Qwt import *
 
 from ..modelo.dao import *
 from ..modelo.clases import *
-from .mokeLoopMain import Display_LCD_modificado, Thermometer_modificado
+from .mokeLoopMain import Display_LCD_modificado, Thermometer_modificado,QComboBox_modificado 
 from .teasGraph import TeasGraph
 import random
 
@@ -19,6 +19,8 @@ class TeasWindow(QWidget):
     
     def __init__(self,id_experimento= None):
         super().__init__()
+        self.setStyleSheet("background-color: rgb(176, 213, 212); color: black;")
+
         #Se crea el objeto 'configuracion' vacío y el objeto 'experimento' vacío de la clase ConfiguracionTeas y Experimento
         self.configuracion = ConfiguracionTeas()
         self.experimento = Experimento()
@@ -157,8 +159,8 @@ class TeasWindow(QWidget):
         lb_sensLabel = QLabel("Sensitivity (/div)")
         lb_timeConsLabel = QLabel("Time constant")
 
-        self.cb_lockinTimeCons = QComboBox()
-        self.cb_lockinSens = QComboBox()
+        self.cb_lockinTimeCons = QComboBox_modificado()
+        self.cb_lockinSens = QComboBox_modificado()
 
         self.cb_lockinTimeCons.insertItems(0, self.scanLockinSensVals)
         self.cb_lockinTimeCons.setCurrentIndex(0)
@@ -193,10 +195,10 @@ class TeasWindow(QWidget):
         #font.setBold(True)
         gb_teasDACbox.setFont(self.fuenteHelvetica)
 
-        self.cb_teasVrange = QComboBox()
-        self.cb_tempVrange = QComboBox()
-        self.cb_teas = QComboBox()
-        self.cb_temperature = QComboBox()
+        self.cb_teasVrange = QComboBox_modificado()
+        self.cb_tempVrange = QComboBox_modificado()
+        self.cb_teas = QComboBox_modificado()
+        self.cb_temperature = QComboBox_modificado()
         
 
         lb_teasLabel = QLabel("TEAS intensity:")
@@ -300,9 +302,9 @@ class TeasWindow(QWidget):
         scanEmission_layout.addWidget(self.rb_scanEmission_2, 3, 0, Qt.AlignmentFlag.AlignCenter)
 
 
-        self.cb_scanAMLGaugeVrangeComboBox = QComboBox()
-        self.cb_scanAMLGaugeDACcomboBox = QComboBox()
-        self.cb_scanAMLUnitsComboBox = QComboBox()
+        self.cb_scanAMLGaugeVrangeComboBox = QComboBox_modificado()
+        self.cb_scanAMLGaugeDACcomboBox = QComboBox_modificado()
+        self.cb_scanAMLUnitsComboBox = QComboBox_modificado()
 
         self.cb_scanAMLGaugeDACcomboBox.insertItems(0, self.scanChannelsDAC)
         self.cb_scanAMLGaugeDACcomboBox.setCurrentIndex(0)
