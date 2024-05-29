@@ -224,7 +224,42 @@ zoom_xpm = ["32 32 8 1",
     "...#dddddddddddddddddddddd##eda#",
     "...#aaaaaaaaaaaaaaaaaaaaaa#.####",
     "...########################..##."]
-
+finish_xpm = ["32 32 2 1",
+"  c None",
+". c red",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"    ........................    ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                "]
+              
 
 
 class Zoomer(Qwt.QwtPlotZoomer):
@@ -329,6 +364,13 @@ class TeasGraph( QWidget ):
         self.toolBar.addWidget( self.btnExport )        
         self.btnExport.clicked.connect(self.exportDocument)
 
+        self.btnExport = QToolButton( self.toolBar )
+        self.btnExport.setText( "FInish" )
+        self.btnExport.setIcon( QIcon(QPixmap( finish_xpm ) ) )
+        self.btnExport.setToolButtonStyle( Qt.ToolButtonStyle.ToolButtonTextUnderIcon )
+        self.toolBar.addWidget( self.btnExport )        
+        self.btnExport.clicked.connect(self.finish_experiment)
+
         self.toolBar.addSeparator()
 
         self.bottom_bar = QWidget( self )
@@ -353,6 +395,12 @@ class TeasGraph( QWidget ):
             self.btnPause.setEnabled(False)
             self.btnMark.setEnabled(False)
             self.actualizarDatos()
+
+    def finish_experiment(self):
+        self.timer.stop()
+        self.btnPause.setEnabled(False)
+        self.btnMark.setEnabled(False)
+
 
     def pause(self):
         self.paused = not self.paused
