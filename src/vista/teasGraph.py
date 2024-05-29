@@ -432,7 +432,7 @@ class TeasGraph( QWidget ):
 
 
     def actualizarDatos(self):
-        if not self.load_results and not self.paused:
+        if not self.load_results:
             self.datay.append(np.random.rand(1000)[0])
             self.datax.append(self.datax[-1]+1)
             # Persistir los datos
