@@ -40,8 +40,6 @@ class ExperimentosWindow(QWidget):
 
     def volver(self):   
         self.close()
-        menu_inicio = MenuInicio()
-        menu_inicio.show()
 
     def cerrar_ventana(self):
         self.close()
