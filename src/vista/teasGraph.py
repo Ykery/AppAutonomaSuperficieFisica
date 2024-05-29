@@ -290,7 +290,7 @@ class TeasGraph( QWidget ):
             self.timer.timeout.connect(self.actualizarDatos)
             self.timer.start(100)
         
-        self.d_plot = Plot( self )
+        self.d_plot = Plot("TEAS Timescan", "Time[sec]", "Intensity [arb. un.]", self )
         
         margin = 5;
         self.d_plot.setContentsMargins( margin, margin, margin, 0 )
@@ -482,7 +482,7 @@ class TeasGraph( QWidget ):
         self.layout.setSpacing( 0 )
         self.layout.setContentsMargins( 0, 0, 0, 0 )
         
-        self.d_plot = Plot( self )
+        self.d_plot = Plot("TEAS Timescan", "Time[sec]", "Intensity [arb. un.]", self )
         margin = 5
         self.d_plot.setContentsMargins( margin, margin, margin, 0 )
         

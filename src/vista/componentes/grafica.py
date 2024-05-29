@@ -3,10 +3,10 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
 class Plot( Qwt.QwtPlot):
-    def __init__(self, parent=None, color = QColor( "MidnightBlue" )):
+    def __init__(self, title, asis_x_title, axis_y_title, parent=None, color = QColor( "MidnightBlue" )):
         Qwt.QwtPlot.__init__(self, parent)
         self.setAutoReplot( False )
-        self.setTitle( "TEAS Timescan" )
+        self.setTitle( title )
         canvas = Qwt.QwtPlotCanvas()
         canvas.setBorderRadius( 10 )
         self.setCanvas( canvas )
@@ -23,8 +23,8 @@ class Plot( Qwt.QwtPlot):
         self.grid.attach( self )
 
         # axes
-        self.setAxisTitle( Qwt.QwtPlot.Axis.xBottom, "Time [sec]" )
-        self.setAxisTitle( Qwt.QwtPlot.Axis.yLeft, "Intensity [arb. un.]" )
+        self.setAxisTitle( Qwt.QwtPlot.Axis.xBottom, asis_x_title )
+        self.setAxisTitle( Qwt.QwtPlot.Axis.yLeft, axis_y_title )
 
         self.setAxisMaxMajor( Qwt.QwtPlot.Axis.xBottom, 6 )
         self.setAxisMaxMinor( Qwt.QwtPlot.Axis.xBottom, 9 )
