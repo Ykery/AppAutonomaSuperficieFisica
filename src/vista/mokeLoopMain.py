@@ -42,7 +42,7 @@ class Thermometer_modificado(Qwt.QwtThermo):
         self.setValue(Thermometer_modificado.numero_flutuante(self.valor_inicial,4))
         self.temporizador=QTimer() 
         self.temporizador.timeout.connect(lambda: self.setValue(Thermometer_modificado.numero_flutuante(self.valor_inicial,5)))
-        self.temporizador.start(50)
+        self.temporizador.start(60)
 
     def numero_flutuante(numero,numero2):
         x=random.uniform(-numero2,numero2) + numero
