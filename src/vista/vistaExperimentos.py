@@ -14,6 +14,8 @@ from . import teasMain
 from . import mokeLoopMain
 from ..vista.mokeLoopMain import VistaPrincipal
 from ..vista import teasGraph
+from .componentes.boton import boton_modificado_run, boton_modificado_exit
+
 
 class ExperimentosWindow(QWidget):
     
