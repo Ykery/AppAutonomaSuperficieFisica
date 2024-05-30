@@ -40,8 +40,8 @@ class VistaPrincipal(QWidget):
 
         self.setLayout(self.main_layout)
 
-        btn_run = QPushButton("Run")
-        btn_close = QPushButton("Close")
+        btn_run = boton_modificado_run("Run")
+        btn_close = boton_modificado_exit("Close")
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(btn_close)
         buttons_layout.addWidget(btn_run)
@@ -326,7 +326,7 @@ class VistaPrincipal(QWidget):
         gb_datafile_selection = QGroupBox("Datafile selection")
 
         self.le_datafile = QLineEdit()
-        btn_browse_button = QPushButton("Browse")
+        btn_browse_button = boton_modificado("Browse")
 
         layout.addWidget(self.le_datafile)
         layout.addWidget(btn_browse_button)
