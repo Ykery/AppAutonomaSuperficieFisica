@@ -33,7 +33,7 @@ class MenuInicio(QWidget):
         self.child_window = None
         self.lb_hora_actual= QLCDNumber()
         self.lb_hora_actual.setFixedSize(100, 50)
-        self.lb_hora_actual.setDigitCount(5)
+        self.lb_hora_actual.setDigitCount(8)
         self.lb_hora_actual.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
         self.lb_hora_actual.setStyleSheet(" color: black")
         self.lb_dia_actual = QLabel("")
