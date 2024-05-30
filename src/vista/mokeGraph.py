@@ -390,6 +390,7 @@ class MokeGraph( QWidget ):
             self.mostrar_btn_pause()
             self.btnPause.setEnabled(False)
             self.btnMark.setEnabled(False)
+            self.btnFinish.setEnabled(False)
             self.actualizarDatos()
 
     def finish_experiment(self):
