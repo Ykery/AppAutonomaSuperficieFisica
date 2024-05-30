@@ -391,6 +391,7 @@ class MokeGraph( QWidget ):
             self.btnPause.setEnabled(False)
             self.btnMark.setEnabled(False)
             self.btnFinish.setEnabled(False)
+            self.lb_estado.setText("Visualizyng results")
             self.actualizarDatos()
 
     def finish_experiment(self):
