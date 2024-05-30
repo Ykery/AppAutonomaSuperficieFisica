@@ -47,10 +47,8 @@ class TeasWindow(QWidget):
 
         self.setLayout(self.main_layout)
 
-        btn_run = QPushButton("Run")
-        btn_run.setFont(self.fuenteHelvetica)
-        btn_close = QPushButton("Close")
-        btn_close.setFont(self.fuenteHelvetica)
+        btn_run = boton_modificado_run("Run")
+        btn_close = boton_modificado_exit("Close")
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(btn_close)
         buttons_layout.addWidget(btn_run)
@@ -432,7 +430,7 @@ class TeasWindow(QWidget):
 
         self.le_fileLineEdit = QLineEdit()
         self.le_fileLineEdit.setFont(QFont("Helvetica", 9))
-        btn_browseButton = QPushButton("Browse")
+        btn_browseButton = boton_modificado("Browse")
 
         layout.addWidget(self.le_fileLineEdit)
         layout.addWidget(btn_browseButton)
