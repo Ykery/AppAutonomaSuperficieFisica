@@ -15,7 +15,7 @@ from PyQt6 import Qwt
 from PyQt6.Qwt import *
 import time
 from datetime import date
-
+from .componentes.boton import *
 
 class MenuInicio(QWidget):
     def __init__(self, ):
