@@ -508,12 +508,6 @@ class TeasGraph( QWidget ):
         self.timer.timeout.connect(self.actualizarDatos)
         self.timer.start(100)
         
-        if self.load_results:
-            self.paused = True
-            self.mostrar_btn_pause()
-            self.btnPause.setEnabled(False)
-            self.btnFinish.setEnabled(False)
-            self.btnMark.setEnabled(False)
 
 
     def closeEvent(self, event):
