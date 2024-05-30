@@ -25,7 +25,8 @@ class ExperimentosWindow(QWidget):
         self.experimentos = None
         self.main_layout = QGridLayout()
         self.fuenteHelvetica = QFont("Helvetica", 11)
-        btn_volver = QPushButton("Volver")
+        self.setStyleSheet("background-color: rgb(176, 213, 212); color: black;")
+        btn_volver = boton_modificado_exit("Volver")
         self.filtro_tipo = None
         self.filtro_fecha_desde = None
         self.filtro_fecha_hasta = None
@@ -264,9 +265,9 @@ class ExperimentosWindow(QWidget):
     def crear_zona_acciones(self):
         layout = QGridLayout()
     
-        btn_exportar = QPushButton("Exportar a PDF")
-        btn_visualizar = QPushButton("Visualizar experimento")
-        btn_configuraciones = QPushButton("Cargar configuraciones")
+        btn_exportar = boton_modificado_run("Exportar a PDF")
+        btn_visualizar = boton_modificado_run("Visualizar experimento")
+        btn_configuraciones = boton_modificado_run("Cargar configuraciones")
         
         btn_exportar.clicked.connect(self.manejar_exportar_pdf)
         btn_visualizar.clicked.connect(self.visualizar_resultados)
