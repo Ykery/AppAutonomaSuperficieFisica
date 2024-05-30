@@ -7,7 +7,7 @@ from PyQt6 import Qwt
 import numpy as np
 from ..modelo.dao import ResultadoTeasDAO, ExperimentoDAO, MarcadorDAO
 from ..modelo.clases import ResultadoTeas
-from datetime import datetime
+from datetime import datetime, time
 from PyQt6.QtCore import Qt,  QSize, QTimer
 from PyQt6.QtGui import QColor,  QPixmap, QIcon, QFont
 from PyQt6.QtWidgets import QMainWindow,  QWidget,  QToolBar,  QToolButton,  QHBoxLayout, QVBoxLayout,  QLabel,  QApplication, QInputDialog, QSplitter, QSizePolicy
