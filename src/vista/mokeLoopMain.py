@@ -12,51 +12,11 @@ from PyQt6 import Qwt
 from ..modelo.clases import Conexion, Experimento, ConfiguracionMoke
 from ..modelo.dao import ExperimentoDAO, ConfiguracionMokeDAO
 from .mokeGraph import MokeGraph
-import random   
-
-
-class Display_LCD_modificado(QLCDNumber):
-    def __init__(self, initial_value=0, digit_count = None):
-        super().__init__()
-        self.setStyleSheet("background-color: rgb(200, 255, 255); color: black;")
-        if digit_count:
-            self.setDigitCount(digit_count)
-        self.setSmallDecimalPoint(True)
-        self.display(initial_value)
-        self.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
-        # Dar un tamaño
-        self.setFixedSize(100, 50)
-class QComboBox_modificado(QComboBox):
-    def __init__(self):
-        super().__init__()
-        self.setStyleSheet("background-color: rgb(200, 255, 255); color: black;")
-        self.insertItems(0, [" -- Select -- "])
-        self.setCurrentIndex(0)
-
-class Thermometer_modificado(Qwt.QwtThermo):
-    def __init__(self):
-        super().__init__()
-        self.setOrientation(Qt.Orientation.Horizontal)
-        self.setScalePosition(Qwt.QwtThermo.ScalePosition.TrailingScale)
-        colorMap = Qwt.QwtLinearColorMap() 
-        colorMap.setColorInterval(Qt.GlobalColor.green, Qt.GlobalColor.red)
-        self.setColorMap(colorMap)
-        self.setAlarmBrush( Qt.GlobalColor.red)
-        self.setAlarmLevel(80)
-        self.valor_inicial=random.randint(0, 100)
-
-        self.setValue(Thermometer_modificado.numero_flutuante(self.valor_inicial,4))
-        self.temporizador=QTimer() 
-        self.temporizador.timeout.connect(lambda: self.setValue(Thermometer_modificado.numero_flutuante(self.valor_inicial,5)))
-        self.temporizador.start(60)
-
-    def numero_flutuante(numero,numero2):
-        x=random.uniform(-numero2,numero2) + numero
-        x_redondeado = round(x, 2)
-        return x_redondeado
-        
-
-
+import random
+from .componentes.boton import boton_modificado_exit, boton_modificado_run, boton_modificado
+from .componentes.displayLCD import Display_LCD_modificado
+from .componentes.thermometer import Thermometer_modificado
+from .componentes.combobox import QComboBox_modificado
 class VistaPrincipal(QWidget):
     def __init__(self,id_experimento=None):
         super().__init__()
