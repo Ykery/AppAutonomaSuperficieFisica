@@ -31,32 +31,36 @@ class MenuInicio(QWidget):
         self.setLayout(layout)
 
         self.child_window = None
-        self.lb_hora_actual= QLCDNumber()
-        self.lb_hora_actual.setFixedSize(100, 50)
-        self.lb_hora_actual.setDigitCount(8)
-        self.lb_hora_actual.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
-        self.lb_hora_actual.setStyleSheet(" color: black")
-        self.lb_dia_actual = QLabel("")
-        self.lb_dia_actual.setFont(self.fuenteHelvetica)
-        self.lb_dia_actual.setStyleSheet(" color: black")
+        self.lb_hora= QLCDNumber()
+        self.lb_hora.setFixedSize(100, 50)
+        self.lb_hora.setDigitCount(8)
+        self.lb_hora.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
+        self.lb_hora.setStyleSheet(" color: black")
+        self.lb_fecha = QLabel("")
+        self.lb_fecha.setFont(self.fuenteHelvetica)
+        self.lb_fecha.setStyleSheet(" color: black")
         lb_label = QLabel("Elija una opción:")
-        btn_teas = QPushButton("Realizar Experimento TEAS TimeScan")
-        btn_moke = QPushButton("Realizar Experimento MOKE Loop")
-        btn_experimentos = QPushButton("Ver Experimentos Realizados")
+        btn_teas = boton_modificado("Realizar Experimento TEAS TimeScan")
+        elemento_fecha_hora = QWidget()
+        elemento_fecha_hora.setLayout( QHBoxLayout() )
+        elemento_fecha_hora.layout().addWidget(self.lb_fecha)
+        elemento_fecha_hora.layout().addWidget(self.lb_hora)
+        self.lb_fecha.setFont(QFont("Helvetica", 18))
+        
+
+        btn_moke = boton_modificado("Realizar Experimento MOKE Loop")
+        btn_experimentos = boton_modificado("Ver Experimentos Realizados")
         linea = QFrame()
         linea.setFrameShape(QFrame.Shape.HLine)
                
-        btn_quit = QPushButton("QUIT")
-        btn_quit.setStyleSheet("background-color: red; color: white")
+        btn_quit = boton_modificado_exit("QUIT")
 
         lb_label.setFont(self.fuenteHelvetica)
         btn_teas.setFont(self.fuenteHelvetica)
         btn_moke.setFont(self.fuenteHelvetica)
         btn_experimentos.setFont(self.fuenteHelvetica)
         btn_quit.setFont(self.fuenteHelvetica)
-
-        layout.addWidget(self.lb_dia_actual)
-        layout.addWidget(self.lb_hora_actual)
+        layout.addWidget(elemento_fecha_hora)
         layout.addWidget(lb_label)
         layout.addWidget(btn_teas)
         layout.addWidget(btn_moke)
@@ -64,8 +68,7 @@ class MenuInicio(QWidget):
         layout.addWidget(linea) 
         layout.addWidget(btn_quit)
 
-        self.actualizar_hora()
-        self.get_dia()
+        self.actualizar_fecha_hora()
         # Si se borra la ventana principal, se cierra la aplicación
         btn_quit.clicked.connect(QApplication.instance().quit)
 
@@ -85,16 +88,16 @@ class MenuInicio(QWidget):
         new_window.show()
         print(self.child_window)
 
-    def actualizar_hora(self):
+    def actualizar_fecha_hora(self):
         hora = time.strftime("%H:%M:%S")
-        self.lb_hora_actual.display(hora)
-
-        QTimer.singleShot(200, self.actualizar_hora)
+        self.lb_hora.display(hora)
+        self.get_dia()
+        QTimer.singleShot(200, self.actualizar_fecha_hora)
 
     def get_dia(self):
         hoy = date.today()
         d1 = hoy.strftime("%d/%m/%Y")
-        self.lb_dia_actual.setText(d1)
+        self.lb_fecha.setText(d1)
     
 
 def main():
