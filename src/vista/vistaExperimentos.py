@@ -300,9 +300,7 @@ class ExperimentosWindow(QWidget):
         if experimento.tipo.lower() == "teas":
             self.abrir_nueva_ventana(teasGraph.TeasGraph(self.experimento_seleccionado, True))
         elif experimento.tipo.lower() == "moke":
-            # NOT IMPLEMENTED
-            # self.abrir_nueva_ventana(mokeGraph.MokeGraph(self.experimento_seleccionado, True))
-            pass
+            self.abrir_nueva_ventana(mokeLoopMain.MokeGraph(self.experimento_seleccionado, True))
     
     def abrir_nueva_ventana(self, nueva_ventana):
         self.nuevaVentana = nueva_ventana
