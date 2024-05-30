@@ -10,10 +10,11 @@ from PyQt6.Qwt import *
 
 from ..modelo.dao import *
 from ..modelo.clases import *
-from .mokeLoopMain import Display_LCD_modificado, Thermometer_modificado,QComboBox_modificado 
+from .mokeLoopMain import Thermometer_modificado,QComboBox_modificado 
 from .teasGraph import TeasGraph
 import random
-
+from .componentes.boton import boton_modificado_exit, boton_modificado_run, boton_modificado
+from .componentes.displayLCD import Display_LCD_modificado
 
 class TeasWindow(QWidget):
     
