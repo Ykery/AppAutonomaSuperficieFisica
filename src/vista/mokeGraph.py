@@ -7,7 +7,7 @@ from PyQt6 import Qwt
 import numpy as np
 from ..modelo.dao import ResultadoMokeDAO, ExperimentoDAO, MarcadorDAO
 from ..modelo.clases import ResultadoMoke
-from datetime import datetime
+from datetime import datetime, time
 from PyQt6.QtCore import Qt,  QSize, QTimer
 from PyQt6.QtGui import QColor,  QPixmap, QIcon, QFont
 from PyQt6.QtWidgets import QMainWindow,  QWidget,  QToolBar,  QToolButton,  QHBoxLayout, QVBoxLayout,  QLabel,  QApplication, QInputDialog, QSplitter, QSizePolicy
@@ -276,6 +276,7 @@ class MokeGraph( QWidget ):
             raise ValueError("El experimento con id " + str(id) + " no existe") 
         self.load_results = load_results
         self.tiempo = datetime.now()
+        time_tag = QLabel("Time: 0")
         if self.load_results:
             resultados_cargados = ResultadoMokeDAO.obtener_por_id_experimento(self.experimento.id)
             self.datax = []
@@ -288,6 +289,7 @@ class MokeGraph( QWidget ):
             self.datax = [0]
             self.datay = [0]
             self.timer = QTimer()
+            self.timer.timeout.connect(lambda: time_tag.setText("Time: " + time(second=int((datetime.now() - self.tiempo).total_seconds())).strftime("%M:%S")))
             self.timer.timeout.connect(self.actualizarDatos)
             self.timer.start(100)
         
@@ -372,7 +374,7 @@ class MokeGraph( QWidget ):
         self.bottom_bar = QWidget( self )
         bottom_bar_layout = QHBoxLayout()
         bottom_bar_layout.setDirection( QHBoxLayout.Direction.LeftToRight )
-        bottom_bar_layout.addWidget( QLabel("Time: "))
+        bottom_bar_layout.addWidget( time_tag )
         bottom_bar_layout.addWidget( QSplitter() )
         self.datapoints_number = QLabel("Number of datapoints: 0")
         bottom_bar_layout.addWidget( self.datapoints_number )

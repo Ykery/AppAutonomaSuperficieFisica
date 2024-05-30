@@ -276,6 +276,7 @@ class TeasGraph( QWidget ):
             raise ValueError("El experimento con id " + str(id) + " no existe") 
         self.load_results = load_results
         self.tiempo = datetime.now()
+        time_tag = QLabel("Time: 0")
         if self.load_results:
             resultados_cargados = ResultadoTeasDAO.obtener_por_id_experimento(self.experimento.id)
             self.datax = []
@@ -289,6 +290,7 @@ class TeasGraph( QWidget ):
             self.datay = [0]
             self.timer = QTimer()
             self.timer.timeout.connect(self.actualizarDatos)
+            self.timer.timeout.connect(lambda: time_tag.setText("Time: " + time(second=int((datetime.now() - self.tiempo).total_seconds())).strftime("%M:%S")))
             self.timer.start(100)
         
         self.d_plot = Plot("TEAS Timescan", "Time[sec]", "Intensity [arb. un.]", self )
@@ -372,7 +374,7 @@ class TeasGraph( QWidget ):
         self.bottom_bar = QWidget( self )
         bottom_bar_layout = QHBoxLayout()
         bottom_bar_layout.setDirection( QHBoxLayout.Direction.LeftToRight )
-        bottom_bar_layout.addWidget( QLabel("Time: "))
+        bottom_bar_layout.addWidget( time_tag )
         bottom_bar_layout.addWidget( QSplitter() )
         self.datapoints_number = QLabel("Number of datapoints: 0")
         bottom_bar_layout.addWidget( self.datapoints_number )
