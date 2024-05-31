@@ -17,6 +17,17 @@ def crear_pdf_experimento(id, pdf_path):
     convertir_docx_pdf(docx_path, pdf_path)
 
 def crear_docx_experimento(id, docx_path = "./experimento.docx"): 
+    """
+    Crea un documento de Word a partir de un experimento en la base de datos.
+
+    :param id: Identificador del experimento en la base de datos.
+    :type id: int
+    :param docx_path: Ruta del documento de Word a crear, defaults to "./experimento.docx"
+    :type docx_path: str, optional
+    :return: Ruta del documento de Word creado.
+    :rtype: str
+    
+    """
     # Definir la ruta por defecto para crear el documento en la carpeta raiz del proyecto
     TEMPLATE_PATH = "src/resources/plantilla_experimento.docx"
     
