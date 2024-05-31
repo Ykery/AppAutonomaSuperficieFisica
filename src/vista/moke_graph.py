@@ -286,41 +286,13 @@ finish_xpm = [
 
 
 class MokeGraph(QWidget):
-    """
-    Representa una gráfica Moke en una interfaz de usuario.
-
-    :param id: Identificador del experimento en la base de datos.
-    :type id: int
-    :param load_results: Indica si se deben cargar resultados previos, defaults to False.
-    :type load_results: bool, optional
-    """
-
     def __init__(self, id, load_results=False, *args):
-        """
-        Creación de una instancia de MokeGraph.
-
-        Se crea una instancia de la clase MokeGraph con un identificador de experimento y se configura
-        para cargar resultados previos desde la base de datos.
-
-        :param id: Identificador del experimento en la base de datos.
-        :type id: int
-        :param load_results: Indica si se deben cargar resultados previos, por defecto False.
-        :type load_results: bool, opcional
-
-        Ejemplo de uso:
-
-        .. code-block:: python
-
-            # Crear una instancia de MokeGraph con un identificador de experimento y cargar resultados previos
-            moke_graph = MokeGraph(id=experiment_id, load_results=True)
-
-        """
-
         super().__init__(*args)
         self.TIEMPO_ACTUALIZACION_GRAFICA = 100
         self.cargando_resultados = load_results
         self.terminado = False
         self.haciendo_zoom = False
+        
 
         self.layout = QVBoxLayout(self)
         self.layout.setSpacing(0)
@@ -334,7 +306,7 @@ class MokeGraph(QWidget):
         else:
             escribir_csv(self.experimento.rutaCsv, "magnetic_field", "intensity")
             self.datos_x = [0]
-            self.datos_y = [self.TIEMPO_ACTUALIZACION_GRAFICA / 1000]
+            self.datos_y = [self.TIEMPO_ACTUALIZACION_GRAFICA/1000]
             self.temporizador = QTimer()
             self.temporizador.timeout.connect(self.actualizarDatos)
             self.temporizador.start(self.TIEMPO_ACTUALIZACION_GRAFICA)
@@ -349,12 +321,34 @@ class MokeGraph(QWidget):
             self.btn_pausar.setEnabled(False)
             self.btn_marcador.setEnabled(False)
             self.btn_terminar.setEnabled(False)
-            self.lb_estado.setText("Visualizing results")
+            self.lb_estado.setText("Visualizyng results")
             self.actualizarDatos()
 
     def cargar_resultados(self):
         """
-        Carga los resultados del experimento desde la base de datos.
+        Carga los resultados del experimento actual desde la base de datos.
+
+        Este método obtiene los resultados del experimento actual utilizando el identificador del experimento
+        almacenado en la variable `self.experimento.id`. Luego, extrae los datos de campo magnético e intensidad
+        de cada resultado y los almacena en las listas `self.datos_x` y `self.datos_y`, respectivamente.
+
+        :return: None
+        :rtype: None
+
+        Los resultados se cargan en las siguientes listas:
+
+        - `self.datos_x`: Lista de datos de campo magnético.
+        - `self.datos_y`: Lista de datos de intensidad.
+
+        Este método asume que existe una clase `ResultadoMokeDAO` con un método estático `obtener_por_id_experimento`
+        que recibe el identificador de un experimento y devuelve una lista de resultados asociados a ese experimento.
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            cargar_resultados()
+
         """
         resultados_cargados = ResultadoMokeDAO.obtener_por_id_experimento(
             self.experimento.id
@@ -362,15 +356,39 @@ class MokeGraph(QWidget):
         self.datos_x = []
         self.datos_y = []
         for resultado in resultados_cargados:
-            self.datos_x.append(resultado.magnetic_field)
-            self.datos_y.append(resultado.intensity)
+                self.datos_x.append(resultado.magnetic_field)
+                self.datos_y.append(resultado.intensity)        
 
     def crear_toolbar(self):
         """
-        Crea y configura la barra de herramientas.
+            Crea una barra de herramientas con varios controles para interactuar con el sistema.
 
-        :return: La barra de herramientas configurada.
-        :rtype: QToolBar
+            Este método configura una barra de herramientas con botones para pausar, habilitar el modo de zoom,
+            añadir marcadores, imprimir, exportar y finalizar el experimento. Además, muestra el estado actual
+            del sistema, ya sea "Paused" o "Running".
+
+            :return: La barra de herramientas configurada.
+            :rtype: QToolBar
+
+            Configura los siguientes controles:
+
+            - `btn_pausar`: Botón para pausar el sistema.
+            - `btn_zoom`: Botón para habilitar el modo de zoom.
+            - `btn_marcador`: Botón para añadir marcadores.
+            - `btn_imprimir`: Botón para imprimir los resultados.
+            - `btn_exportar`: Botón para exportar los resultados.
+            - `btn_terminar`: Botón para finalizar el experimento.
+
+            Se conectan varios eventos a sus correspondientes manejadores para realizar acciones específicas
+            cuando se interactúa con los controles.
+
+            Ejemplo de uso:
+
+            .. code-block:: python
+
+                toolbar = self.crear_toolbar()
+                layout.addWidget(toolbar)
+
         """
         self.toolBar = QToolBar(self)
 
@@ -436,10 +454,23 @@ class MokeGraph(QWidget):
 
     def crear_cuerpo(self):
         """
-        Crea y configura el cuerpo de la gráfica.
+        Crea el cuerpo principal del widget para mostrar el gráfico del experimento MOKE.
 
-        :return: El widget de la gráfica configurado.
+        Este método inicializa un objeto de tipo Plot para mostrar el gráfica del experimento MOKE.
+        Configura el título del gráfico, las etiquetas de los ejes y el color del gráfico.
+        Además, establece márgenes en el gráfico, deshabilita el menú contextual y configura herramientas
+        de zoom, desplazamiento y selección.
+
+        :return: El objeto Plot configurado para mostrar el gráfico del experimento MOKE.
         :rtype: Plot
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            cuerpo = self.crear_cuerpo()
+            layout.addWidget(cuerpo)
+
         """
         self.plt_experimento = Plot(
             "Moke Loop Graph",
@@ -473,10 +504,22 @@ class MokeGraph(QWidget):
 
     def crear_footer(self):
         """
-        Crea y configura el pie de página de la gráfica.
+        Crea el pie de página del widget que muestra información adicional sobre el experimento.
 
-        :return: El widget del pie de página configurado.
+        Este método configura un QLabel para mostrar el tiempo transcurrido desde el inicio del experimento,
+        otro QLabel para mostrar el número de puntos de datos del experimento y un QLabel adicional para mostrar
+        la ruta del archivo CSV asociado al experimento.
+
+        :return: El widget configurado para mostrar el pie de página.
         :rtype: QWidget
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            footer = self.crear_footer()
+            layout.addWidget(footer)
+
         """
         lb_tiempo_experimento = QLabel("Time: 0")
         if not self.cargando_resultados:
@@ -502,7 +545,22 @@ class MokeGraph(QWidget):
 
     def finish_experiment(self):
         """
-        Finaliza el experimento, deteniendo el temporizador y actualizando la interfaz de usuario.
+        Finaliza el experimento actual.
+
+        Este método detiene el temporizador utilizado para seguir el tiempo transcurrido del experimento,
+        y deshabilita algunos controles como el botón de pausa, el botón para añadir marcadores y el botón
+        para finalizar el experimento. Además, cambia el texto del estado a "Finished" y establece la bandera
+        `terminado` en True.
+
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            finish_experiment()
+
         """
         self.temporizador.stop()
         self.btn_pausar.setEnabled(False)
@@ -513,7 +571,22 @@ class MokeGraph(QWidget):
 
     def pause(self):
         """
-        Pausa o reanuda la actualización de la gráfica.
+        Pausa o reanuda el experimento actual.
+
+        Este método alterna entre pausar y reanudar el experimento actual cambiando el estado de la variable
+        `pausado`. Además, crea un marcador en la base de datos indicando el momento en que se pausa o se reanuda
+        el experimento. Actualiza el texto del estado en función del estado de pausa, mostrando "Paused" si el
+        experimento está pausado y "Running" si está en curso.
+
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            pause()
+
         """
         self.pausado = not self.pausado
         marcador = Marcador()
@@ -521,13 +594,28 @@ class MokeGraph(QWidget):
         marcador.id_experimento = self.experimento.id
         marcador.descripcion = "Paused" if self.pausado else "Resumed"
         MarcadorDAO.crear(marcador)
-        self.lb_estado.setText(marcador.descripcion)
+        self.lb_estado.setText("Paused" if self.pausado else "Running")
 
         self.mostrar_btn_pause()
 
     def mostrar_btn_pause(self):
         """
-        Actualiza el texto e ícono del botón de pausa.
+        Actualiza el texto y el ícono del botón de pausa según el estado del experimento.
+
+        Este método cambia el texto y el ícono del botón de pausa en función del estado del experimento.
+        Si el experimento está pausado, el texto del botón se establece como "Resume" y se muestra un ícono
+        de reproducción. Si el experimento está en curso, el texto del botón se establece como "Pause" y se
+        muestra un ícono de pausa.
+
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            mostrar_btn_pause()
+
         """
         self.btn_pausar.setText("Resume" if self.pausado else "Pause")
         self.btn_pausar.setIcon(
@@ -536,7 +624,23 @@ class MokeGraph(QWidget):
 
     def manejar_anadir_marcador(self):
         """
-        Maneja la adición de un marcador en la gráfica.
+        Maneja la acción de añadir un marcador al experimento.
+
+        Este método obtiene el valor del eje x del último punto de datos del experimento.
+        Luego, solicita al usuario que ingrese el texto del marcador mediante un cuadro de diálogo.
+        Si el usuario confirma la entrada, crea un nuevo marcador con el valor del eje x, el identificador
+        del experimento y el texto ingresado. Si se produce algún error durante la creación del marcador,
+        muestra un mensaje de error al usuario.
+
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            manejar_anadir_marcador()
+
         """
         valor_x = self.datos_x[-1]
 
@@ -555,13 +659,27 @@ class MokeGraph(QWidget):
 
     def actualizarDatos(self):
         """
-        Actualiza los datos de la gráfica con nuevos valores.
+        Actualiza los datos del experimento y el gráfico asociado.
+
+        Este método agrega un nuevo punto de datos al experimento y actualiza el gráfico asociado si el proceso
+        de carga de resultados no está en curso y el experimento no ha finalizado. El punto de datos consiste
+        en un valor aleatorio de intensidad generado y el valor del campo magnético calculado como el último valor
+        del campo magnético más un incremento. Además, persiste los datos agregados en un archivo CSV y en la base
+        de datos asociada al experimento.
+
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            actualizarDatos()
+
         """
         if not self.cargando_resultados and not self.terminado:
             self.datos_y.append(np.random.rand(1000)[0])
-            self.datos_x.append(
-                self.datos_x[-1] + self.TIEMPO_ACTUALIZACION_GRAFICA / 1000
-            )
+            self.datos_x.append(self.datos_x[-1] + self.TIEMPO_ACTUALIZACION_GRAFICA/1000)
             # Persistir los datos
             resultado = ResultadoMoke()
             resultado.id_experimento = self.experimento.id
@@ -578,7 +696,21 @@ class MokeGraph(QWidget):
 
     def mprint(self):
         """
-        Imprime la gráfica utilizando un diálogo de impresión.
+        Imprime el gráfico actual.
+
+        Este método muestra un cuadro de diálogo de impresión estándar de Qt para permitir al usuario seleccionar
+        las opciones de impresión. Luego, utiliza un renderizador de gráficos para renderizar el contenido del gráfico
+        actual en la impresora seleccionada.
+
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            mprint()
+
         """
         printer = QPrinter()
         printer.setCreator("UAM app")
@@ -595,16 +727,45 @@ class MokeGraph(QWidget):
 
     def exportDocument(self):
         """
-        Exporta la gráfica como un documento PDF.
+        Exporta el documento asociado al experimento actual.
+
+        Este método inicia el proceso de exportación del documento asociado al experimento actual. Para completar
+        la exportación, delega la tarea de solicitar al usuario la ruta de exportación a la función
+        `pedir_ruta_exportar_pdf`.
+
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            exportDocument()
+
         """
         pedir_ruta_exportar_pdf(self, self.experimento.id)
 
     def enableZoomMode(self, on):
         """
-        Habilita o deshabilita el modo zoom en la gráfica.
+        Habilita o deshabilita el modo de zoom en el gráfico.
 
-        :param on: Indica si el modo zoom debe estar habilitado o deshabilitado.
+        Este método permite habilitar o deshabilitar el modo de zoom en el gráfico. Cuando el parámetro `on`
+        es True, se habilita el modo de zoom y se deshabilitan otras funcionalidades como la selección de puntos.
+        Si `on` es False y el modo de zoom estaba activado anteriormente, se recarga el gráfico. Además, actualiza
+        el estado de los objetos `picker_experimento`, `panner_experimento` y `zoomer_experimento` para reflejar
+        el cambio en el modo de zoom.
+
+        :param on: Indica si se debe activar o desactivar el modo de zoom.
         :type on: bool
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            enableZoomMode(True)
+
         """
         if on:
             self.haciendo_zoom = True
@@ -617,7 +778,21 @@ class MokeGraph(QWidget):
 
     def recargar_grafica(self):
         """
-        Recarga la gráfica, reiniciando sus componentes.
+        Recarga el gráfico del experimento.
+
+        Este método borra y recrea el gráfico del experimento, restaurando la configuración inicial. Se utiliza
+        cuando se desactiva el modo de zoom para volver al estado original del gráfico. Además, se reinicia el
+        temporizador para actualizar los datos del experimento.
+
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            recargar_grafica()
+
         """
         self.plt_experimento.deleteLater()
         self.haciendo_zoom = False
@@ -634,10 +809,25 @@ class MokeGraph(QWidget):
 
     def closeEvent(self, event):
         """
-        Sobreescribe el evento de cierre de la ventana.
+        Maneja el evento de cierre de la ventana.
 
-        :param event: Evento de cierre de la ventana.
+        Este método es invocado cuando se intenta cerrar la ventana. Si el proceso de carga de resultados está
+        en curso o el experimento ha finalizado, se cierra la ventana sin mostrar ningún mensaje. De lo contrario,
+        se muestra un mensaje de advertencia solicitando confirmación antes de cerrar la ventana y detener el experimento.
+        Si el usuario confirma la acción, se detiene el temporizador, se borran los elementos gráficos y se cierra la ventana.
+        Si el usuario cancela la acción, se ignora el evento de cierre y la ventana permanece abierta.
+
+        :param event: El evento de cierre.
         :type event: QCloseEvent
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            closeEvent(event)
+
         """
         if self.cargando_resultados or self.terminado:
             event.accept()
