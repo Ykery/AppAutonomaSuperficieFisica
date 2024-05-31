@@ -5,17 +5,18 @@ import math
 #import Qwt
 from PyQt6 import Qwt
 import numpy as np
-from ..modelo.dao import ResultadoTeasDAO, ExperimentoDAO, MarcadorDAO
-from ..modelo.clases import ResultadoTeas
-from datetime import datetime, time
-from PyQt6.QtCore import Qt,  QSize, QTimer
+from src.modelo.dao import ResultadoTeasDAO, ExperimentoDAO, MarcadorDAO
+from src.modelo.clases import ResultadoTeas
+from datetime import datetime
+from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QColor,  QPixmap, QIcon, QFont
-from PyQt6.QtWidgets import QMainWindow,  QWidget,  QToolBar,  QToolButton,  QHBoxLayout, QVBoxLayout,  QLabel,  QApplication, QInputDialog, QSplitter, QSizePolicy
+from PyQt6.QtWidgets import (QWidget,  QToolBar,  QToolButton,  QHBoxLayout, 
+                             QVBoxLayout,  QLabel,  QApplication, QInputDialog, QSplitter, QSizePolicy)
 from PyQt6.QtPrintSupport import QPrintDialog, QPrinter
-from ..utilidades.utilidades import pedir_ruta_exportar_pdf, escribir_csv
-from .componentes.grafica import Plot, Zoomer
+from src.utilidades.utilidades import pedir_ruta_exportar_pdf, escribir_csv
+from src.vista.componentes.grafica import Plot, Zoomer
 from PyQt6.QtWidgets import QMessageBox
-from ..modelo.clases import Marcador
+from src.modelo.clases import Marcador
  
 
 def logSpace(size, xmin, xmax ):

@@ -8,13 +8,13 @@ from PyQt6.QtWidgets import *
 from PyQt6 import Qwt
 from PyQt6.Qwt import *
 
-from ..modelo.dao import *
-from ..modelo.clases import *
-from .mokeLoopMain import Thermometer_modificado,QComboBox_modificado 
-from .teasGraph import TeasGraph
+from src.modelo.dao import *
+from src.modelo.clases import *
+from src.vista.mokeLoopMain import Display_LCD_modificado, Thermometer_modificado,QComboBox_modificado 
+from src.vista.teasGraph import TeasGraph
 import random
-from .componentes.boton import boton_modificado_exit, boton_modificado_run, boton_modificado
-from .componentes.displayLCD import Display_LCD_modificado
+from src.vista.componentes.boton import boton_modificado_exit, boton_modificado_run, boton_modificado
+from src.vista.componentes.displayLCD import Display_LCD_modificado
 
 class TeasWindow(QWidget):
     

@@ -1,7 +1,7 @@
 import sys
 import numpy as np
-import random
-from ..modelo.dao import ExperimentoDAO
+
+from src.modelo.dao import ExperimentoDAO
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
@@ -9,13 +9,11 @@ from PyQt6 import Qwt
 from PyQt6.Qwt import *
 from datetime import datetime
 from threading import Thread
-from ..utilidades.utilidades import pedir_ruta_exportar_pdf
-from . import teasMain
-from . import mokeLoopMain
-from ..vista.mokeLoopMain import VistaPrincipal
-from ..vista import teasGraph
-from .componentes.boton import boton_modificado_run, boton_modificado_exit
-
+from src.utilidades.utilidades import pedir_ruta_exportar_pdf
+from src.vista.teasMain import TeasWindow
+from src.vista.mokeLoopMain import VistaPrincipal, MokeGraph
+from src.vista import teasGraph
+from src.vista.componentes.boton import boton_modificado_run, boton_modificado_exit
 
 class ExperimentosWindow(QWidget):
     
@@ -290,7 +288,7 @@ class ExperimentosWindow(QWidget):
         if not self.verificar_experimento_seleccionado():
             return   
         if ExperimentoDAO.obtener_por_id(self.experimento_seleccionado).tipo.lower() == "teas":
-            self.abrir_nueva_ventana(teasMain.TeasWindow(self.experimento_seleccionado))
+            self.abrir_nueva_ventana(TeasWindow(self.experimento_seleccionado))
         elif ExperimentoDAO.obtener_por_id(self.experimento_seleccionado).tipo.lower() == "moke":
             self.abrir_nueva_ventana(VistaPrincipal(self.experimento_seleccionado))
 
@@ -303,7 +301,7 @@ class ExperimentosWindow(QWidget):
         if experimento.tipo.lower() == "teas":
             self.abrir_nueva_ventana(teasGraph.TeasGraph(self.experimento_seleccionado, True))
         elif experimento.tipo.lower() == "moke":
-            self.abrir_nueva_ventana(mokeLoopMain.MokeGraph(self.experimento_seleccionado, True))
+            self.abrir_nueva_ventana(MokeGraph(self.experimento_seleccionado, True))
     
     def abrir_nueva_ventana(self, nueva_ventana):
         self.nuevaVentana = nueva_ventana

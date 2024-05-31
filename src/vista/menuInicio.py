@@ -1,12 +1,10 @@
 import sys
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget, QMainWindow
+from PyQt6.QtWidgets import QWidget
 import numpy as np
 
-from ..modelo.dao import ExperimentoDAO
-from ..vista import teasMain, teasGraph, vistaExperimentos, mokeLoopMain
 
-
+from src.vista import teasMain, vistaExperimentos, mokeLoopMain
 
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
