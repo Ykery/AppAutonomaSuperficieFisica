@@ -7,14 +7,14 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6 import Qwt
-from ..modelo.clases import Conexion, Experimento, ConfiguracionMoke
-from ..modelo.dao import ExperimentoDAO, ConfiguracionMokeDAO
-from .mokeGraph import MokeGraph
+from src.modelo.clases import Conexion, Experimento, ConfiguracionMoke
+from src.modelo.dao import ExperimentoDAO, ConfiguracionMokeDAO
+from src.vista.moke_graph import MokeGraph
 import random
-from .componentes.boton import BotonModificadoExit, BotonModificadoRun, BotonModificado
-from .componentes.displayLCD import DisplayLCDModificado
-from .componentes.thermometer import ThermometerModificado
-from .componentes.combobox import QComboBoxModificado
+from src.vista.componentes.boton import BotonModificadoExit, BotonModificadoRun, BotonModificado
+from src.vista.componentes.displayLCD import DisplayLCDModificado
+from src.vista.componentes.thermometer import ThermometerModificado
+from src.vista.componentes.combobox import QComboBoxModificado
 
 
 class VistaPrincipal(QWidget):
