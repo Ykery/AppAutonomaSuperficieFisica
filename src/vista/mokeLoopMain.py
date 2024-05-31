@@ -9,14 +9,14 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
 from PyQt6 import Qwt
-from ..modelo.clases import Conexion, Experimento, ConfiguracionMoke
-from ..modelo.dao import ExperimentoDAO, ConfiguracionMokeDAO
-from .mokeGraph import MokeGraph
+from src.modelo.clases import Conexion, Experimento, ConfiguracionMoke
+from src.modelo.dao import ExperimentoDAO, ConfiguracionMokeDAO
+from src.vista.moke_graph import MokeGraph
 import random
-from .componentes.boton import boton_modificado_exit, boton_modificado_run, boton_modificado
-from .componentes.displayLCD import Display_LCD_modificado
-from .componentes.thermometer import Thermometer_modificado
-from .componentes.combobox import QComboBox_modificado
+from src.vista.componentes.boton import boton_modificado_exit, boton_modificado_run, boton_modificado
+from src.vista.componentes.displayLCD import Display_LCD_modificado
+from src.vista.componentes.thermometer import Thermometer_modificado
+from src.vista.componentes.combobox import QComboBox_modificado
 class VistaPrincipal(QWidget):
     def __init__(self,id_experimento=None):
         super().__init__()
