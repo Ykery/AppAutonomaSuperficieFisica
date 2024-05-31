@@ -1,7 +1,7 @@
 from .modelo import *
-from .vista import mokeLoopMain, vistaExperimentos, teasMain
+from .vista import moke_config, vistaExperimentos, teasMain
 from .vista import *
-from .vista import menuInicio
+from .vista import menu_inicio
 
 def verificar_dependencias():
     # Verificar si las librerias de python estan instaladas
@@ -28,4 +28,4 @@ if __name__ == '__main__':
 
     verificar_dependencias()
     #vistaExperimentos.main()
-    menuInicio.main()
+    menu_inicio.main()

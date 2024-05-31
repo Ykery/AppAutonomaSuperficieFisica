@@ -10,7 +10,7 @@ from PyQt6.Qwt import *
 
 from src.modelo.dao import *
 from src.modelo.clases import *
-from src.vista.mokeLoopMain import Display_LCD_modificado, Thermometer_modificado,QComboBox_modificado 
+from src.vista.moke_config import Display_LCD_modificado, Thermometer_modificado,QComboBox_modificado 
 from src.vista.teasGraph import TeasGraph
 import random
 from src.vista.componentes.boton import boton_modificado_exit, boton_modificado_run, boton_modificado

@@ -11,7 +11,7 @@ from datetime import datetime
 from threading import Thread
 from src.utilidades.utilidades import pedir_ruta_exportar_pdf
 from src.vista.teasMain import TeasWindow
-from src.vista.mokeLoopMain import VistaPrincipal, MokeGraph
+from src.vista.moke_config import VistaPrincipal, MokeGraph
 from src.vista import teasGraph
 from src.vista.componentes.boton import boton_modificado_run, boton_modificado_exit
 
