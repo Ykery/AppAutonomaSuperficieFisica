@@ -13,21 +13,51 @@ from PyQt6.QtWidgets import QFileDialog
 from threading import Thread
 
 def crear_pdf_experimento(id, pdf_path):
+    """
+    Crea un archivo PDF a partir de un documento de Word (docx) generado para un experimento.
+
+    Este método genera un archivo PDF utilizando un documento de Word previamente creado para un experimento específico.
+
+    :param id: El identificador único del experimento.
+    :type id: int
+    :param pdf_path: La ruta donde se guardará el archivo PDF generado.
+    :type pdf_path: str
+    :return: None
+    :rtype: None
+
+    Ejemplo de uso:
+
+    .. code-block:: python
+
+        # Crear un archivo PDF a partir del documento de Word para un experimento con ID 1
+        crear_pdf_experimento(1, "experimento.pdf")
+
+    """
     docx_path = crear_docx_experimento(id)
     convertir_docx_pdf(docx_path, pdf_path)
 
-def crear_docx_experimento(id, docx_path = "./experimento.docx"): 
+def crear_docx_experimento(id, docx_path = "./experimento.docx"):
     """
-    Crea un documento de Word a partir de un experimento en la base de datos.
+    Crea un documento de Word (docx) para un experimento específico.
 
-    :param id: Identificador del experimento en la base de datos.
+    Este método genera un documento de Word que contiene información sobre un experimento, incluida una descripción, 
+    configuración, gráfico de resultados y marcadores asociados.
+
+    :param id: El identificador único del experimento.
     :type id: int
-    :param docx_path: Ruta del documento de Word a crear, defaults to "./experimento.docx"
+    :param docx_path: La ruta donde se guardará el documento de Word generado. Por defecto, "./experimento.docx".
     :type docx_path: str, optional
-    :return: Ruta del documento de Word creado.
-    :rtype: str
-    
-    """
+    :return: La ruta del archivo del documento de Word generado si se crea correctamente, False si el experimento no existe.
+    :rtype: str or bool
+
+    Ejemplo de uso:
+
+    .. code-block:: python
+
+        # Crear un documento de Word para un experimento con ID 1
+        ruta_documento = crear_docx_experimento(1)
+
+    """ 
     # Definir la ruta por defecto para crear el documento en la carpeta raiz del proyecto
     TEMPLATE_PATH = "src/resources/plantilla_experimento.docx"
     
@@ -85,18 +115,98 @@ def crear_docx_experimento(id, docx_path = "./experimento.docx"):
     return docx_path
 
 def convertir_docx_pdf(docx_path, pdf_path):
+    """
+    Convierte un archivo de Word (docx) en un archivo PDF y elimina el archivo de Word original.
+
+    Este método toma un archivo de Word en formato docx, lo convierte a PDF y luego elimina el archivo de Word original.
+
+    :param docx_path: La ruta del archivo de Word (docx) que se convertirá a PDF.
+    :type docx_path: str
+    :param pdf_path: La ruta donde se guardará el archivo PDF generado.
+    :type pdf_path: str
+    :return: None
+    :rtype: None
+
+    Ejemplo de uso:
+
+    .. code-block:: python
+
+        # Convertir un archivo de Word a PDF y eliminar el archivo de Word original
+        convertir_docx_pdf("documento.docx", "documento.pdf")
+
+    """
     convert(docx_path, pdf_path)
     remove(docx_path)
 
 def mostrar_pdf(path):
+    """
+    Abre el archivo PDF en el visor de PDF predeterminado del sistema operativo.
+
+    Este método abre el archivo PDF especificado en el visor de PDF predeterminado del sistema operativo.
+
+    :param path: La ruta del archivo PDF que se abrirá.
+    :type path: str
+    :return: None
+    :rtype: None
+
+    Ejemplo de uso:
+
+    .. code-block:: python
+
+        # Abrir un archivo PDF en el visor de PDF predeterminado del sistema operativo
+        mostrar_pdf("documento.pdf")
+
+    """
     import os
     os.system("start " + path)
 
 def exportar_mostrar_pdf(id_experimento, pdf_path):
+    """
+    Exporta el experimento a un archivo PDF y luego lo muestra.
+
+    Este método exporta el experimento con el ID especificado a un archivo PDF en la ubicación especificada
+    y luego abre el archivo PDF en el visor de PDF predeterminado del sistema operativo.
+
+    :param id_experimento: El ID del experimento a exportar.
+    :type id_experimento: int
+    :param pdf_path: La ruta donde se guardará el archivo PDF exportado.
+    :type pdf_path: str
+    :return: None
+    :rtype: None
+
+    Ejemplo de uso:
+
+    .. code-block:: python
+
+        # Exportar el experimento con ID 123 a un archivo PDF y mostrarlo
+        exportar_mostrar_pdf(123, "experimento.pdf")
+
+    """
     crear_pdf_experimento(id_experimento, pdf_path)
     mostrar_pdf(pdf_path)
     
 def pedir_ruta_exportar_pdf(parent, id_experimento):
+    """
+    Abre un cuadro de diálogo para seleccionar la ruta de exportación y luego exporta el experimento a un archivo PDF.
+
+    Este método abre un cuadro de diálogo para que el usuario seleccione la ruta y el nombre del archivo PDF de destino.
+    Luego, exporta el experimento con el ID especificado a ese archivo PDF.
+
+    :param parent: El widget principal padre del cuadro de diálogo.
+    :type parent: QWidget
+    :param id_experimento: El ID del experimento a exportar.
+    :type id_experimento: int
+    :return: None
+    :rtype: None
+
+    Ejemplo de uso:
+
+    .. code-block:: python
+
+        # Pedir al usuario que seleccione la ruta y el nombre del archivo PDF y luego exportar el experimento
+        pedir_ruta_exportar_pdf(parent_widget, 123)
+
+    """
     pdf_path = QFileDialog.getSaveFileName(parent, "Guardar PDF", "", "PDF Files (*.pdf)")
     if pdf_path[0] == "":
         return
@@ -105,5 +215,27 @@ def pedir_ruta_exportar_pdf(parent, id_experimento):
     
     
 def escribir_csv(path, valor_x, valor_y):
+    """
+    Escribe un par de valores en formato CSV en un archivo especificado.
+
+    Este método escribe un par de valores (valor_x, valor_y) en formato CSV en el archivo especificado por la ruta.
+
+    :param path: La ruta del archivo CSV donde se escribirán los valores.
+    :type path: str
+    :param valor_x: El valor correspondiente al eje X que se va a escribir en el archivo CSV.
+    :type valor_x: float or int
+    :param valor_y: El valor correspondiente al eje Y que se va a escribir en el archivo CSV.
+    :type valor_y: float or int
+    :return: None
+    :rtype: None
+
+    Ejemplo de uso:
+
+    .. code-block:: python
+
+        # Escribir un par de valores en un archivo CSV
+        escribir_csv("datos.csv", 10.5, 20.3)
+
+    """
     with open(path, "a") as file:
         file.write(f"{valor_x},{valor_y}\n")
