@@ -1,7 +1,8 @@
 from PyQt6.QtWidgets import QLCDNumber
 
+
 class DisplayLCDModificado(QLCDNumber):
-    def __init__(self, initial_value=0, digit_count = None):
+    def __init__(self, initial_value=0, digit_count=None):
         """
         Inicializa un display LCD modificado con un estilo personalizado.
 
@@ -11,8 +12,6 @@ class DisplayLCDModificado(QLCDNumber):
         :type initial_value: int, optional
         :param digit_count: El número de dígitos que mostrará el display (por defecto es None, lo que significa que se ajustará automáticamente).
         :type digit_count: int, optional
-        :return: None
-        :rtype: None
 
         Ejemplo de uso:
 
