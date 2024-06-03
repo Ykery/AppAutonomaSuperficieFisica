@@ -99,14 +99,14 @@ class TeasWindow(QWidget):
         buttons_layout.addWidget(btn_run)
         buttons_layout.setAlignment(Qt.AlignmentFlag.AlignRight)
 
-        self.main_layout.addWidget(self.createTeasDACbox(), 0, 0, 3, 3)
-        self.main_layout.addWidget(self.createTeasLockinBox(), 0, 3, 2, 1)
-        self.main_layout.addWidget(self.createScanAMLgaugeBox(), 3, 0, 2, 3)
-        self.main_layout.addWidget(self.createTeasTimeBox(), 2, 3, 3, 1)
-        self.main_layout.addWidget(self.createLockinThermo(), 5, 0, 1, 3)
-        self.main_layout.addWidget(self.createTeasChanneltronBox(), 5, 3, 1, 1)
-        self.main_layout.addWidget(self.teasSystemIDBox(), 6, 0, 1, 2)
-        self.main_layout.addWidget(self.setDataFile(), 6, 2, 1, 2)
+        self.main_layout.addWidget(self.create_teas_DAC_box(), 0, 0, 3, 3)
+        self.main_layout.addWidget(self.create_teas_lock_in_box(), 0, 3, 2, 1)
+        self.main_layout.addWidget(self.create_scan_AML_gauge_box(), 3, 0, 2, 3)
+        self.main_layout.addWidget(self.create_teas_time_box(), 2, 3, 3, 1)
+        self.main_layout.addWidget(self.create_lock_in_thermo(), 5, 0, 1, 3)
+        self.main_layout.addWidget(self.create_teas_channeltron_box(), 5, 3, 1, 1)
+        self.main_layout.addWidget(self.teas_system_ID_box(), 6, 0, 1, 2)
+        self.main_layout.addWidget(self.set_data_file(), 6, 2, 1, 2)
         self.main_layout.addLayout(buttons_layout, 7, 3, 1, 1)
 
         print(self.configuracion)
@@ -225,7 +225,7 @@ class TeasWindow(QWidget):
             return False
         return True
 
-    def createTeasLockinBox(self):
+    def create_teas_lock_in_box(self):
         """
         Crea un cuadro de configuración de Lock-in.
 
@@ -253,7 +253,7 @@ class TeasWindow(QWidget):
 
         .. code-block:: python
 
-            lock_in_box = self.createTeasLockinBox()
+            lock_in_box = self.create_teas_lock_in_box()
             layout.addWidget(lock_in_box)
         """
 
@@ -289,7 +289,7 @@ class TeasWindow(QWidget):
         gb_teasLockinBox.setLayout(layout)
         return gb_teasLockinBox
 
-    def createTeasDACbox(self):
+    def create_teas_DAC_box(self):
         """
         Crea un cuadro de configuración de selección de canal DAC.
 
@@ -322,7 +322,7 @@ class TeasWindow(QWidget):
 
         .. code-block:: python
 
-            dac_box = self.createTeasDACbox()
+            dac_box = self.create_teas_DAC_box()
             layout.addWidget(dac_box)
         """
 
@@ -361,7 +361,7 @@ class TeasWindow(QWidget):
 
         self.cb_teasVrange.insertItems(0, self.scanVrange)
         self.cb_teasVrange.setCurrentIndex(0)
-        self.cb_teasVrange.currentIndexChanged.connect(self.setDACparameters)
+        self.cb_teasVrange.currentIndexChanged.connect(self.set_DAC_parameters)
         self.cb_teasVrange.currentTextChanged.connect(self.manejar_cb_teasVrange)
 
         self.cb_temperature.insertItems(0, self.scanChannelsDAC)
@@ -372,7 +372,7 @@ class TeasWindow(QWidget):
 
         self.cb_tempVrange.insertItems(0, self.scanVrange)
         self.cb_tempVrange.setCurrentIndex(0)
-        self.cb_tempVrange.currentIndexChanged.connect(self.setDACparameters)
+        self.cb_tempVrange.currentIndexChanged.connect(self.set_DAC_parameters)
         self.cb_tempVrange.currentTextChanged.connect(self.manejar_cb_tempVrange)
 
         self.slider_samplingRate.setOrientation(Qt.Orientation.Horizontal)
@@ -404,7 +404,7 @@ class TeasWindow(QWidget):
         gb_teasDACbox.setLayout(layout)
         return gb_teasDACbox
 
-    def createScanAMLgaugeBox(self):
+    def create_scan_AML_gauge_box(self):
         """
         Crea un cuadro de configuración del medidor de presión AML.
 
@@ -438,7 +438,7 @@ class TeasWindow(QWidget):
 
         .. code-block:: python
 
-            aml_gauge_box = self.createScanAMLgaugeBox()
+            aml_gauge_box = self.create_scan_AML_gauge_box()
             layout.addWidget(aml_gauge_box)
         """
 
@@ -489,7 +489,7 @@ class TeasWindow(QWidget):
         self.cb_scanAMLGaugeVrangeComboBox.insertItems(0, self.scanVrange)
         self.cb_scanAMLGaugeVrangeComboBox.setCurrentIndex(0)
         self.cb_scanAMLGaugeVrangeComboBox.currentIndexChanged.connect(
-            self.setDACparameters
+            self.set_DAC_parameters
         )
         self.cb_scanAMLGaugeVrangeComboBox.currentTextChanged.connect(
             self.manejar_cb_scanAMLGaugeVrangeComboBox
@@ -515,7 +515,7 @@ class TeasWindow(QWidget):
         gb_scanAMLgaugeBox.setLayout(layout)
         return gb_scanAMLgaugeBox
 
-    def createTeasTimeBox(self):
+    def create_teas_time_box(self):
         """
         Crea un cuadro de configuración de tiempo de integración.
 
@@ -543,7 +543,7 @@ class TeasWindow(QWidget):
 
         .. code-block:: python
 
-            time_box = self.createTeasTimeBox()
+            time_box = self.create_teas_time_box()
             layout.addWidget(time_box)
         """
 
@@ -568,7 +568,7 @@ class TeasWindow(QWidget):
         gb_teasTimeBox.setLayout(layout)
         return gb_teasTimeBox
 
-    def createLockinThermo(self):
+    def create_lock_in_thermo(self):
         """
         Crea el grupo de widgets para mostrar la señal actual del lock-in.
 
@@ -591,7 +591,7 @@ class TeasWindow(QWidget):
         gb_lockinThermoBox.setLayout(layout)
         return gb_lockinThermoBox
 
-    def createTeasChanneltronBox(self):
+    def create_teas_channeltron_box(self):
         """
         Crea un cuadro de configuración para el voltaje de polarización del Channeltron.
 
@@ -616,7 +616,7 @@ class TeasWindow(QWidget):
 
         .. code-block:: python
 
-            channeltron_box = self.createTeasChanneltronBox()
+            channeltron_box = self.create_teas_channeltron_box()
             layout.addWidget(channeltron_box)
         """
 
@@ -634,7 +634,7 @@ class TeasWindow(QWidget):
         self.gb_teasChanneltronBox.setLayout(layout)
         return self.gb_teasChanneltronBox
 
-    def teasSystemIDBox(self):
+    def teas_system_ID_box(self):
         """
         Crea un cuadro de descripción de muestra/sistema.
 
@@ -659,7 +659,7 @@ class TeasWindow(QWidget):
 
         .. code-block:: python
 
-            sys_id_box = self.teasSystemIDBox()
+            sys_id_box = self.teas_system_ID_box()
             layout.addWidget(sys_id_box)
         """
 
@@ -670,7 +670,7 @@ class TeasWindow(QWidget):
 
         self.le_teasSysIDboxLineEdit = QLineEdit()
         self.le_teasSysIDboxLineEdit.textChanged.connect(
-            self.manejar_le_teasSysIDboxLineEdit
+            self.manejar_le_teasys_ID_box_line_edit
         )
 
         layout.addWidget(self.le_teasSysIDboxLineEdit)
@@ -706,7 +706,7 @@ class TeasWindow(QWidget):
 
         file.close()
 
-    def setDataFile(self):
+    def set_data_file(self):
         """
         Configura un cuadro de selección de archivo de datos.
 
@@ -733,7 +733,7 @@ class TeasWindow(QWidget):
 
         .. code-block:: python
 
-            data_file_box = self.setDataFile()
+            data_file_box = self.set_data_file()
             layout.addWidget(data_file_box)
         """
 
@@ -955,7 +955,7 @@ class TeasWindow(QWidget):
         """
         self.configuracion.channeltron_voltage = texto
 
-    def manejar_le_teasSysIDboxLineEdit(self, texto):
+    def manejar_le_teasys_ID_box_line_edit(self, texto):
         """
         Maneja el cambio en el valor introducido en el campo de entrada de descripción del sistema en el experimento TEAS.
 
@@ -1113,7 +1113,7 @@ class TeasWindow(QWidget):
         self.cb_lockinTimeCons.setCurrentText(configuracion_cargada.lock_time_constant)
         self.cb_lockinSens.setCurrentText(configuracion_cargada.lock_sensitivity)
 
-    def setDACparameters(self):
+    def set_DAC_parameters(self):
         """
         .. note::
 
@@ -1232,7 +1232,7 @@ class TeasWindow(QWidget):
             self.teasDACParams[4] = -1.0
             self.teasDACParams[5] = 1.0
 
-    def actualizarDatos(self):
+    def actualizar_datos(self):
         """
         Actualiza los datos de forma periódica.
 
@@ -1242,7 +1242,7 @@ class TeasWindow(QWidget):
 
         """
         self.timer = QTimer()
-        self.timer.timeout.connect(self.actualizarDatos)
+        self.timer.timeout.connect(self.actualizar_datos)
         self.timer.start(100)
         import random
 
