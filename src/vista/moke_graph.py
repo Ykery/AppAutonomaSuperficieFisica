@@ -816,7 +816,7 @@ class MokeGraph(QWidget):
         self.temporizador.timeout.connect(self.actualizar_datos)
         self.temporizador.start(100)
 
-    def close_event(self, event):
+    def closeEvent(self, event):
         """
         Maneja el evento de cierre de la ventana.
 
@@ -827,7 +827,7 @@ class MokeGraph(QWidget):
         Si el usuario cancela la acción, se ignora el evento de cierre y la ventana permanece abierta.
 
         :param event: El evento de cierre.
-        :type event: QClose_event
+        :type event: QCloseEvent
         :return: None
         :rtype: None
 
@@ -835,7 +835,7 @@ class MokeGraph(QWidget):
 
         .. code-block:: python
 
-            close_event(event)
+            closeEvent(event)
 
         """
         if self.cargando_resultados or self.terminado:
