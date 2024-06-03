@@ -1,32 +1,23 @@
 #!/usr/bin/python3
 
-import sys
 import math
+import sys
+from datetime import datetime, time, timedelta
 
+import numpy as np
 # import Qwt
 from PyQt6 import Qwt
-import numpy as np
-from src.modelo.dao import ResultadoMokeDAO, ExperimentoDAO, MarcadorDAO
-from src.modelo.clases import ResultadoMoke, Marcador
-from datetime import datetime, time
-from PyQt6.QtCore import Qt, QSize, QTimer
-from PyQt6.QtGui import QColor, QPixmap, QIcon, QFont
-from PyQt6.QtWidgets import (
-    QWidget,
-    QToolBar,
-    QToolButton,
-    QHBoxLayout,
-    QVBoxLayout,
-    QLabel,
-    QApplication,
-    QInputDialog,
-    QSplitter,
-    QSizePolicy,
-)
+from PyQt6.QtCore import QSize, Qt, QTimer
+from PyQt6.QtGui import QColor, QFont, QIcon, QPixmap
 from PyQt6.QtPrintSupport import QPrintDialog, QPrinter
-from src.utilidades.utilidades import pedir_ruta_exportar_pdf, escribir_csv
+from PyQt6.QtWidgets import (QApplication, QHBoxLayout, QInputDialog, QLabel,
+                             QMessageBox, QSizePolicy, QSplitter, QToolBar,
+                             QToolButton, QVBoxLayout, QWidget)
+
+from src.modelo.clases import Marcador, ResultadoMoke
+from src.modelo.dao import ExperimentoDAO, MarcadorDAO, ResultadoMokeDAO
+from src.utilidades.utilidades import escribir_csv, pedir_ruta_exportar_pdf
 from src.vista.componentes.grafica import Plot, Zoomer
-from PyQt6.QtWidgets import QMessageBox
 
 
 def logSpace(size, xmin, xmax):
@@ -292,7 +283,7 @@ class MokeGraph(QWidget):
         self.cargando_resultados = load_results
         self.terminado = False
         self.haciendo_zoom = False
-        
+        self.subir = False
 
         self.layout = QVBoxLayout(self)
         self.layout.setSpacing(0)
@@ -306,9 +297,9 @@ class MokeGraph(QWidget):
         else:
             escribir_csv(self.experimento.rutaCsv, "magnetic_field", "intensity")
             self.datos_x = [0]
-            self.datos_y = [self.TIEMPO_ACTUALIZACION_GRAFICA/1000]
+            self.datos_y = [0]
             self.temporizador = QTimer()
-            self.temporizador.timeout.connect(self.actualizarDatos)
+            self.temporizador.timeout.connect(self.actualizar_datos)
             self.temporizador.start(self.TIEMPO_ACTUALIZACION_GRAFICA)
 
         self.layout.addWidget(self.crear_toolbar())
@@ -322,7 +313,7 @@ class MokeGraph(QWidget):
             self.btn_marcador.setEnabled(False)
             self.btn_terminar.setEnabled(False)
             self.lb_estado.setText("Visualizyng results")
-            self.actualizarDatos()
+            self.actualizar_datos()
 
     def cargar_resultados(self):
         """
@@ -356,38 +347,38 @@ class MokeGraph(QWidget):
         self.datos_x = []
         self.datos_y = []
         for resultado in resultados_cargados:
-                self.datos_x.append(resultado.magnetic_field)
-                self.datos_y.append(resultado.intensity)        
+            self.datos_x.append(resultado.magnetic_field)
+            self.datos_y.append(resultado.intensity)
 
     def crear_toolbar(self):
         """
-            Crea una barra de herramientas con varios controles para interactuar con el sistema.
+        Crea una barra de herramientas con varios controles para interactuar con el sistema.
 
-            Este método configura una barra de herramientas con botones para pausar, habilitar el modo de zoom,
-            añadir marcadores, imprimir, exportar y finalizar el experimento. Además, muestra el estado actual
-            del sistema, ya sea "Paused" o "Running".
+        Este método configura una barra de herramientas con botones para pausar, habilitar el modo de zoom,
+        añadir marcadores, imprimir, exportar y finalizar el experimento. Además, muestra el estado actual
+        del sistema, ya sea "Paused" o "Running".
 
-            :return: La barra de herramientas configurada.
-            :rtype: QToolBar
+        :return: La barra de herramientas configurada.
+        :rtype: QToolBar
 
-            Configura los siguientes controles:
+        Configura los siguientes controles:
 
-            - `btn_pausar`: Botón para pausar el sistema.
-            - `btn_zoom`: Botón para habilitar el modo de zoom.
-            - `btn_marcador`: Botón para añadir marcadores.
-            - `btn_imprimir`: Botón para imprimir los resultados.
-            - `btn_exportar`: Botón para exportar los resultados.
-            - `btn_terminar`: Botón para finalizar el experimento.
+        - `btn_pausar`: Botón para pausar el sistema.
+        - `btn_zoom`: Botón para habilitar el modo de zoom.
+        - `btn_marcador`: Botón para añadir marcadores.
+        - `btn_imprimir`: Botón para imprimir los resultados.
+        - `btn_exportar`: Botón para exportar los resultados.
+        - `btn_terminar`: Botón para finalizar el experimento.
 
-            Se conectan varios eventos a sus correspondientes manejadores para realizar acciones específicas
-            cuando se interactúa con los controles.
+        Se conectan varios eventos a sus correspondientes manejadores para realizar acciones específicas
+        cuando se interactúa con los controles.
 
-            Ejemplo de uso:
+        Ejemplo de uso:
 
-            .. code-block:: python
+        .. code-block:: python
 
-                toolbar = self.crear_toolbar()
-                layout.addWidget(toolbar)
+            toolbar = self.crear_toolbar()
+            layout.addWidget(toolbar)
 
         """
         self.toolBar = QToolBar(self)
@@ -521,20 +512,13 @@ class MokeGraph(QWidget):
             layout.addWidget(footer)
 
         """
-        lb_tiempo_experimento = QLabel("Time: 0")
+        self.lb_tiempo_experimento = QLabel("Time: 0")
         if not self.cargando_resultados:
-            self.temporizador.timeout.connect(
-                lambda: lb_tiempo_experimento.setText(
-                    "Time: "
-                    + time(
-                        second=int((datetime.now() - self.tiempo).total_seconds())
-                    ).strftime("%M:%S")
-                )
-            )
+            self.temporizador.timeout.connect(self.actualizar_tiempo)
         self.footer_datos = QWidget(self)
         layout_footer_datos = QHBoxLayout()
         layout_footer_datos.setDirection(QHBoxLayout.Direction.LeftToRight)
-        layout_footer_datos.addWidget(lb_tiempo_experimento)
+        layout_footer_datos.addWidget(self.lb_tiempo_experimento)
         layout_footer_datos.addWidget(QSplitter())
         self.datapoints_number = QLabel("Number of datapoints: 0")
         layout_footer_datos.addWidget(self.datapoints_number)
@@ -542,6 +526,23 @@ class MokeGraph(QWidget):
         layout_footer_datos.addWidget(QLabel(self.experimento.rutaCsv))
         self.footer_datos.setLayout(layout_footer_datos)
         return self.footer_datos
+
+    def actualizar_tiempo(self):
+
+        tiempo_experimento = datetime.now() - self.tiempo
+        horas = int(tiempo_experimento.total_seconds() // 3600)
+        tiempo_experimento = tiempo_experimento - timedelta(hours=horas)
+        minutos = int(tiempo_experimento.total_seconds() // 60)
+        tiempo_experimento = tiempo_experimento - timedelta(minutes=minutos)
+        segundos = int(tiempo_experimento.total_seconds())
+        self.lb_tiempo_experimento.setText(
+            "Time: "
+            + time(
+                hour=horas,
+                minute=minutos,
+                second=segundos,
+            ).strftime("%H:%M:%S")
+        )
 
     def finish_experiment(self):
         """
@@ -657,29 +658,37 @@ class MokeGraph(QWidget):
             except Exception as e:
                 QMessageBox.critical(self, "Error", str(e))
 
-    def actualizarDatos(self):
+    def actualizar_datos(self):
         """
-        Actualiza los datos del experimento y el gráfico asociado.
-
-        Este método agrega un nuevo punto de datos al experimento y actualiza el gráfico asociado si el proceso
-        de carga de resultados no está en curso y el experimento no ha finalizado. El punto de datos consiste
-        en un valor aleatorio de intensidad generado y el valor del campo magnético calculado como el último valor
-        del campo magnético más un incremento. Además, persiste los datos agregados en un archivo CSV y en la base
-        de datos asociada al experimento.
-
+        Actualiza los datos del experimento.
+        
+        Este método actualiza los datos del experimento MOKE. Si el experimento no está cargando resultados y no ha
+        finalizado, genera un nuevo par de valores aleatorios para el campo magnético y la intensidad. Luego, persiste
+        los datos en un archivo CSV y en la base de datos. Finalmente, actualiza el número de puntos de datos y muestra
+        el gráfico actualizado.
+        
         :return: None
         :rtype: None
-
+        
         Ejemplo de uso:
-
+        
         .. code-block:: python
-
-            actualizarDatos()
-
+        
+            actualizar_datos()
+            
         """
         if not self.cargando_resultados and not self.terminado:
-            self.datos_y.append(np.random.rand(1000)[0])
-            self.datos_x.append(self.datos_x[-1] + self.TIEMPO_ACTUALIZACION_GRAFICA/1000)
+            self.datos_x.append(
+                self.datos_x[-1] + self.TIEMPO_ACTUALIZACION_GRAFICA / 1000
+            )
+            if self.datos_y[-1] >= np.random.uniform(10, 15):
+                self.subir = False
+            elif self.datos_y[-1] <= np.random.uniform(-7, 0):
+                self.subir = True
+            if self.subir:
+                self.datos_y.append(self.datos_y[-1] + np.random.uniform(0, 2))
+            else:
+                self.datos_y.append(self.datos_y[-1] - np.random.uniform(0, 2))
             # Persistir los datos
             resultado = ResultadoMoke()
             resultado.id_experimento = self.experimento.id
@@ -804,7 +813,7 @@ class MokeGraph(QWidget):
         self.layout.addWidget(self.footer_datos)
         self.enableZoomMode(False)
         self.temporizador = QTimer()
-        self.temporizador.timeout.connect(self.actualizarDatos)
+        self.temporizador.timeout.connect(self.actualizar_datos)
         self.temporizador.start(100)
 
     def closeEvent(self, event):

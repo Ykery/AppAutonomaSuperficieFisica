@@ -14,7 +14,7 @@ from src.vista.componentes.displayLCD import DisplayLCDModificado
 from src.vista.componentes.thermometer import ThermometerModificado
 from src.vista.componentes.combobox import QComboBoxModificado
 
-from src.vista.teasGraph import TeasGraph
+from src.vista.teas_graph import TeasGraph
 import random
 from src.vista.componentes.boton import (
     BotonModificado,
@@ -245,7 +245,6 @@ class TeasWindow(QWidget):
 
         - `self.cb_lockinTimeCons`: Selección de constante de tiempo.
         - `self.cb_lockinSens`: Selección de sensibilidad.
-        - `chb_lockincheckBox`: Checkbox para marcar cuando los valores correctos están configurados.
 
         Se conectan varias señales a sus correspondientes manejadores para actualizar
         los parámetros del sistema Lock-in cuando los valores seleccionados cambian.
@@ -281,14 +280,11 @@ class TeasWindow(QWidget):
         self.cb_lockinSens.setCurrentIndex(0)
         self.cb_lockinSens.currentTextChanged.connect(self.manejar_cb_lockinSens)
 
-        chb_lockincheckBox = QCheckBox("Check when correct values set")
-        chb_lockincheckBox.setChecked(False)
 
         layout.addWidget(lb_sensLabel)
         layout.addWidget(self.cb_lockinTimeCons)
         layout.addWidget(lb_timeConsLabel)
         layout.addWidget(self.cb_lockinSens)
-        layout.addWidget(chb_lockincheckBox)
 
         gb_teasLockinBox.setLayout(layout)
         return gb_teasLockinBox
@@ -318,7 +314,6 @@ class TeasWindow(QWidget):
         - `self.cb_teas`: Selección de canal DAC para TEAS.
         - `self.cb_temperature`: Selección de canal DAC para temperatura.
         - `self.slider_samplingRate`: Slider para ajustar la tasa de muestreo.
-        - `ckb_DACcheckBox`: Checkbox para verificar la configuración.
 
         Se conectan varias señales a sus correspondientes manejadores para actualizar
         los parámetros del DAC cuando los valores seleccionados cambian.
@@ -358,8 +353,6 @@ class TeasWindow(QWidget):
         self.slider_samplingRate.valueChanged.connect(self.manejar_silder_samplingRate)
         self.slider_samplingRate.valueChanged.connect(lcd_samplingRateDisplay.display)
 
-        ckb_DACcheckBox = QCheckBox()
-        ckb_DACcheckBox.setChecked(False)
 
         self.cb_teas.insertItems(0, self.scanChannelsDAC)
         self.cb_teas.currentTextChanged.connect(
@@ -407,7 +400,6 @@ class TeasWindow(QWidget):
         layout.addWidget(lb_samplingRateLabel, 4, 0, 1, 1)
         layout.addWidget(self.slider_samplingRate, 5, 0, 1, 3)
         layout.addWidget(lcd_samplingRateDisplay, 5, 3, 1, 1)
-        layout.addWidget(ckb_DACcheckBox, 6, 0, 1, 1)
 
         gb_teasDACbox.setLayout(layout)
         return gb_teasDACbox
@@ -700,7 +692,7 @@ class TeasWindow(QWidget):
         file = QFileDialog(self)
         file.setFileMode(QFileDialog.FileMode.AnyFile)
         file.setViewMode(QFileDialog.ViewMode.List)
-        file.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
+        file.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
 
         # Si se escribe una ruta y existe, que apareza en el cuadro de diálogo del sistema de gestor de archivos
         self.archivo_incio = self.le_fileLineEdit.text()

@@ -100,7 +100,7 @@ def crear_docx_experimento(id, docx_path = "./experimento.docx"):
             None,
             color=QColor(131, 25, 70),
         )
-    plot_experimento.resize(350,300)
+    plot_experimento.resize(270,270)
     plot_experimento.showData(datos_x, datos_y)
     printer : QPixmap = plot_experimento.grab()
     buffer = QBuffer()

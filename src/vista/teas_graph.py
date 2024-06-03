@@ -289,6 +289,8 @@ finish_xpm = [
 class TeasGraph(QWidget):
     def __init__(self, id, load_results=False, *args):
         super().__init__(*args)
+        self.TIEMPO_ACTUALIZACION_GRAFICA = 100
+        self.subir = False
 
         self.layout = QVBoxLayout(self)
         self.layout.setSpacing(0)
@@ -313,9 +315,9 @@ class TeasGraph(QWidget):
             self.datos_x = [0]
             self.datos_y = [0]
             self.temporizador = QTimer()
-            self.temporizador.timeout.connect(self.actualizarDatos)
+            self.temporizador.timeout.connect(self.actualizar_datos)
             
-            self.temporizador.start(100)
+            self.temporizador.start(self.TIEMPO_ACTUALIZACION_GRAFICA)
 
         self.zooming = False
         self.layout.addWidget(self.crear_toolbar())
@@ -324,12 +326,12 @@ class TeasGraph(QWidget):
         self.enableZoomMode(False)
         if self.cargando_resultados:
             self.pausado = True
-            self.mostrar_btn_pause()
+            self.actualizar_btn_pause()
             self.btn_pausar.setEnabled(False)
             self.btn_terminar.setEnabled(False)
             self.btn_marcador.setEnabled(False)
             self.lb_estado.setText("Visualizyng results")
-            self.actualizarDatos()
+            self.actualizar_datos()
     
     def crear_toolbar(self):
         self.toolBar = QToolBar(self)
@@ -343,7 +345,7 @@ class TeasGraph(QWidget):
         self.btn_pausar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
         self.toolBar.addWidget(self.btn_pausar)
         self.btn_pausar.toggled.connect(self.pause)
-        self.mostrar_btn_pause()
+        self.actualizar_btn_pause()
 
         self.btnZoom = QToolButton(self.toolBar)
         self.btnZoom.setText("Zoom")
@@ -403,8 +405,6 @@ class TeasGraph(QWidget):
 
         self.zoomer_experimento = Zoomer(2, 0, self.plt_experimento.canvas())
 
-        self.panner_experimento = Qwt.QwtPlotPanner(self.plt_experimento.canvas())
-        self.panner_experimento.setMouseButton(Qt.MouseButton.MiddleButton)
 
         self.picker_experimento = Qwt.QwtPlotPicker(
             2,
@@ -477,9 +477,9 @@ class TeasGraph(QWidget):
         MarcadorDAO.crear(marcador)
         self.lb_estado.setText("Paused" if self.pausado else "Running")
 
-        self.mostrar_btn_pause()
+        self.actualizar_btn_pause()
 
-    def mostrar_btn_pause(self):
+    def actualizar_btn_pause(self):
         self.btn_pausar.setText("Resume" if self.pausado else "Pause")
         self.btn_pausar.setIcon(
             QIcon(QPixmap(play_xpm)) if self.pausado else QIcon(QPixmap(pause_xpm))
@@ -499,10 +499,19 @@ class TeasGraph(QWidget):
             except Exception as e:
                 QMessageBox.critical(self, "Error", str(e))
 
-    def actualizarDatos(self):
+    def actualizar_datos(self):
         if not self.cargando_resultados and not self.finished:
-            self.datos_y.append(np.random.rand(1000)[0])
-            self.datos_x.append(self.datos_x[-1] + 1)
+            self.datos_x.append(
+                self.datos_x[-1] + self.TIEMPO_ACTUALIZACION_GRAFICA / 1000
+            )
+            if self.datos_y[-1] >= np.random.uniform(10, 15):
+                self.subir = False
+            elif self.datos_y[-1] <= np.random.uniform(-7, 0):
+                self.subir = True
+            if self.subir:
+                self.datos_y.append(self.datos_y[-1] + np.random.uniform(0, 2))
+            else:
+                self.datos_y.append(self.datos_y[-1] - np.random.uniform(0, 2))
             # Persistir los datos
             resultado = ResultadoTeas()
             resultado.id_experimento = self.experimento.id
@@ -536,7 +545,6 @@ class TeasGraph(QWidget):
         if not on and self.zooming:
             self.recargar_grafica()
         self.picker_experimento.setEnabled(not on)
-        self.panner_experimento.setEnabled(on)
         self.zoomer_experimento.setEnabled(on)
         self.zoomer_experimento.zoom(0)
 
@@ -554,8 +562,6 @@ class TeasGraph(QWidget):
 
         self.zoomer_experimento = Zoomer(2, 0, self.plt_experimento.canvas())
 
-        self.panner_experimento = Qwt.QwtPlotPanner(self.plt_experimento.canvas())
-        self.panner_experimento.setMouseButton(Qt.MouseButton.MiddleButton)
 
         self.picker_experimento = Qwt.QwtPlotPicker(
             2,
@@ -575,7 +581,7 @@ class TeasGraph(QWidget):
         self.zooming = False
         self.enableZoomMode(False)
         self.temporizador = QTimer()
-        self.temporizador.timeout.connect(self.actualizarDatos)
+        self.temporizador.timeout.connect(self.actualizar_datos)
         self.temporizador.start(100)
 
     def closeEvent(self, event):
@@ -585,7 +591,7 @@ class TeasGraph(QWidget):
         reply = QMessageBox.warning(
             self,
             "Warning",
-            "¿Estás seguro que deseas salir y terminar el experimento?",
+            "Are you sure you want to close the window and stop the experiment?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No,
         )
@@ -602,9 +608,9 @@ class TeasGraph(QWidget):
 
 
 def main():
-    a = QApplication(sys.argv)
-    m = TeasGraph(1, True)
-    m.resize(540, 400)
-    m.show()
+    app = QApplication(sys.argv)
+    teas_graph = TeasGraph(1, True)
+    teas_graph.resize(540, 400)
+    teas_graph.show()
 
-    sys.exit(a.exec())
+    sys.exit(app.exec())

@@ -17,7 +17,7 @@ from src.vista.componentes.thermometer import ThermometerModificado
 from src.vista.componentes.combobox import QComboBoxModificado
 
 
-class VistaPrincipal(QWidget):
+class MokeWindow(QWidget):
     def __init__(self, id_experimento=None):
         super().__init__()
         self.configuracion = ConfiguracionMoke()
@@ -274,7 +274,6 @@ class VistaPrincipal(QWidget):
     
     - `self.cb_sensitivity`: Selección de sensibilidad.
     - `self.cb_time`: Selección de constante de tiempo.
-    - `chb_verified`: Checkbox para marcar cuando los valores correctos están configurados.
 
     Se conectan varias señales a sus correspondientes manejadores para actualizar 
     los parámetros del sistema Lock-in cuando los valores seleccionados cambian.
@@ -305,13 +304,11 @@ class VistaPrincipal(QWidget):
         self.cb_time.setCurrentIndex(0)
         self.cb_time.currentTextChanged.connect(self.manejar_cb_time_constant)
 
-        chb_verified = QCheckBox("Check when correct values set")
 
         layout.addWidget(lb_sensitivity)
         layout.addWidget(self.cb_sensitivity)
         layout.addWidget(lb_time)
         layout.addWidget(self.cb_time)
-        layout.addWidget(chb_verified)
 
         gb_lock_in_box.setLayout(layout)
         return gb_lock_in_box
@@ -578,7 +575,7 @@ class VistaPrincipal(QWidget):
         file = QFileDialog(self)
         file.setFileMode(QFileDialog.FileMode.AnyFile)
         file.setViewMode(QFileDialog.ViewMode.List)
-        file.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
+        file.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
 
         # Si se escribe una ruta y existe, que apareza en el cuadro de diálogo del sistema de gestor de archivos
         self.archivo_incio = self.le_datafile.text()
@@ -1290,6 +1287,6 @@ def main():
     """
     Conexion.iniciar_bbdd()
     app = QApplication([])
-    vista_moke_loop = VistaPrincipal()
+    vista_moke_loop = MokeWindow()
     vista_moke_loop.show()
     sys.exit(app.exec())
