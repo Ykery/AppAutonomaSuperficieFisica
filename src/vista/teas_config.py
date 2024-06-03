@@ -24,8 +24,47 @@ from src.vista.componentes.boton import (
 
 
 class TeasWindow(QWidget):
+    """
+    Ventana principal para la gestión de un sistema TEAS.
+
+    Esta clase crea y configura la interfaz de usuario para gestionar un sistema TEAS,
+    incluyendo la configuración de parámetros de DAC, Lock-in, canales y otras configuraciones específicas.
+
+    :param id_experimento: ID opcional del experimento para cargar una configuración previa.
+    :type id_experimento: int, optional
+    """
 
     def __init__(self, id_experimento=None):
+        """
+        Inicializa una nueva instancia de la ventana de gestión de TEAS.
+
+        Este método configura la ventana principal, inicializa las variables necesarias,
+        crea y organiza los diferentes widgets y layouts necesarios para la interfaz de usuario.
+
+        :param id_experimento: ID opcional del experimento para cargar una configuración previa.
+        :type id_experimento: int, optional
+
+        Configura los siguientes elementos:
+
+        - Estilo de la ventana.
+        - Objetos `configuracion` y `experimento` vacíos de las clases `ConfiguracionTeas` y `Experimento`.
+        - Título de la ventana.
+        - Variables generales `teasDACParams` e `indicesList`.
+        - Diseño principal (`QGridLayout`).
+        - Fuente utilizada (`QFont`).
+        - Listas desplegables para varios parámetros del sistema.
+        - Botones de ejecución y cierre con sus respectivos layouts.
+        - Conexión de señales de botones a sus manejadores.
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            app = QApplication([])
+            window = TeasWindow(id_experimento=1)
+            window.show()
+            app.exec_()
+        """
         super().__init__()
         self.setStyleSheet("background-color: rgb(176, 213, 212); color: black;")
 
@@ -119,14 +158,33 @@ class TeasWindow(QWidget):
 
     def run(self):
         """
-        Ejecuta el proceso principal del experimento.
+        Ejecuta el proceso principal de la ventana de gestión de TEAS.
 
-        :param self: Referencia a la instancia de la clase.
-        :type self: object
-        :return: Ninguno.
-        :rtype: None
+        Este método valida la configuración actual y, si todo es correcto, guarda el experimento
+        y su configuración en la base de datos, y luego abre la pantalla de gráficos.
 
+        Realiza las siguientes acciones:
+
+        - Verifica si la ruta del archivo CSV está especificada.
+        - Valida los datos de configuración.
+        - Establece el tipo de experimento como "TEAS".
+        - Crea un nuevo registro de experimento en la base de datos.
+        - Asocia la configuración con el experimento y guarda la configuración en la base de datos.
+        - Abre la pantalla de gráficos para visualizar los resultados.
+
+        Muestra mensajes de error si:
+
+        - No se ha especificado la ruta del archivo CSV (`mostrar_error_ruta_CSV`).
+        - Los datos de configuración no son válidos (`mostrar_error_faltan_datos`).
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            window = TeasWindow()
+            window.run()
         """
+
         if not self.experimento.rutaCsv:
             self.mostrar_error_ruta_CSV()
         elif not self.control_validar_datos():
@@ -140,12 +198,27 @@ class TeasWindow(QWidget):
 
     def mostrar_error(self):
         """
-        Muestra una ventana de error cuando se selecciona un input no válido.
+        Muestra un cuadro de diálogo de error con un mensaje de entrada no válido.
 
-        :param self: Referencia a la instancia de la clase.
-        :type self: object
+        Este método crea y configura una ventana de mensaje de error con un icono crítico,
+        un título y un texto de error. La ventana de mensaje se muestra con un botón "Ok".
 
+        Configura los siguientes elementos:
+
+        - Icono del cuadro de diálogo como crítico.
+        - Título de la ventana como "Error de Input".
+        - Texto del mensaje como "Input selecionado no valido.".
+        - Estilo de la fuente con tamaño 12 puntos.
+        - Botón "Ok" para cerrar la ventana.
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            window = TeasWindow()
+            window.mostrar_error()
         """
+
         # Crear y configurar la ventana de error
         error_dialog = QMessageBox()
         error_dialog.setIcon(QMessageBox.Icon.Critical)
@@ -159,11 +232,26 @@ class TeasWindow(QWidget):
 
     def mostrar_error_ruta_CSV(self):
         """
-        Muestra un mensaje de error indicando que la ruta del archivo CSV no ha sido especificada.
+        Muestra un cuadro de diálogo de error indicando que se debe ingresar la ruta del archivo CSV.
 
-        :param self: Referencia a la instancia de la clase.
-        :type self: object
+        Este método crea y configura una ventana de mensaje de error con un ícono crítico,
+        un título y un texto de error indicando al usuario que debe ingresar la ruta del archivo CSV.
+        La ventana de mensaje se muestra con un botón "Ok".
 
+        Configura los siguientes elementos:
+
+        - Ícono del cuadro de diálogo como crítico.
+        - Título de la ventana como "Error de Datafile".
+        - Texto del mensaje como "Ingrese la ruta del archivo.".
+        - Estilo de la fuente con tamaño 12 puntos.
+        - Botón "Ok" para cerrar la ventana.
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            window = TeasWindow()
+            window.mostrar_error_ruta_CSV()
         """
         # Crear y configurar la ventana de error
         error_dialog = QMessageBox()
@@ -178,12 +266,28 @@ class TeasWindow(QWidget):
 
     def mostrar_error_faltan_datos(self):
         """
-        Muestra un mensaje de error indicando que faltan datos para correr el experimento.
+        Muestra un cuadro de diálogo de error indicando que faltan datos para correr el experimento.
 
-        :param self: Referencia a la instancia de la clase.
-        :type self: object
+        Este método crea y configura una ventana de mensaje de error con un ícono crítico,
+        un título y un texto de error indicando al usuario que deben ingresar todos los datos necesarios
+        para correr el experimento. La ventana de mensaje se muestra con un botón "Ok".
 
+        Configura los siguientes elementos:
+
+        - Ícono del cuadro de diálogo como crítico.
+        - Título de la ventana como "Error de Datos".
+        - Texto del mensaje como "Ingrese todos los datos necesarios para correr el experimento.".
+        - Estilo de la fuente con tamaño 12 puntos.
+        - Botón "Ok" para cerrar la ventana.
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            window = TeasWindow()
+            window.mostrar_error_faltan_datos()
         """
+
         # Crear y configurar la ventana de error
         error_dialog = QMessageBox()
         error_dialog.setIcon(QMessageBox.Icon.Critical)
@@ -199,14 +303,28 @@ class TeasWindow(QWidget):
 
     def control_validar_datos(self):
         """
-        Valida que los datos necesarios para correr el experimento hayan sido ingresados.
+        Verifica si se han ingresado todos los datos necesarios para correr el experimento.
 
-        :param self: Referencia a la instancia de la clase.
-        :type self: object
-        :return: True si los datos son válidos, False en caso contrario.
-        :rtype: bool
+        Este método verifica si todos los atributos de configuración necesarios para ejecutar
+        el experimento tienen un valor distinto de `None`. Devuelve True si todos los datos
+        necesarios están presentes y False en caso contrario.
 
+        Retorna:
+        -------
+        bool
+            True si todos los datos necesarios están presentes, False de lo contrario.
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            window = TeasWindow()
+            if window.control_validar_datos():
+                window.run()
+            else:
+                window.mostrar_error_faltan_datos()
         """
+
         if (
             self.configuracion.dac_input_intensity == None
             or self.configuracion.dac_teas_voltaje_range == None
@@ -570,14 +688,27 @@ class TeasWindow(QWidget):
 
     def create_lock_in_thermo(self):
         """
-        Crea el grupo de widgets para mostrar la señal actual del lock-in.
+    Crea un grupo de widgets para visualizar el nivel de la señal lock-in actual.
 
-        :param self: Referencia a la instancia de la clase.
-        :type self: object
-        :return: Grupo de widgets para mostrar la señal actual del lock-in.
-        :rtype: QGroupBox
+    Este método configura un layout de cuadrícula (`QGridLayout`) que contiene un grupo de caja (`QGroupBox`)
+    titulado "Current lock-in signal level". Dentro de este grupo de caja se incluye un termómetro 
+    (`ThermometerModificado`) que muestra el nivel de la señal lock-in actual. Es sólo para pruebas y no tiene
+    funcionalidad real.
 
-        """
+    Retorna:
+    -------
+    QGroupBox
+        Un grupo de widgets configurado para visualizar el nivel de la señal lock-in actual.
+
+    Ejemplo de uso:
+
+    .. code-block:: python
+
+        window = TeasWindow()
+        lock_in_thermo_box = window.create_lock_in_thermo()
+        layout.addWidget(lock_in_thermo_box)
+    """
+
 
         layout = QGridLayout()
 
