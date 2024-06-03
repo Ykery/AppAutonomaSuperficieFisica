@@ -6,7 +6,7 @@ from os import remove
 import sys
 from io import BytesIO
 from PyQt6 import Qwt
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtGui import QPixmap, QColor
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import QBuffer, QIODevice
 from PyQt6.QtWidgets import QFileDialog
@@ -90,7 +90,16 @@ def crear_docx_experimento(id, docx_path = "./experimento.docx"):
     # Crear el documento de Word
     doc = DocxTemplate(TEMPLATE_PATH)
     # Crear la imagen de la grafica
-    plot_experimento = Plot()
+    if experimento.tipo.lower() == "teas":
+        plot_experimento = Plot("TEAS Timescan", "Time[sec]", "Intensity [arb. un.]", None)
+    elif experimento.tipo.lower() == "moke":
+        plot_experimento = Plot(
+            "Moke Loop Graph",
+            "Magnetic field (Oe)",
+            "Intensity [arb. un.]",
+            None,
+            color=QColor(131, 25, 70),
+        )
     plot_experimento.resize(350,300)
     plot_experimento.showData(datos_x, datos_y)
     printer : QPixmap = plot_experimento.grab()
