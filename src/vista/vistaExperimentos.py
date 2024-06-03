@@ -13,18 +13,35 @@ from src.utilidades.utilidades import pedir_ruta_exportar_pdf
 from src.vista.teasMain import TeasWindow
 from src.vista.moke_config import VistaPrincipal, MokeGraph
 from src.vista import teasGraph
-from src.vista.componentes.boton import boton_modificado_run, boton_modificado_exit
+from src.vista.componentes.boton import BotonModificadoRun,BotonModificadoExit 
 
 class ExperimentosWindow(QWidget):
-    
+    """
+    Ventana para mostrar una lista de experimentos realizados.
+
+    Esta ventana proporciona una interfaz para mostrar una lista de experimentos realizados,
+    filtrar los experimentos por tipo y fecha, exportar experimentos a PDF, visualizar experimentos
+    y cargar configuraciones asociadas a los experimentos.
+
+    :param parent: El widget padre de la ventana.
+    :type parent: QWidget
+    """
     def __init__(self):
+        """
+        Inicializa la ventana de Experimentos.
+
+        Se establece el título de la ventana, se configura el diseño principal, se crean los filtros
+        para tipo de experimento y fecha, se crea la zona de acciones y se conectan los eventos de los botones.
+
+        :type parent: QWidget
+        """
         super().__init__()
         self.setWindowTitle("EXPERIMENTOS REALIZADOS")
         self.experimentos = None
         self.main_layout = QGridLayout()
         self.fuenteHelvetica = QFont("Helvetica", 11)
         self.setStyleSheet("background-color: rgb(176, 213, 212); color: black;")
-        btn_volver = boton_modificado_exit("Volver")
+        btn_volver = BotonModificadoExit("Volver")
         self.filtro_tipo = None
         self.filtro_fecha_desde = None
         self.filtro_fecha_hasta = None
@@ -39,13 +56,29 @@ class ExperimentosWindow(QWidget):
         btn_volver.clicked.connect(self.volver)
 
 
-    def volver(self):   
+    def volver(self):
+        """
+    Cierra la ventana actual.
+
+    Este método cierra la ventana actual en la que se encuentra el usuario.
+
+    :return: None
+    :rtype: None
+
+    Ejemplo de uso:
+
+    .. code-block:: python
+
+        ventana_principal.volver()
+
+    """   
         self.close()
 
     def cerrar_ventana(self):
         self.close()
 
     def crear_scroll_area(self):
+    
         layout = QGridLayout()
         self.tb_experimentos = QTableWidget(0, 4) 
         self.tb_experimentos.setHorizontalHeaderLabels(["Tipo experimento", "Fecha creación", "Descripción", "Nombre/Ruta"])
@@ -103,6 +136,25 @@ class ExperimentosWindow(QWidget):
 
 
     def manejar_indices_tabla(self, row):
+        """
+    Maneja los eventos de clic en los índices de la tabla.
+
+    Este método se encarga de manejar los clics del usuario en los índices verticales
+    de la tabla de experimentos. Cuando el usuario hace clic en un índice, se selecciona
+    el experimento correspondiente en función del identificador asociado al índice.
+
+    :param int row: El índice de la fila en la tabla donde se hizo clic.
+
+    Este método obtiene el identificador del experimento asociado al índice de la fila
+    y lo utiliza para seleccionar dicho experimento mediante el método
+    ``seleccionar_experimento``.
+
+    Ejemplo de uso:
+
+    .. code-block:: python
+
+        self.tb_experimentos.verticalHeader().sectionClicked.connect(self.manejar_indices_tabla)
+    """
         experiment_id = None
         item = self.tb_experimentos.item(row, 0)
         experiment_id = item.data(Qt.ItemDataRole.UserRole)
@@ -131,7 +183,6 @@ class ExperimentosWindow(QWidget):
 
     def seleccionar_experimento(self, id_experimento):
         self.experimento_seleccionado = id_experimento
-        print(f"Experimento seleccionado: {self.experimento_seleccionado}")
 
 
     def verificar_experimento_seleccionado(self):
@@ -263,9 +314,9 @@ class ExperimentosWindow(QWidget):
     def crear_zona_acciones(self):
         layout = QGridLayout()
     
-        btn_exportar = boton_modificado_run("Exportar a PDF")
-        btn_visualizar = boton_modificado_run("Visualizar experimento")
-        btn_configuraciones = boton_modificado_run("Cargar configuraciones")
+        btn_exportar = BotonModificadoRun("Exportar a PDF")
+        btn_visualizar = BotonModificadoRun("Visualizar experimento")
+        btn_configuraciones = BotonModificadoRun("Cargar configuraciones")
         
         btn_exportar.clicked.connect(self.manejar_exportar_pdf)
         btn_visualizar.clicked.connect(self.visualizar_resultados)
