@@ -160,47 +160,45 @@ class VistaPrincipal(QWidget):
         gb_MokeDACBox.setCheckable(True)
         gb_MokeDACBox.setChecked(False)
 
-        self.cb_moke_intensity = BotonModificado()
+        self.cb_moke_intensity = QComboBoxModificado()
         self.cb_moke_intensity.insertItems(0, self.mokeChannelsDAC)
         self.cb_moke_intensity.setCurrentIndex(0)
         self.cb_moke_intensity.currentTextChanged.connect(
             lambda texto: self.manejar_cb_moke_intensity(texto)
         )
 
-        self.cb_moke_dc_level = BotonModificado()
+        self.cb_moke_dc_level = QComboBoxModificado()
         self.cb_moke_dc_level.insertItems(0, self.mokeChannelsDAC)
         self.cb_moke_dc_level.setCurrentIndex(0)
-        self.cb_moke_dc_level.currentTextChanged.connect(
-            lambda texto: self.manejar_cb_moke_dc_level(texto)
-        )
+        self.cb_moke_dc_level.currentTextChanged.connect(lambda texto: self.manejar_cb_moke_dc_level(texto))
 
-        self.cb_moke_voltage_range = BotonModificado()
-        self.cb_moke_voltage_range.insertItems(0, self.mokeVRange)
+
+        self.cb_moke_voltage_range =  QComboBoxModificado()
+        self.cb_moke_voltage_range.insertItems(0,self.mokeVRange)
         self.cb_moke_voltage_range.setCurrentIndex(0)
-        self.cb_moke_voltage_range.currentTextChanged.connect(
-            self.manejar_cb_moke_volage_range
-        )
+        self.cb_moke_voltage_range.currentTextChanged.connect(self.manejar_cb_moke_volage_range)
 
-        self.cb_dc_level_voltage_range = BotonModificado()
+
+        self.cb_dc_level_voltage_range = QComboBoxModificado()
         self.cb_dc_level_voltage_range.insertItems(0, self.mokeVRange)
         self.cb_dc_level_voltage_range.setCurrentIndex(0)
         self.cb_dc_level_voltage_range.currentTextChanged.connect(
             self.manejar_cb_dc_level_voltage_range
         )
 
-        self.cb_temperature = BotonModificado()
+        self.cb_temperature = QComboBoxModificado()
         self.cb_temperature.insertItems(0, self.mokeChannelsDAC)
         self.cb_temperature.setCurrentIndex(0)
         self.cb_temperature.currentTextChanged.connect(
             lambda texto: self.manejar_cb_temperature(texto)
         )
 
-        self.cb_tempVrange = BotonModificado()
+        self.cb_tempVrange = QComboBoxModificado()
         self.cb_tempVrange.insertItems(0, self.mokeLockinSensVals)
         self.cb_tempVrange.setCurrentIndex(0)
         self.cb_tempVrange.currentTextChanged.connect(self.manejar_cb_tempVrange)
 
-        self.cb_timeFieldDriving = BotonModificado()
+        self.cb_timeFieldDriving = QComboBoxModificado()
         self.cb_timeFieldDriving.insertItems(0, self.mokeLockinTimeConsVals)
         self.cb_timeFieldDriving.setCurrentIndex(0)
         self.cb_timeFieldDriving.currentTextChanged.connect(
