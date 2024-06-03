@@ -305,7 +305,7 @@ class MokeGraph(QWidget):
         self.layout.addWidget(self.crear_toolbar())
         self.layout.addWidget(self.crear_cuerpo())
         self.layout.addWidget(self.crear_footer())
-        self.enableZoomMode(False)
+        self.enable_zoom_mode(False)
         if self.cargando_resultados:
             self.pausado = True
             self.mostrar_btn_pause()
@@ -408,7 +408,7 @@ class MokeGraph(QWidget):
         self.toolBar.addWidget(self.btn_marcador)
         self.btn_marcador.clicked.connect(self.manejar_anadir_marcador)
 
-        self.btn_zoom.toggled.connect(self.enableZoomMode)
+        self.btn_zoom.toggled.connect(self.enable_zoom_mode)
 
         self.btn_imprimir = QToolButton(self.toolBar)
         self.btn_imprimir.setText("Print")
@@ -422,7 +422,7 @@ class MokeGraph(QWidget):
         self.btn_exportar.setIcon(QIcon(QPixmap(print_xpm)))
         self.btn_exportar.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
         self.toolBar.addWidget(self.btn_exportar)
-        self.btn_exportar.clicked.connect(self.exportDocument)
+        self.btn_exportar.clicked.connect(self.export_document)
 
         self.btn_terminar = QToolButton(self.toolBar)
         self.btn_terminar.setText("Finish")
@@ -734,7 +734,7 @@ class MokeGraph(QWidget):
                 renderer.setLayoutFlag(Qwt.QwtPlotRenderer.FrameWithScales)
             renderer.renderTo(self.plt_experimento, printer)
 
-    def exportDocument(self):
+    def export_document(self):
         """
         Exporta el documento asociado al experimento actual.
 
@@ -749,12 +749,12 @@ class MokeGraph(QWidget):
 
         .. code-block:: python
 
-            exportDocument()
+            export_document()
 
         """
         pedir_ruta_exportar_pdf(self, self.experimento.id)
 
-    def enableZoomMode(self, on):
+    def enable_zoom_mode(self, on):
         """
         Habilita o deshabilita el modo de zoom en el gráfico.
 
@@ -773,7 +773,7 @@ class MokeGraph(QWidget):
 
         .. code-block:: python
 
-            enableZoomMode(True)
+            enable_zoom_mode(True)
 
         """
         if on:
@@ -811,12 +811,12 @@ class MokeGraph(QWidget):
         self.layout.addWidget(self.toolBar)
         self.layout.addWidget(self.crear_cuerpo())
         self.layout.addWidget(self.footer_datos)
-        self.enableZoomMode(False)
+        self.enable_zoom_mode(False)
         self.temporizador = QTimer()
         self.temporizador.timeout.connect(self.actualizar_datos)
         self.temporizador.start(100)
 
-    def closeEvent(self, event):
+    def close_event(self, event):
         """
         Maneja el evento de cierre de la ventana.
 
@@ -827,7 +827,7 @@ class MokeGraph(QWidget):
         Si el usuario cancela la acción, se ignora el evento de cierre y la ventana permanece abierta.
 
         :param event: El evento de cierre.
-        :type event: QCloseEvent
+        :type event: QClose_event
         :return: None
         :rtype: None
 
@@ -835,7 +835,7 @@ class MokeGraph(QWidget):
 
         .. code-block:: python
 
-            closeEvent(event)
+            close_event(event)
 
         """
         if self.cargando_resultados or self.terminado:
