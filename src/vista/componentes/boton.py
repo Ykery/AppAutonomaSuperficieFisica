@@ -6,7 +6,7 @@ class BotonModificado(QPushButton):
     """
     Un botón personalizado con un estilo y fuente específicos.
 
-    Esta clase extiende :class:`QPushButton` y aplica una fuente personalizada y 
+    Esta clase extiende :class:`QPushButton` y aplica una fuente personalizada y
     un estilo de hoja de estilos (CSS) para modificar la apariencia del botón.
 
     :param texto: El texto que se mostrará en el botón.
@@ -19,7 +19,8 @@ class BotonModificado(QPushButton):
         boton = BotonModificado("Click me")
         layout.addWidget(boton)
     """
-    def __init__(self,texto):
+
+    def __init__(self, texto):
         """
         Inicializa el botón personalizado con el texto dado.
 
@@ -28,7 +29,8 @@ class BotonModificado(QPushButton):
         """
         super(BotonModificado, self).__init__(texto)
         self.setFont(QFont("Helvetica", 11))
-        self.setStyleSheet("""
+        self.setStyleSheet(
+            """
             QPushButton {
                 background-color: rgb(135, 206, 235);
                 padding: 10px;
@@ -39,7 +41,10 @@ class BotonModificado(QPushButton):
              QPushButton:pressed {
             background-color: rgb(100, 121, 120);
             }                  
-        """)
+        """
+        )
+
+
 class BotonModificadoExit(BotonModificado):
     def __init__(self, texto):
         """
@@ -49,8 +54,6 @@ class BotonModificadoExit(BotonModificado):
 
         :param texto: El texto que se mostrará en el botón.
         :type texto: str
-        :return: None
-        :rtype: None
 
         Ejemplo de uso:
 
@@ -62,7 +65,8 @@ class BotonModificadoExit(BotonModificado):
         """
         super().__init__(texto)
         self.setFont(QFont("Helvetica", 11))
-        self.setStyleSheet("""
+        self.setStyleSheet(
+            """
             QPushButton {
                 background-color: rgb(201,112,098);
                 padding: 10px;
@@ -73,7 +77,9 @@ class BotonModificadoExit(BotonModificado):
              QPushButton:pressed {
                 background-color: rgb(167, 98, 88);
             }                  
-        """)
+        """
+        )
+
 
 class BotonModificadoRun(BotonModificado):
     def __init__(self, texto):
@@ -84,8 +90,6 @@ class BotonModificadoRun(BotonModificado):
 
         :param texto: El texto que se mostrará en el botón.
         :type texto: str
-        :return: None
-        :rtype: None
 
         Ejemplo de uso:
 
@@ -97,7 +101,8 @@ class BotonModificadoRun(BotonModificado):
         """
         super().__init__(texto)
         self.setFont(QFont("Helvetica", 11))
-        self.setStyleSheet("""
+        self.setStyleSheet(
+            """
             QPushButton {
                 background-color: rgb(59, 235, 156);
                 padding: 10px;
@@ -108,4 +113,5 @@ class BotonModificadoRun(BotonModificado):
              QPushButton:pressed {
                 background-color: rgb(100, 121, 120);
             }                  
-        """)
+        """
+        )
