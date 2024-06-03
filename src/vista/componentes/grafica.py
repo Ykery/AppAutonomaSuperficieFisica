@@ -4,14 +4,34 @@ from PyQt6.QtGui import QColor
 
 
 class Plot(Qwt.QwtPlot):
+    """
+    Clase para proporcionar una gráfica personalizada.
+    """
+
     def __init__(
         self,
         title,
-        asis_x_title,
+        axis_x_title,
         axis_y_title,
         parent=None,
         color=QColor("MidnightBlue"),
     ):
+        """
+        Inicializa una instancia de la clase Plot.
+
+        Esta clase extiende Qwt.QwtPlot para proporcionar una gráfica personalizada.
+
+        :param title: Título de la gráfica.
+        :type title: str
+        :param axis_x_title: Título del eje X.
+        :type axis_x_title: str
+        :param axis_y_title: Título del eje Y.
+        :type axis_y_title: str
+        :param parent: Widget padre de la gráfica. Por defecto, None.
+        :type parent: QWidget, optional
+        :param color: Color de fondo de la gráfica. Por defecto, "MidnightBlue".
+        :type color: QColor, optional
+        """
         Qwt.QwtPlot.__init__(self, parent)
         self.setAutoReplot(False)
         self.setTitle(title)
@@ -28,7 +48,7 @@ class Plot(Qwt.QwtPlot):
         self.grid.attach(self)
 
         # axes
-        self.setAxisTitle(Qwt.QwtPlot.Axis.xBottom, asis_x_title)
+        self.setAxisTitle(Qwt.QwtPlot.Axis.xBottom, axis_x_title)
         self.setAxisTitle(Qwt.QwtPlot.Axis.yLeft, axis_y_title)
 
         # curves
@@ -56,11 +76,35 @@ class Plot(Qwt.QwtPlot):
         self.setAutoReplot(True)
 
     def showData(self, x, y):
+        """
+        Muestra los datos en la gráfica.
+
+        :param x: Datos del eje X.
+        :type x: list
+        :param y: Datos del eje Y.
+        :type y: list
+        """
         self.datos_grafica.setSamples(x, y)
 
 
 class Zoomer(Qwt.QwtPlotZoomer):
+    """
+    Clase para proporcionar funcionalidad de zoom a una gráfica.
+    """
+
     def __init__(self, xAxis, yAxis, canvas):
+        """
+        Inicializa una instancia de la clase Zoomer.
+
+        Esta clase extiende Qwt.QwtPlotZoomer para proporcionar funcionalidad de zoom a una gráfica.
+
+        :param xAxis: Eje X de la gráfica.
+        :type xAxis: Qwt.QwtPlot.Axis
+        :param yAxis: Eje Y de la gráfica.
+        :type yAxis: Qwt.QwtPlot.Axis
+        :param canvas: Lienzo de la gráfica.
+        :type canvas: Qwt.QwtPlotCanvas
+        """
         Qwt.QwtPlotZoomer.__init__(self, xAxis, yAxis, canvas)
         self.setTrackerMode(Qwt.QwtPicker.DisplayMode.AlwaysOff)
         self.setRubberBand(Qwt.QwtPicker.RubberBand.NoRubberBand)
