@@ -38,7 +38,7 @@ class ThermometerModificado(Qwt.QwtThermo):
         self.setAlarmLevel(80)
         self.valor_inicial = random.randint(0, 100)
 
-        self.setValue(ThermometerModificado.numero_flutuante(self.valor_inicial, 4))
+        self.setValue(ThermometerModificado.numero_fluctuante(self.valor_inicial, 4))
         self.temporizador = QTimer()
         self.temporizador.timeout.connect(
             lambda: self.setValue(
@@ -62,7 +62,7 @@ class ThermometerModificado(Qwt.QwtThermo):
 
         .. code-block:: python
 
-            numero_generado = ThermometerModificado.numero_flutuante(10, 2)
+            numero_generado = ThermometerModificado.numero_fluctuante(10, 2)
 
         """
         x = random.uniform(-numero2, numero2) + numero
