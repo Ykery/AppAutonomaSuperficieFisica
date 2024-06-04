@@ -528,7 +528,21 @@ class MokeGraph(QWidget):
         return self.footer_datos
 
     def actualizar_tiempo(self):
+        """
+        Actualiza el tiempo transcurrido desde el inicio del experimento.
 
+        Este método calcula el tiempo transcurrido desde el inicio del experimento y lo muestra en el pie de página
+        del widget. El tiempo se muestra en formato HH:MM:SS.
+
+        :return: None
+        :rtype: None
+
+        Ejemplo de uso:
+
+        .. code-block:: python 
+        actualizar_tiempo()
+    
+        """ 
         tiempo_experimento = datetime.now() - self.tiempo
         horas = int(tiempo_experimento.total_seconds() // 3600)
         tiempo_experimento = tiempo_experimento - timedelta(hours=horas)
