@@ -3,3 +3,4 @@ sqlalchemy>=1.4.0
 mysqlclient>=2.0.3
 docxtpl>=0.17.0
 docx2pdf>=0.1.7
+numpy>=1.21.2
