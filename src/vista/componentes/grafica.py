@@ -92,7 +92,7 @@ class Zoomer(Qwt.QwtPlotZoomer):
     Clase para proporcionar funcionalidad de zoom a una gráfica.
     """
 
-    def __init__(self, xAxis, yAxis, canvas):
+    def __init__(self, eje_x, eje_y, canvas):
         """
         Inicializa una instancia de la clase Zoomer.
 
@@ -105,7 +105,7 @@ class Zoomer(Qwt.QwtPlotZoomer):
         :param canvas: Lienzo de la gráfica.
         :type canvas: Qwt.QwtPlotCanvas
         """
-        Qwt.QwtPlotZoomer.__init__(self, xAxis, yAxis, canvas)
+        Qwt.QwtPlotZoomer.__init__(self, eje_x, eje_y, canvas)
         self.setTrackerMode(Qwt.QwtPicker.DisplayMode.AlwaysOff)
         self.setRubberBand(Qwt.QwtPicker.RubberBand.NoRubberBand)
         # Disable zoom out

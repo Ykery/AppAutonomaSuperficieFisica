@@ -41,7 +41,7 @@ class MenuInicio(QWidget):
         """
         super().__init__()
         self.setWindowTitle("Menu Inicio")
-        self.fuenteHelvetica = QFont("Helvetica", 11)
+        self.fuente_helvetica = QFont("Helvetica", 11)
         self.setStyleSheet(
             "background-color: rgb(176, 213, 212);" "color: black;"
         )  # Estilo de la ventana
@@ -59,7 +59,7 @@ class MenuInicio(QWidget):
         self.lb_hora.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
         self.lb_hora.setStyleSheet(" color: black")
         self.lb_fecha = QLabel("")
-        self.lb_fecha.setFont(self.fuenteHelvetica)
+        self.lb_fecha.setFont(self.fuente_helvetica)
         self.lb_fecha.setStyleSheet(" color: black")
         lb_label = QLabel("Elija una opción:")
         btn_teas = BotonModificado("Realizar Experimento TEAS TimeScan")
@@ -76,11 +76,11 @@ class MenuInicio(QWidget):
 
         btn_quit = BotonModificadoExit("QUIT")
 
-        lb_label.setFont(self.fuenteHelvetica)
-        btn_teas.setFont(self.fuenteHelvetica)
-        btn_moke.setFont(self.fuenteHelvetica)
-        btn_experimentos.setFont(self.fuenteHelvetica)
-        btn_quit.setFont(self.fuenteHelvetica)
+        lb_label.setFont(self.fuente_helvetica)
+        btn_teas.setFont(self.fuente_helvetica)
+        btn_moke.setFont(self.fuente_helvetica)
+        btn_experimentos.setFont(self.fuente_helvetica)
+        btn_quit.setFont(self.fuente_helvetica)
         layout.addWidget(elemento_fecha_hora)
         layout.addWidget(lb_label)
         layout.addWidget(btn_teas)

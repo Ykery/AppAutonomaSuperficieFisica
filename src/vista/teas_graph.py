@@ -1,33 +1,23 @@
 #!/usr/bin/python3
 
-import sys
 import math
+import sys
+from datetime import datetime, time
 
+import numpy as np
 # import Qwt
 from PyQt6 import Qwt
-import numpy as np
-from src.modelo.dao import ResultadoTeasDAO, ExperimentoDAO, MarcadorDAO
-from src.modelo.clases import ResultadoTeas
-from datetime import datetime, time
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QColor, QPixmap, QIcon, QFont
-from PyQt6.QtWidgets import (
-    QWidget,
-    QToolBar,
-    QToolButton,
-    QHBoxLayout,
-    QVBoxLayout,
-    QLabel,
-    QApplication,
-    QInputDialog,
-    QSplitter,
-    QSizePolicy,
-)
+from PyQt6.QtGui import QColor, QFont, QIcon, QPixmap
 from PyQt6.QtPrintSupport import QPrintDialog, QPrinter
-from src.utilidades.utilidades import pedir_ruta_exportar_pdf, escribir_csv
+from PyQt6.QtWidgets import (QApplication, QHBoxLayout, QInputDialog, QLabel,
+                             QMessageBox, QSizePolicy, QSplitter, QToolBar,
+                             QToolButton, QVBoxLayout, QWidget)
+
+from src.modelo.clases import Marcador, ResultadoTeas
+from src.modelo.dao import ExperimentoDAO, MarcadorDAO, ResultadoTeasDAO
+from src.utilidades.utilidades import escribir_csv, pedir_ruta_exportar_pdf
 from src.vista.componentes.grafica import Plot, Zoomer
-from PyQt6.QtWidgets import QMessageBox
-from src.modelo.clases import Marcador
 
 
 def logSpace(size, xmin, xmax):
@@ -316,7 +306,7 @@ class TeasGraph(QWidget):
             self.datos_y = [0]
             self.temporizador = QTimer()
             self.temporizador.timeout.connect(self.actualizar_datos)
-            
+
             self.temporizador.start(self.TIEMPO_ACTUALIZACION_GRAFICA)
 
         self.zooming = False
@@ -332,7 +322,7 @@ class TeasGraph(QWidget):
             self.btn_marcador.setEnabled(False)
             self.lb_estado.setText("Visualizyng results")
             self.actualizar_datos()
-    
+
     def crear_toolbar(self):
         self.toolBar = QToolBar(self)
 
@@ -395,16 +385,17 @@ class TeasGraph(QWidget):
         )
         self.toolBar.addWidget(self.lb_estado)
         return self.toolBar
-    
+
     def crear_cuerpo(self):
-        self.plt_experimento = Plot("TEAS Timescan", "Time[sec]", "Intensity [arb. un.]", self)
+        self.plt_experimento = Plot(
+            "TEAS Timescan", "Time[sec]", "Intensity [arb. un.]", self
+        )
 
         margin = 5
         self.plt_experimento.setContentsMargins(margin, margin, margin, 0)
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
 
         self.zoomer_experimento = Zoomer(2, 0, self.plt_experimento.canvas())
-
 
         self.picker_experimento = Qwt.QwtPlotPicker(
             2,
@@ -554,14 +545,15 @@ class TeasGraph(QWidget):
         self.layout.setSpacing(0)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.plt_experimento = Plot("TEAS Timescan", "Time[sec]", "Intensity [arb. un.]", self)
+        self.plt_experimento = Plot(
+            "TEAS Timescan", "Time[sec]", "Intensity [arb. un.]", self
+        )
         margin = 5
         self.plt_experimento.setContentsMargins(margin, margin, margin, 0)
 
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
 
         self.zoomer_experimento = Zoomer(2, 0, self.plt_experimento.canvas())
-
 
         self.picker_experimento = Qwt.QwtPlotPicker(
             2,

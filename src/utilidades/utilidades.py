@@ -1,16 +1,20 @@
-from src.modelo.dao import ExperimentoDAO, ConfiguracionTeasDAO, ConfiguracionMokeDAO, ResultadoTeasDAO, ResultadoMokeDAO, MarcadorDAO
-from src.vista.componentes.grafica import Plot
-from docxtpl import DocxTemplate, InlineImage
-from docx2pdf import convert
-from os import remove
 import sys
 from io import BytesIO
-from PyQt6 import Qwt
-from PyQt6.QtGui import QPixmap, QColor
-from PyQt6.QtWidgets import QApplication
-from PyQt6.QtCore import QBuffer, QIODevice
-from PyQt6.QtWidgets import QFileDialog
+from os import remove
 from threading import Thread
+
+from docx2pdf import convert
+from docxtpl import DocxTemplate, InlineImage
+from PyQt6 import Qwt
+from PyQt6.QtCore import QBuffer, QIODevice
+from PyQt6.QtGui import QColor, QPixmap
+from PyQt6.QtWidgets import QApplication, QFileDialog
+
+from src.modelo.dao import (ConfiguracionMokeDAO, ConfiguracionTeasDAO,
+                            ExperimentoDAO, MarcadorDAO, ResultadoMokeDAO,
+                            ResultadoTeasDAO)
+from src.vista.componentes.grafica import Plot
+
 
 def crear_pdf_experimento(id, pdf_path):
     """
