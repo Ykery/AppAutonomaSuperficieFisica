@@ -51,8 +51,7 @@ class Conexion:
     engine : sqlalchemy.engine.Engine
         El motor de base de datos utilizado para las conexiones.
     """
-
-    # Crear un motor de base de datos
+    engine = create_engine('mysql://root:root@localhost/aplicacionuam', echo=True) 
 
     def iniciar_bbdd():
         """
