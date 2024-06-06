@@ -119,7 +119,7 @@ class ExperimentosWindow(QWidget):
         layout = QGridLayout()
         self.tb_experimentos = QTableWidget(0, 4)
         self.tb_experimentos.setHorizontalHeaderLabels(
-            ["Tipo experimento", "Fecha creación", "Descripción", "Nombre/Ruta"]
+            ["Tipo", "Fecha creación", "Descripción", "Nombre/Ruta"]
         )
         self.tb_experimentos.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.ResizeToContents
