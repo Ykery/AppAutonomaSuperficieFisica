@@ -1,26 +1,23 @@
-import sys
-import numpy as np
-import random
 import os
+import random
+import sys
+
+import numpy as np
+from PyQt6 import Qwt
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
-from PyQt6 import Qwt
 from PyQt6.Qwt import *
 
-from src.modelo.dao import *
 from src.modelo.clases import *
-from src.vista.componentes.displayLCD import DisplayLCDModificado
-from src.vista.componentes.thermometer import ThermometerModificado
+from src.modelo.dao import *
+from src.vista.componentes.boton import (BotonModificado, BotonModificadoExit,
+                                         BotonModificadoRun)
 from src.vista.componentes.combobox import QComboBoxModificado
-
+from src.vista.componentes.displayLCD import DisplayLCDModificado
+from src.vista.componentes.line_edit import LineEditModificado
+from src.vista.componentes.thermometer import ThermometerModificado
 from src.vista.teas_graph import TeasGraph
-import random
-from src.vista.componentes.boton import (
-    BotonModificado,
-    BotonModificadoExit,
-    BotonModificadoRun,
-)
 
 
 class TeasWindow(QWidget):
@@ -66,14 +63,12 @@ class TeasWindow(QWidget):
             app.exec_()
         """
         super().__init__()
-        self.setStyleSheet("background-color: rgb(176, 213, 212); color: black;")
 
         # Se crea el objeto 'configuracion' vacío y el objeto 'experimento' vacío de la clase ConfiguracionTeas y Experimento
         self.configuracion = ConfiguracionTeas()
         self.experimento = Experimento()
 
         self.setWindowTitle("TEAS MANAGEMENT")
-        # self.setContentsMargins(10, 10, 10, 10)
 
         # variables generales
         self.teasDACParams = [None] * 6
@@ -147,6 +142,12 @@ class TeasWindow(QWidget):
         self.main_layout.addWidget(self.teas_system_ID_box(), 6, 0, 1, 2)
         self.main_layout.addWidget(self.set_data_file(), 6, 2, 1, 2)
         self.main_layout.addLayout(buttons_layout, 7, 3, 1, 1)
+
+        self.main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        # Dar tamaño a la ventana prederminado por la pantalla y la resulucion
+        ancho = QScreen.availableGeometry(QApplication.primaryScreen()).width()
+        alto = QScreen.availableGeometry(QApplication.primaryScreen()).height()
+        print(ancho, alto)
 
         print(self.configuracion)
 
@@ -225,7 +226,6 @@ class TeasWindow(QWidget):
         error_dialog.setWindowTitle("Error de Input")
         error_dialog.setText("Input selecionado no valido.")
         # aumentar tamaño de la letra
-        error_dialog.setStyleSheet("font: 12pt")
         error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
         # Mostrar la ventana de error
         error_dialog.exec()
@@ -259,7 +259,6 @@ class TeasWindow(QWidget):
         error_dialog.setWindowTitle("Error de Datafile")
         error_dialog.setText("Ingrese la ruta del archivo.")
         # aumentar tamaño de la letra
-        error_dialog.setStyleSheet("font: 12pt")
         error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
         # Mostrar la ventana de error
         error_dialog.exec()
@@ -296,7 +295,6 @@ class TeasWindow(QWidget):
             "Ingrese todos los datos necesarios para correr el experimento."
         )
         # aumentar tamaño de la letra
-        error_dialog.setStyleSheet("font: 12pt")
         error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
         # Mostrar la ventana de error
         error_dialog.exec()
@@ -310,7 +308,7 @@ class TeasWindow(QWidget):
         necesarios están presentes y False en caso contrario.
 
         Retorna:
-        -------
+        --------
         bool
             True si todos los datos necesarios están presentes, False de lo contrario.
 
@@ -398,7 +396,6 @@ class TeasWindow(QWidget):
         self.cb_lockinSens.setCurrentIndex(0)
         self.cb_lockinSens.currentTextChanged.connect(self.manejar_cb_lockinSens)
 
-
         layout.addWidget(lb_sensLabel)
         layout.addWidget(self.cb_lockinTimeCons)
         layout.addWidget(lb_timeConsLabel)
@@ -470,7 +467,6 @@ class TeasWindow(QWidget):
 
         self.slider_samplingRate.valueChanged.connect(self.manejar_silder_samplingRate)
         self.slider_samplingRate.valueChanged.connect(lcd_samplingRateDisplay.display)
-
 
         self.cb_teas.insertItems(0, self.scanChannelsDAC)
         self.cb_teas.currentTextChanged.connect(
@@ -574,7 +570,7 @@ class TeasWindow(QWidget):
         lb_scanAMLunitsLabel = QLabel("Pressure gauge units: ")
         self.lb_emissionLabel = QLabel("Emission current:")
 
-        self.le_scanSensLineEdit = QLineEdit()
+        self.le_scanSensLineEdit = LineEditModificado()
         self.le_scanSensLineEdit.textChanged.connect(self.manejar_le_scanSensLineEdit)
 
         self.rb_scanEmission_1 = QRadioButton("0.5 mA")
@@ -688,27 +684,26 @@ class TeasWindow(QWidget):
 
     def create_lock_in_thermo(self):
         """
-    Crea un grupo de widgets para visualizar el nivel de la señal lock-in actual.
+        Crea un grupo de widgets para visualizar el nivel de la señal lock-in actual.
 
-    Este método configura un layout de cuadrícula (`QGridLayout`) que contiene un grupo de caja (`QGroupBox`)
-    titulado "Current lock-in signal level". Dentro de este grupo de caja se incluye un termómetro 
-    (`ThermometerModificado`) que muestra el nivel de la señal lock-in actual. Es sólo para pruebas y no tiene
-    funcionalidad real.
+        Este método configura un layout de cuadrícula (`QGridLayout`) que contiene un grupo de caja (`QGroupBox`)
+        titulado "Current lock-in signal level". Dentro de este grupo de caja se incluye un termómetro
+        (`ThermometerModificado`) que muestra el nivel de la señal lock-in actual. Es sólo para pruebas y no tiene
+        funcionalidad real.
 
-    Retorna:
-    -------
-    QGroupBox
-        Un grupo de widgets configurado para visualizar el nivel de la señal lock-in actual.
+        Retorna:
+        --------
+        QGroupBox
+            Un grupo de widgets configurado para visualizar el nivel de la señal lock-in actual.
 
-    Ejemplo de uso:
+        Ejemplo de uso:
 
-    .. code-block:: python
+        .. code-block:: python
 
-        window = TeasWindow()
-        lock_in_thermo_box = window.create_lock_in_thermo()
-        layout.addWidget(lock_in_thermo_box)
-    """
-
+            window = TeasWindow()
+            lock_in_thermo_box = window.create_lock_in_thermo()
+            layout.addWidget(lock_in_thermo_box)
+        """
 
         layout = QGridLayout()
 
@@ -756,7 +751,7 @@ class TeasWindow(QWidget):
         self.gb_teasChanneltronBox = QGroupBox("Channeltron bias voltage (V)")
         self.gb_teasChanneltronBox.setFont(self.fuenteHelvetica)
 
-        self.le_teasChanneltronLineEdit = QLineEdit()
+        self.le_teasChanneltronLineEdit = LineEditModificado()
         self.le_teasChanneltronLineEdit.textChanged.connect(
             self.manejar_le_teasChanneltronLineEdit
         )
@@ -799,7 +794,7 @@ class TeasWindow(QWidget):
         gb_teasSysIDbox = QGroupBox("Sample/system description")
         gb_teasSysIDbox.setFont(self.fuenteHelvetica)
 
-        self.le_teasSysIDboxLineEdit = QLineEdit()
+        self.le_teasSysIDboxLineEdit = LineEditModificado()
         self.le_teasSysIDboxLineEdit.textChanged.connect(
             self.manejar_le_teasys_ID_box_line_edit
         )
@@ -872,7 +867,7 @@ class TeasWindow(QWidget):
         gb_dataFileBox = QGroupBox("Datafile selection")
         gb_dataFileBox.setFont(self.fuenteHelvetica)
 
-        self.le_fileLineEdit = QLineEdit()
+        self.le_fileLineEdit = LineEditModificado()
         self.le_fileLineEdit.setFont(QFont("Helvetica", 9))
         btn_browseButton = BotonModificado("Browse")
 

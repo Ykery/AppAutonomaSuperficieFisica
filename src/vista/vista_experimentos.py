@@ -14,6 +14,7 @@ from src.vista.moke_config import MokeWindow
 from src.vista.moke_graph import MokeGraph
 from src.vista.teas_config import TeasWindow
 from src.vista.teas_graph import TeasGraph
+from src.vista.componentes.line_edit import LineEditModificado
 
 
 class ExperimentosWindow(QWidget):
@@ -41,7 +42,6 @@ class ExperimentosWindow(QWidget):
         self.setWindowTitle("EXPERIMENTOS REALIZADOS")
         self.experimentos = None
         self.main_layout = QGridLayout()
-        self.setStyleSheet("background-color: rgb(176, 213, 212); color: black;")
         btn_volver = BotonModificadoExit("Volver")
         self.filtro_tipo = None
         self.filtro_fecha_desde = None
@@ -500,15 +500,13 @@ class ExperimentosWindow(QWidget):
         self.btn_desde = QPushButton("Desde")
         self.btn_hasta = QPushButton("Hasta")
 
-        self.le_desde = QLineEdit()
+        self.le_desde = LineEditModificado()
         self.le_desde.setPlaceholderText("dd/mm/aaaa")
-        self.le_desde.setStyleSheet("background-color: #f0f0f0")
         self.le_desde.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.le_desde.setDisabled(True)
 
-        self.le_hasta = QLineEdit()
+        self.le_hasta = LineEditModificado()
         self.le_hasta.setPlaceholderText("dd/mm/aaaa")
-        self.le_hasta.setStyleSheet("background-color: #f0f0f0")
         self.le_hasta.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.le_hasta.setDisabled(True)
 
@@ -604,11 +602,9 @@ class ExperimentosWindow(QWidget):
 
         if tipo_fecha == "desde":
             self.le_desde.setText(self.formatear_fecha(fecha))
-            self.le_desde.setStyleSheet("color: black")
             self.filtrar_desde(fecha.toPyDate())
         elif tipo_fecha == "hasta":
             self.le_hasta.setText(self.formatear_fecha(fecha))
-            self.le_hasta.setStyleSheet("color: black")
             self.filtrar_hasta(fecha.toPyDate())
         # return fecha.toString("dd/MM/yyyy")
 

@@ -11,13 +11,11 @@ from PyQt6.uic import loadUi
 
 from src.modelo.clases import Conexion, ConfiguracionMoke, Experimento
 from src.modelo.dao import ConfiguracionMokeDAO, ExperimentoDAO
-from src.vista.componentes.boton import (
-    BotonModificado,
-    BotonModificadoExit,
-    BotonModificadoRun,
-)
+from src.vista.componentes.boton import (BotonModificado, BotonModificadoExit,
+                                         BotonModificadoRun)
 from src.vista.componentes.combobox import QComboBoxModificado
 from src.vista.componentes.displayLCD import DisplayLCDModificado
+from src.vista.componentes.line_edit import LineEditModificado
 from src.vista.componentes.thermometer import ThermometerModificado
 from src.vista.moke_graph import MokeGraph
 
@@ -27,7 +25,6 @@ class MokeWindow(QWidget):
         super().__init__()
         self.configuracion = ConfiguracionMoke()
         self.experimento = Experimento()
-        self.setStyleSheet("background-color: rgb(176, 213, 212); color: black;")
         self.setWindowTitle("MOKE LOOP")
         self.main_layout = QGridLayout()
         self.fuenteHelvetica = QFont("Helvetica", 11)
@@ -517,7 +514,7 @@ class MokeWindow(QWidget):
         layout = QGridLayout()
         gb_description = QGroupBox("Sample/system description")
 
-        self.le_description = QLineEdit()
+        self.le_description = LineEditModificado()
         self.le_description.textChanged.connect(self.manejar_lb_description)
 
         layout.addWidget(self.le_description)
@@ -620,7 +617,7 @@ class MokeWindow(QWidget):
 
         gb_datafile_selection = QGroupBox("Datafile selection")
 
-        self.le_datafile = QLineEdit()
+        self.le_datafile = LineEditModificado()
         self.le_datafile.textChanged.connect(self.manejar_le_datafile)
         btn_browse_button = BotonModificado("Browse")
         btn_browse_button.clicked.connect(self.open_file_dialog)
@@ -652,7 +649,6 @@ class MokeWindow(QWidget):
         error_dialog.setIcon(QMessageBox.Icon.Critical)
         error_dialog.setWindowTitle("Error de Input")
         error_dialog.setText("Input selecionado no valido.")
-        error_dialog.setStyleSheet("font: 12pt")
         error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
         error_dialog.exec()
 
@@ -678,7 +674,6 @@ class MokeWindow(QWidget):
         error_dialog.setIcon(QMessageBox.Icon.Critical)
         error_dialog.setWindowTitle("Error de Datafile")
         error_dialog.setText("Ingrese la ruta del archivo.")
-        error_dialog.setStyleSheet("font: 12pt")
         error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
         error_dialog.exec()
 
@@ -706,7 +701,6 @@ class MokeWindow(QWidget):
         error_dialog.setText(
             "Ingrese todos los datos necesarios para correr el experimento."
         )
-        error_dialog.setStyleSheet("font: 12pt")
         error_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
         error_dialog.exec()
 

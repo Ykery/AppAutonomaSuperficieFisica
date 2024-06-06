@@ -11,6 +11,8 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtWidgets import QWidget
 from PyQt6.Qwt import *
 
+from qt_material import apply_stylesheet
+
 from src.vista.moke_config import MokeWindow
 from src.vista.teas_config import TeasWindow
 from src.vista.vista_experimentos import ExperimentosWindow
@@ -42,9 +44,6 @@ class MenuInicio(QWidget):
         super().__init__()
         self.setWindowTitle("Menu Inicio")
         self.fuente_helvetica = QFont("Helvetica", 11)
-        self.setStyleSheet(
-            "background-color: rgb(176, 213, 212);" "color: black;"
-        )  # Estilo de la ventana
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.setSpacing(25)
@@ -57,10 +56,8 @@ class MenuInicio(QWidget):
         self.lb_hora.setFixedSize(100, 50)
         self.lb_hora.setDigitCount(8)
         self.lb_hora.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
-        self.lb_hora.setStyleSheet(" color: black")
         self.lb_fecha = QLabel("")
         self.lb_fecha.setFont(self.fuente_helvetica)
-        self.lb_fecha.setStyleSheet(" color: black")
         lb_label = QLabel("Elija una opción:")
         btn_teas = BotonModificado("Realizar Experimento TEAS TimeScan")
         elemento_fecha_hora = QWidget()
@@ -190,7 +187,10 @@ def main():
         main()
 
     """
+
     app = QApplication(sys.argv)
     window = MenuInicio()
+    apply_stylesheet(app, theme="dark_teal.xml", invert_secondary=False)
+
     window.show()
     sys.exit(app.exec())

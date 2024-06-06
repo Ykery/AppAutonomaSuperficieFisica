@@ -39,7 +39,7 @@ def logSpace(size, xmin, xmax):
 play_xpm = [
     "32 32 2 1 ",
     "  c None",
-    ". c black",
+    ". c white",
     "  .                             ",
     "  ...                           ",
     "  .....                         ",
@@ -76,7 +76,7 @@ play_xpm = [
 pause_xpm = [
     "32 32 2 1",
     "  c None",
-    ". c black",
+    ". c white",
     "    .......          .......    ",
     "    .......          .......    ",
     "    .......          .......    ",
@@ -113,7 +113,7 @@ pause_xpm = [
 mark_xpm = [
     "32 32 2 1",
     "  c None",
-    ". c black",
+    ". c white",
     "                                ",
     "                                ",
     "                                ",

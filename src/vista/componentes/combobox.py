@@ -17,5 +17,5 @@ class QComboBoxModificado(QComboBox):
 
         """
         super().__init__()
-        self.setStyleSheet("background-color: rgb(200, 255, 255); color: black;")
+        self.setStyleSheet("QComboBox:enabled {color: #f0f0f0;}")
         self.setCurrentIndex(0)

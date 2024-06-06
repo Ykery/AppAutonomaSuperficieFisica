@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QPushButton
 from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QPushButton
 
 
 class BotonModificado(QPushButton):
@@ -29,20 +29,6 @@ class BotonModificado(QPushButton):
         """
         super(BotonModificado, self).__init__(texto)
         self.setFont(QFont("Helvetica", 11))
-        self.setStyleSheet(
-            """
-            QPushButton {
-                background-color: rgb(135, 206, 235);
-                padding: 10px;
-            }
-            QPushButton:hover {
-            background-color: lightblue;
-            }
-             QPushButton:pressed {
-            background-color: rgb(100, 121, 120);
-            }                  
-        """
-        )
 
 
 class BotonModificadoExit(BotonModificado):
@@ -65,19 +51,14 @@ class BotonModificadoExit(BotonModificado):
         """
         super().__init__(texto)
         self.setFont(QFont("Helvetica", 11))
+        self.setProperty("class", "danger")
+
         self.setStyleSheet(
             """
-            QPushButton {
-                background-color: rgb(201,112,098);
-                padding: 10px;
-            }
-            QPushButton:hover {
-                background-color: rgb(240, 140, 126);
-            }
-             QPushButton:pressed {
-                background-color: rgb(167, 98, 88);
-            }                  
-        """
+                QPushButton {background-color: #dc3545; color: #31363b;}
+                QPushButton:hover {background-color: transparent;color: #dc3545;}
+                QPushButton:pressed {background-color: #dc3545; color: #31363b;}
+            """
         )
 
 
@@ -101,17 +82,12 @@ class BotonModificadoRun(BotonModificado):
         """
         super().__init__(texto)
         self.setFont(QFont("Helvetica", 11))
+
+        self.setProperty("class", "success")
         self.setStyleSheet(
             """
-            QPushButton {
-                background-color: rgb(59, 235, 156);
-                padding: 10px;
-            }
-            QPushButton:hover {
-                background-color: rgb(79, 255, 176);
-            }
-             QPushButton:pressed {
-                background-color: rgb(100, 121, 120);
-            }                  
-        """
+                QPushButton {background-color: #17a2b8; color: #31363b;} 
+                QPushButton:hover {background-color: transparent;color: #17a2b8;}
+                QPushButton:pressed {background-color: #17a2b8; color: #31363b;}
+            """
         )
