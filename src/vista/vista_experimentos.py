@@ -56,6 +56,34 @@ class ExperimentosWindow(QWidget):
         self.setLayout(self.main_layout)
         btn_volver.clicked.connect(self.volver)
 
+
+    def showEvent(self, event):
+        """
+        Muestra la ventana en el centro de la pantalla.
+        
+        Este método se llama cuando la ventana se muestra por primera vez.
+        Mueve la ventana al centro de la pantalla principal.
+        
+        :param event: El evento de mostrar la ventana.
+        :type event: QShowEvent
+        
+        Ejemplo de uso:
+        
+        .. code-block:: python
+        
+            self.showEvent(event)
+        
+        """
+        screen = QGuiApplication.primaryScreen()
+        screenGeometry = screen.geometry()
+        centerPoint = screenGeometry.center()
+        frameGm = self.frameGeometry()
+        frameGm.moveCenter(centerPoint)
+        
+        self.move(frameGm.topLeft())
+        super().showEvent(event)
+
+
     def volver(self):
         """
         Cierra la ventana actual.
@@ -452,7 +480,7 @@ class ExperimentosWindow(QWidget):
         rb_teas.clicked.connect(lambda: self.filtrar_por_tipo("teas"))
         rb_moke.clicked.connect(lambda: self.filtrar_por_tipo("moke"))
         rb_todos.clicked.connect(lambda: self.filtrar_por_tipo(None))
-        # rb_teas.setChecked(True)
+        rb_todos.setChecked(True)
 
         radio_buttons_layout.addWidget(rb_teas, 0, 0, Qt.AlignmentFlag.AlignCenter)
         radio_buttons_layout.addWidget(rb_moke, 0, 1, Qt.AlignmentFlag.AlignCenter)

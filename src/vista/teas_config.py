@@ -157,6 +157,33 @@ class TeasWindow(QWidget):
         if id_experimento != None:
             self.cargar_configuracion(id_experimento=id_experimento)
 
+    def showEvent(self, event):
+        """
+        Muestra la ventana en el centro de la pantalla.
+        
+        Este método se llama cuando la ventana se muestra por primera vez.
+        Mueve la ventana al centro de la pantalla principal.
+        
+        :param event: El evento de mostrar la ventana.
+        :type event: QShowEvent
+        
+        Ejemplo de uso:
+        
+        .. code-block:: python
+        
+            self.showEvent(event)
+        
+        """
+        screen = QGuiApplication.primaryScreen()
+        screenGeometry = screen.geometry()
+        centerPoint = screenGeometry.center()
+        frameGm = self.frameGeometry()
+        frameGm.moveCenter(centerPoint)
+        
+        self.move(frameGm.topLeft())
+        super().showEvent(event)
+
+
     def run(self):
         """
         Ejecuta el proceso principal de la ventana de gestión de TEAS.

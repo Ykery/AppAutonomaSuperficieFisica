@@ -98,6 +98,56 @@ class MenuInicio(QWidget):
             lambda: self.open_child_window(ExperimentosWindow)
         )
 
+    
+    def closeEvent(self, event):
+        """
+        Cierra la ventana principal y todas las ventanas secundarias abiertas.
+
+        Este método se llama cuando se cierra la ventana principal. Cierra todas las ventanas secundarias abiertas
+        antes de cerrar la ventana principal.
+
+        :param event: El evento de cerrar la ventana.
+        :type event: QCloseEvent
+
+        Ejemplo de uso:
+
+        .. code-block:: python
+
+            self.closeEvent(event)
+
+        """
+        if self.child_window:
+            self.child_window.close()
+        event.accept()
+
+
+    def showEvent(self, event):
+        """
+        Muestra la ventana en el centro de la pantalla.
+        
+        Este método se llama cuando la ventana se muestra por primera vez.
+        Mueve la ventana al centro de la pantalla principal.
+        
+        :param event: El evento de mostrar la ventana.
+        :type event: QShowEvent
+        
+        Ejemplo de uso:
+        
+        .. code-block:: python
+        
+            self.showEvent(event)
+        
+        """
+        screen = QGuiApplication.primaryScreen()
+        screenGeometry = screen.geometry()
+        centerPoint = screenGeometry.center()
+        frameGm = self.frameGeometry()
+        frameGm.moveCenter(centerPoint)
+        
+        self.move(frameGm.topLeft())
+        super().showEvent(event)
+
+
     def open_child_window(self, window_class):
         """
         Abre una ventana secundaria basada en la clase de la ventana proporcionada.
