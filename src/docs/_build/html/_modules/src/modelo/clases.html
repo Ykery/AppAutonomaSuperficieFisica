@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.modelo.clases &mdash; Aplicación UAM Depart. Física 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Aplicación UAM Depart. Física
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Vista General</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Aplicación UAM Depart. Física</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.modelo.clases</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.modelo.clases</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sqlalchemy</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DECIMAL</span><span class="p">,</span>
+    <span class="n">Column</span><span class="p">,</span>
+    <span class="n">DateTime</span><span class="p">,</span>
+    <span class="n">ForeignKey</span><span class="p">,</span>
+    <span class="n">Integer</span><span class="p">,</span>
+    <span class="n">String</span><span class="p">,</span>
+    <span class="n">create_engine</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">DeclarativeBase</span><span class="p">,</span> <span class="n">sessionmaker</span>
+
+
+<div class="viewcode-block" id="Base">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.clases.Base">[docs]</a>
+<span class="k">class</span> <span class="nc">Base</span><span class="p">(</span><span class="n">DeclarativeBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clase base para modelos declarativos de SQLAlchemy.</span>
+
+<span class="sd">    Esta clase sirve como base para todas las definiciones de modelos en SQLAlchemy.</span>
+<span class="sd">    Hereda de `DeclarativeBase`, proporcionando la funcionalidad necesaria para la</span>
+<span class="sd">    creación de tablas y el mapeo de objetos relacionales.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        from sqlalchemy import Column, Integer, String</span>
+
+<span class="sd">        class User(Base):</span>
+<span class="sd">            __tablename__ = &#39;users&#39;</span>
+<span class="sd">            id = Column(Integer, primary_key=True)</span>
+<span class="sd">            name = Column(String)</span>
+<span class="sd">            email = Column(String)</span>
+
+<span class="sd">    Esta clase no contiene métodos ni atributos adicionales, simplemente extiende</span>
+<span class="sd">    `DeclarativeBase` para permitir la creación de modelos de base de datos.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="Conexion">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.clases.Conexion">[docs]</a>
+<span class="k">class</span> <span class="nc">Conexion</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clase para gestionar la conexión a la base de datos y la creación de sesiones.</span>
+
+<span class="sd">    Esta clase proporciona métodos para inicializar la base de datos y obtener conexiones</span>
+<span class="sd">    de sesión utilizando SQLAlchemy.</span>
+
+<span class="sd">    Atributos de clase:</span>
+<span class="sd">    -------------------</span>
+<span class="sd">    engine : sqlalchemy.engine.Engine</span>
+<span class="sd">        El motor de base de datos utilizado para las conexiones.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Crear un motor de base de datos</span>
+
+<div class="viewcode-block" id="Conexion.iniciar_bbdd">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.clases.Conexion.iniciar_bbdd">[docs]</a>
+    <span class="k">def</span> <span class="nf">iniciar_bbdd</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inicializa la base de datos creando todas las tablas definidas en los modelos.</span>
+
+<span class="sd">        Utiliza el metadata de la clase `Base` para crear todas las tablas en la base de datos</span>
+<span class="sd">        conectada a través del motor `engine`.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            Conexion.iniciar_bbdd()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">Conexion</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Conexion.getConexion">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.clases.Conexion.getConexion">[docs]</a>
+    <span class="k">def</span> <span class="nf">getConexion</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene una nueva sesión de conexión a la base de datos.</span>
+
+<span class="sd">        Crea una nueva sesión utilizando el motor de la clase y la devuelve para su uso</span>
+<span class="sd">        en operaciones de base de datos.</span>
+
+<span class="sd">        :return: Una nueva sesión de SQLAlchemy.</span>
+<span class="sd">        :rtype: sqlalchemy.orm.session.Session</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            session = Conexion.getConexion()</span>
+<span class="sd">            # Realizar operaciones de base de datos con la sesión</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">Conexion</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">session</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Experimento">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.clases.Experimento">[docs]</a>
+<span class="k">class</span> <span class="nc">Experimento</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Modelo de base de datos para representar un experimento en la aplicación.</span>
+
+<span class="sd">    Esta clase define la estructura de la tabla `experimentos` en la base de datos,</span>
+<span class="sd">    incluyendo columnas para la descripción, ruta del archivo CSV, fecha de creación</span>
+<span class="sd">    y tipo de experimento.</span>
+
+<span class="sd">    Atributos:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        Identificador único del experimento (clave primaria, autoincremental).</span>
+<span class="sd">    descripcion : str</span>
+<span class="sd">        Descripción del experimento, opcional.</span>
+<span class="sd">    rutaCsv : str</span>
+<span class="sd">        Ruta del archivo CSV asociado con el experimento, obligatorio.</span>
+<span class="sd">    fecha_creacion : datetime</span>
+<span class="sd">        Fecha y hora en que se creó el registro, se autogenera al insertar un nuevo registro.</span>
+<span class="sd">    tipo : str</span>
+<span class="sd">        Tipo de experimento, obligatorio.</span>
+<span class="sd">    configuracion : dict</span>
+<span class="sd">        Diccionario para almacenar configuraciones adicionales del experimento.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        nuevo_experimento = Experimento(</span>
+<span class="sd">            descripcion=&quot;Descripción del experimento&quot;,</span>
+<span class="sd">            rutaCsv=&quot;ruta/al/archivo.csv&quot;,</span>
+<span class="sd">            tipo=&quot;Tipo de experimento&quot;</span>
+<span class="sd">        )</span>
+<span class="sd">        session.add(nuevo_experimento)</span>
+<span class="sd">        session.commit()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;experimentos&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">descripcion</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">server_default</span><span class="o">=</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
+    <span class="n">rutaCsv</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># Atributo fecha_creacion autogenerado al insertar un nuevo registro</span>
+    <span class="n">fecha_creacion</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">sqlalchemy</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">tipo</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">configuracion</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Representación en forma de cadena del objeto Experimento.</span>
+
+<span class="sd">        :return: Una cadena que representa al objeto Experimento con sus atributos.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        Ejemplo de salida:</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            Experimento(id=1,</span>
+<span class="sd">                        descripcion=&#39;Descripción del experimento&#39;,</span>
+<span class="sd">                        rutaCsv=&#39;ruta/al/archivo.csv&#39;,</span>
+<span class="sd">                        fecha_creacion=&#39;2023-01-01 00:00:00&#39;,</span>
+<span class="sd">                        tipo=&#39;Tipo de experimento&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Experimento(id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">, </span>
+<span class="s2">            descripcion=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">descripcion</span><span class="si">}</span><span class="s2">, </span>
+<span class="s2">            rutaCsv=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rutaCsv</span><span class="si">}</span><span class="s2">, </span>
+<span class="s2">            fecha_creacion=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fecha_creacion</span><span class="si">}</span><span class="s2">, </span>
+<span class="s2">            tipo=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tipo</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">            &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ResultadoTeas">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.clases.ResultadoTeas">[docs]</a>
+<span class="k">class</span> <span class="nc">ResultadoTeas</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Modelo de base de datos para representar un resultado TEAS en la aplicación.</span>
+
+<span class="sd">    Esta clase define la estructura de la tabla `resultados_teas` en la base de datos,</span>
+<span class="sd">    incluyendo columnas para el identificador del resultado, el identificador del experimento</span>
+<span class="sd">    asociado, el tiempo y la intensidad.</span>
+
+<span class="sd">    Atributos:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id_resultado_exp : int</span>
+<span class="sd">        Identificador único del resultado del experimento (clave primaria, autoincremental).</span>
+<span class="sd">    id_experimento : int</span>
+<span class="sd">        Identificador del experimento al que pertenece este resultado (clave foránea).</span>
+<span class="sd">    time : decimal</span>
+<span class="sd">        Tiempo asociado al resultado, con precisión y escala definidas.</span>
+<span class="sd">    intensity : decimal</span>
+<span class="sd">        Intensidad asociada al resultado, con precisión y escala definidas.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        nuevo_resultado = ResultadoTeas(</span>
+<span class="sd">            id_experimento=1,</span>
+<span class="sd">            time=12.34,</span>
+<span class="sd">            intensity=56.78</span>
+<span class="sd">        )</span>
+<span class="sd">        session.add(nuevo_resultado)</span>
+<span class="sd">        session.commit()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;resultados_teas&quot;</span>
+
+    <span class="n">id_resultado_exp</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">id_experimento</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;experimentos.id&quot;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Representación en forma de cadena del objeto ResultadoTeas.</span>
+
+<span class="sd">        :return: Una cadena que representa al objeto ResultadoTeas con sus atributos.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        Ejemplo de salida:</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            ResultadoTeas(id_resultado_exp=1,</span>
+<span class="sd">                          id_experimento=1,</span>
+<span class="sd">                          time=12.34,</span>
+<span class="sd">                          intensity=56.78)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;ResultadoTeas(id_resultado_exp=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id_resultado_exp</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            id_experimento=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id_experimento</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            time=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            intensity=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">intensity</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">            &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ResultadoMoke">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.clases.ResultadoMoke">[docs]</a>
+<span class="k">class</span> <span class="nc">ResultadoMoke</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representa un resultado del experimento MOKE almacenado en la base de datos.</span>
+
+<span class="sd">    Esta clase mapea a la tabla &quot;resultados_moke&quot; en la base de datos y contiene</span>
+<span class="sd">    los campos necesarios para almacenar los resultados de un experimento MOKE.</span>
+
+<span class="sd">    Atributos:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id_resultado_exp : int</span>
+<span class="sd">        Identificador único autoincremental del resultado del experimento.</span>
+<span class="sd">    id_experimento : int</span>
+<span class="sd">        Identificador del experimento al que pertenece este resultado.</span>
+<span class="sd">    magnetic_field : decimal</span>
+<span class="sd">        Campo magnético medido durante el experimento (precisión de 10, escala de 2).</span>
+<span class="sd">    intensity : decimal</span>
+<span class="sd">        Intensidad medida durante el experimento (precisión de 10, escala de 2).</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        resultado = ResultadoMoke(</span>
+<span class="sd">            id_experimento=1,</span>
+<span class="sd">            magnetic_field=5.75,</span>
+<span class="sd">            intensity=3.42</span>
+<span class="sd">        )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;resultados_moke&quot;</span>
+
+    <span class="n">id_resultado_exp</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">id_experimento</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;experimentos.id&quot;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">magnetic_field</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;ResultadoMoke(id_resultado_exp=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id_resultado_exp</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            id_experimento=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id_experimento</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            magnetic_field=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">magnetic_field</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            intensity=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">intensity</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">            &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ConfiguracionTeas">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.clases.ConfiguracionTeas">[docs]</a>
+<span class="k">class</span> <span class="nc">ConfiguracionTeas</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representa la configuración de un experimento TEAS almacenado en la base de datos.</span>
+
+<span class="sd">    Esta clase mapea a la tabla &quot;configuracion_teas&quot; en la base de datos y contiene</span>
+<span class="sd">    los campos necesarios para almacenar la configuración de un experimento TEAS.</span>
+
+<span class="sd">    Atributos:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id_experimento : int</span>
+<span class="sd">        Identificador del experimento al que pertenece esta configuración (clave primaria).</span>
+<span class="sd">    dac_input_intensity : str</span>
+<span class="sd">        Intensidad de entrada DAC.</span>
+<span class="sd">    dac_teas_voltaje_range : str</span>
+<span class="sd">        Rango de voltaje DAC para TEAS.</span>
+<span class="sd">    dac_input_temperature : str</span>
+<span class="sd">        Temperatura de entrada DAC.</span>
+<span class="sd">    dac_temperature_voltaje_range : str</span>
+<span class="sd">        Rango de voltaje de temperatura DAC.</span>
+<span class="sd">    dac_sampling_rate : decimal</span>
+<span class="sd">        Tasa de muestreo DAC (precisión de 10, escala de 2).</span>
+<span class="sd">    aml_input_pressure : str</span>
+<span class="sd">        Presión de entrada AML.</span>
+<span class="sd">    aml_voltage_range : str</span>
+<span class="sd">        Rango de voltaje AML.</span>
+<span class="sd">    aml_sensitivity : str</span>
+<span class="sd">        Sensibilidad AML.</span>
+<span class="sd">    aml_presure_units : str</span>
+<span class="sd">        Unidades de presión AML.</span>
+<span class="sd">    aml_emission_current : str</span>
+<span class="sd">        Corriente de emisión AML.</span>
+<span class="sd">    lock_sensitivity : str</span>
+<span class="sd">        Sensibilidad del lock-in.</span>
+<span class="sd">    lock_time_constant : str</span>
+<span class="sd">        Constante de tiempo del lock-in.</span>
+<span class="sd">    integration_time : decimal</span>
+<span class="sd">        Tiempo de integración (precisión de 10, escala de 2).</span>
+<span class="sd">    channeltron_voltage : str</span>
+<span class="sd">        Voltaje del Channeltron.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        configuracion = ConfiguracionTeas(</span>
+<span class="sd">            id_experimento=1,</span>
+<span class="sd">            dac_input_intensity=&quot;10V&quot;,</span>
+<span class="sd">            dac_teas_voltaje_range=&quot;5V&quot;,</span>
+<span class="sd">            dac_input_temperature=&quot;25C&quot;,</span>
+<span class="sd">            dac_temperature_voltaje_range=&quot;10V&quot;,</span>
+<span class="sd">            dac_sampling_rate=1000.0,</span>
+<span class="sd">            aml_input_pressure=&quot;1 atm&quot;,</span>
+<span class="sd">            aml_voltage_range=&quot;5V&quot;,</span>
+<span class="sd">            aml_sensitivity=&quot;High&quot;,</span>
+<span class="sd">            aml_presure_units=&quot;Pa&quot;,</span>
+<span class="sd">            aml_emission_current=&quot;0.5A&quot;,</span>
+<span class="sd">            lock_sensitivity=&quot;10mV&quot;,</span>
+<span class="sd">            lock_time_constant=&quot;1s&quot;,</span>
+<span class="sd">            integration_time=0.5,</span>
+<span class="sd">            channeltron_voltage=&quot;1000V&quot;</span>
+<span class="sd">        )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;configuracion_teas&quot;</span>
+
+    <span class="n">id_experimento</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">Integer</span><span class="p">,</span>
+        <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;experimentos.id&quot;</span><span class="p">),</span>
+        <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">autoincrement</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">dac_input_intensity</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dac_teas_voltaje_range</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dac_input_temperature</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dac_temperature_voltaje_range</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dac_sampling_rate</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="n">aml_input_pressure</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">aml_voltage_range</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">aml_sensitivity</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">aml_presure_units</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">aml_emission_current</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">lock_sensitivity</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">lock_time_constant</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">integration_time</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">channeltron_voltage</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;ConfiguracionTeas(id_experimento=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id_experimento</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_input_intensity=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_input_intensity</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_teas_voltaje_range=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_teas_voltaje_range</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_input_temperature=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_input_temperature</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_temperature_voltaje_range=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_temperature_voltaje_range</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_sampling_rate=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_sampling_rate</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            aml_input_pressure=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">aml_input_pressure</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            aml_voltage_range=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">aml_voltage_range</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            aml_sensitivity=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">aml_sensitivity</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            aml_presure_units=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">aml_presure_units</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            aml_emission_current=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">aml_emission_current</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            lock_sensitivity=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lock_sensitivity</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            lock_time_constant=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lock_time_constant</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            integration_time=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">integration_time</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            channeltron_voltage=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltron_voltage</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">            &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ConfiguracionMoke">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.clases.ConfiguracionMoke">[docs]</a>
+<span class="k">class</span> <span class="nc">ConfiguracionMoke</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representa la configuración de un experimento MOKE almacenado en la base de datos.</span>
+
+<span class="sd">    Esta clase mapea a la tabla &quot;configuracion_moke&quot; en la base de datos y contiene</span>
+<span class="sd">    los campos necesarios para almacenar la configuración de un experimento MOKE.</span>
+
+<span class="sd">    Atributos:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id_experimento : int</span>
+<span class="sd">        Identificador del experimento al que pertenece esta configuración (clave primaria).</span>
+<span class="sd">    dac_input_intensity : str</span>
+<span class="sd">        Intensidad de entrada DAC.</span>
+<span class="sd">    dac_voltaje_range : str</span>
+<span class="sd">        Rango de voltaje DAC.</span>
+<span class="sd">    dac_input_temperature : str</span>
+<span class="sd">        Temperatura de entrada DAC.</span>
+<span class="sd">    dac_temperature_voltaje_range : str</span>
+<span class="sd">        Rango de voltaje de temperatura DAC.</span>
+<span class="sd">    dac_sampling_rate : decimal</span>
+<span class="sd">        Tasa de muestreo DAC (precisión de 10, escala de 2).</span>
+<span class="sd">    dac_dc_level : str</span>
+<span class="sd">        Nivel de DC del DAC.</span>
+<span class="sd">    dac_dc_voltage_range : str</span>
+<span class="sd">        Rango de voltaje de DC del DAC.</span>
+<span class="sd">    dac_field_driving_current : str</span>
+<span class="sd">        Corriente de conducción de campo del DAC.</span>
+<span class="sd">    lock_sensitivity : str</span>
+<span class="sd">        Sensibilidad del lock-in.</span>
+<span class="sd">    lock_time_constant : str</span>
+<span class="sd">        Constante de tiempo del lock-in.</span>
+<span class="sd">    integration_time : decimal</span>
+<span class="sd">        Tiempo de integración (precisión de 10, escala de 2).</span>
+<span class="sd">    dwell_time : decimal</span>
+<span class="sd">        Tiempo de permanencia (precisión de 10, escala de 2).</span>
+<span class="sd">    magnetic_field : decimal</span>
+<span class="sd">        Campo magnético (precisión de 10, escala de 2).</span>
+<span class="sd">    points_per_loop : decimal</span>
+<span class="sd">        Puntos por bucle (precisión de 10, escala de 2).</span>
+<span class="sd">    number_of_sweeps : decimal</span>
+<span class="sd">        Número de barridos (precisión de 10, escala de 2).</span>
+<span class="sd">    geometry : str</span>
+<span class="sd">        Geometría del experimento.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;configuracion_moke&quot;</span>
+
+    <span class="n">id_experimento</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;experimentos.id&quot;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">dac_input_intensity</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dac_voltaje_range</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dac_input_temperature</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dac_temperature_voltaje_range</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dac_sampling_rate</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="n">dac_dc_level</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dac_dc_voltage_range</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dac_field_driving_current</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">lock_sensitivity</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">lock_time_constant</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">integration_time</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">dwell_time</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">magnetic_field</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">points_per_loop</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">number_of_sweeps</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DECIMAL</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">geometry</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">45</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;ConfiguracionMoke(id_experimento=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id_experimento</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_input_intensity=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_input_intensity</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_voltaje_range=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_voltaje_range</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_input_temperature=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_input_temperature</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_temperature_voltaje_range=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_temperature_voltaje_range</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_sampling_rate=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_sampling_rate</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_dc_level=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_dc_level</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_dc_voltage_range=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_dc_voltage_range</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dac_field_driving_current=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dac_field_driving_current</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            lock_sensitivity=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lock_sensitivity</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            lock_time_constant=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lock_time_constant</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            integration_time=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">integration_time</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            dwell_time=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dwell_time</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            magnetic_field=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">magnetic_field</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            points_per_loop=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">points_per_loop</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            number_of_sweeps=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_sweeps</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            geometry=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">            &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Marcador">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.clases.Marcador">[docs]</a>
+<span class="k">class</span> <span class="nc">Marcador</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representa un marcador asociado a un experimento almacenado en la base de datos.</span>
+
+<span class="sd">    Esta clase mapea a la tabla &quot;marcadores&quot; en la base de datos y contiene</span>
+<span class="sd">    los campos necesarios para almacenar la información de un marcador.</span>
+
+<span class="sd">    Atributos:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    eje_x_id : int</span>
+<span class="sd">        Identificador del eje X del marcador (parte de la clave primaria compuesta).</span>
+<span class="sd">    id_experimento : int</span>
+<span class="sd">        Identificador del experimento al que pertenece este marcador (parte de la clave primaria compuesta).</span>
+<span class="sd">    descripcion : str</span>
+<span class="sd">        Descripción del marcador.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        marcador = Marcador(</span>
+<span class="sd">            eje_x_id=1,</span>
+<span class="sd">            id_experimento=101,</span>
+<span class="sd">            descripcion=&quot;Marcador de referencia inicial&quot;</span>
+<span class="sd">        )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;marcadores&quot;</span>
+
+    <span class="c1"># &#39;eje_x_id&#39; y &#39;id_experimento&#39; son claves primarias compuestas</span>
+    <span class="n">eje_x_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">id_experimento</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;experimentos.id&quot;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">descripcion</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Marcadores(eje_x_id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">eje_x_id</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            id_experimento=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id_experimento</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            descripcion=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">descripcion</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">            &quot;&quot;&quot;</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Equipo prácticas IES Sampedro: Adolfo M. Luque, Iker Carrón &amp; David Romero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

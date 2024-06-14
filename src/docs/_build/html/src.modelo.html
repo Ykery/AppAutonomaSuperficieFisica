@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MODELO &mdash; Aplicación UAM Depart. Física 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.utilidades package" href="src.utilidades.html" />
+    <link rel="prev" title="PAQUETES" href="src.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Aplicación UAM Depart. Física
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Vista General</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html">PAQUETES</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">MODELO</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#clases">Clases</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dao">DAO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.modelo">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.utilidades.html">src.utilidades package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.vista.html">VISTA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Aplicación UAM Depart. Física</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Vista General</a></li>
+          <li class="breadcrumb-item"><a href="src.html">PAQUETES</a></li>
+      <li class="breadcrumb-item active">MODELO</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/src.modelo.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="modelo">
+<h1>MODELO<a class="headerlink" href="#modelo" title="Link to this heading"></a></h1>
+<p>Este paquete contiene los módulos que definen las clases y la lógica de acceso a la base de datos.</p>
+<section id="clases">
+<h2>Clases<a class="headerlink" href="#clases" title="Link to this heading"></a></h2>
+<p>El módulo <cite>clases</cite> contiene las clases que representan los objetos de la aplicación. Estas clases son las siguientes:</p>
+<dl class="py class" id="module-src.modelo.clases">
+<dt class="sig sig-object py" id="src.modelo.clases.Base">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.clases.</span></span><span class="sig-name descname"><span class="pre">Base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/clases.html#Base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.clases.Base" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DeclarativeBase</span></code></p>
+<p>Clase base para modelos declarativos de SQLAlchemy.</p>
+<p>Esta clase sirve como base para todas las definiciones de modelos en SQLAlchemy.
+Hereda de <cite>DeclarativeBase</cite>, proporcionando la funcionalidad necesaria para la
+creación de tablas y el mapeo de objetos relacionales.</p>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;users&#39;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Esta clase no contiene métodos ni atributos adicionales, simplemente extiende
+<cite>DeclarativeBase</cite> para permitir la creación de modelos de base de datos.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Base.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">MetaData</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">MetaData()</span></em><a class="headerlink" href="#src.modelo.clases.Base.metadata" title="Link to this definition"></a></dt>
+<dd><p>Refers to the <code class="xref py py-class docutils literal notranslate"><span class="pre">_schema.MetaData</span></code> collection that will be used
+for new <code class="xref py py-class docutils literal notranslate"><span class="pre">_schema.Table</span></code> objects.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><span class="xref std std-ref">orm_declarative_metadata</span></p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Base.registry">
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">_RegistryType</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;sqlalchemy.orm.decl_api.registry</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#src.modelo.clases.Base.registry" title="Link to this definition"></a></dt>
+<dd><p>Refers to the <code class="xref py py-class docutils literal notranslate"><span class="pre">_orm.registry</span></code> in use where new
+<code class="xref py py-class docutils literal notranslate"><span class="pre">_orm.Mapper</span></code> objects will be associated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.clases.Conexion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.clases.</span></span><span class="sig-name descname"><span class="pre">Conexion</span></span><a class="reference internal" href="_modules/src/modelo/clases.html#Conexion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.clases.Conexion" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Clase para gestionar la conexión a la base de datos y la creación de sesiones.</p>
+<p>Esta clase proporciona métodos para inicializar la base de datos y obtener conexiones
+de sesión utilizando SQLAlchemy.</p>
+<section id="atributos-de-clase">
+<h3>Atributos de clase:<a class="headerlink" href="#atributos-de-clase" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>engine<span class="classifier">sqlalchemy.engine.Engine</span></dt><dd><p>El motor de base de datos utilizado para las conexiones.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.clases.Conexion.getConexion">
+<span class="sig-name descname"><span class="pre">getConexion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/clases.html#Conexion.getConexion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.clases.Conexion.getConexion" title="Link to this definition"></a></dt>
+<dd><p>Obtiene una nueva sesión de conexión a la base de datos.</p>
+<p>Crea una nueva sesión utilizando el motor de la clase y la devuelve para su uso
+en operaciones de base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Una nueva sesión de SQLAlchemy.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>sqlalchemy.orm.session.Session</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+<span class="c1"># Realizar operaciones de base de datos con la sesión</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.clases.Conexion.iniciar_bbdd">
+<span class="sig-name descname"><span class="pre">iniciar_bbdd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/clases.html#Conexion.iniciar_bbdd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.clases.Conexion.iniciar_bbdd" title="Link to this definition"></a></dt>
+<dd><p>Inicializa la base de datos creando todas las tablas definidas en los modelos.</p>
+<p>Utiliza el metadata de la clase <cite>Base</cite> para crear todas las tablas en la base de datos
+conectada a través del motor <cite>engine</cite>.</p>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Conexion</span><span class="o">.</span><span class="n">iniciar_bbdd</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.clases.</span></span><span class="sig-name descname"><span class="pre">ConfiguracionMoke</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/clases.html#ConfiguracionMoke"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.modelo.clases.Base" title="src.modelo.clases.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code></a></p>
+<p>Representa la configuración de un experimento MOKE almacenado en la base de datos.</p>
+<p>Esta clase mapea a la tabla “configuracion_moke” en la base de datos y contiene
+los campos necesarios para almacenar la configuración de un experimento MOKE.</p>
+<section id="atributos">
+<h3>Atributos:<a class="headerlink" href="#atributos" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>id_experimento<span class="classifier">int</span></dt><dd><p>Identificador del experimento al que pertenece esta configuración (clave primaria).</p>
+</dd>
+<dt>dac_input_intensity<span class="classifier">str</span></dt><dd><p>Intensidad de entrada DAC.</p>
+</dd>
+<dt>dac_voltaje_range<span class="classifier">str</span></dt><dd><p>Rango de voltaje DAC.</p>
+</dd>
+<dt>dac_input_temperature<span class="classifier">str</span></dt><dd><p>Temperatura de entrada DAC.</p>
+</dd>
+<dt>dac_temperature_voltaje_range<span class="classifier">str</span></dt><dd><p>Rango de voltaje de temperatura DAC.</p>
+</dd>
+<dt>dac_sampling_rate<span class="classifier">decimal</span></dt><dd><p>Tasa de muestreo DAC (precisión de 10, escala de 2).</p>
+</dd>
+<dt>dac_dc_level<span class="classifier">str</span></dt><dd><p>Nivel de DC del DAC.</p>
+</dd>
+<dt>dac_dc_voltage_range<span class="classifier">str</span></dt><dd><p>Rango de voltaje de DC del DAC.</p>
+</dd>
+<dt>dac_field_driving_current<span class="classifier">str</span></dt><dd><p>Corriente de conducción de campo del DAC.</p>
+</dd>
+<dt>lock_sensitivity<span class="classifier">str</span></dt><dd><p>Sensibilidad del lock-in.</p>
+</dd>
+<dt>lock_time_constant<span class="classifier">str</span></dt><dd><p>Constante de tiempo del lock-in.</p>
+</dd>
+<dt>integration_time<span class="classifier">decimal</span></dt><dd><p>Tiempo de integración (precisión de 10, escala de 2).</p>
+</dd>
+<dt>dwell_time<span class="classifier">decimal</span></dt><dd><p>Tiempo de permanencia (precisión de 10, escala de 2).</p>
+</dd>
+<dt>magnetic_field<span class="classifier">decimal</span></dt><dd><p>Campo magnético (precisión de 10, escala de 2).</p>
+</dd>
+<dt>points_per_loop<span class="classifier">decimal</span></dt><dd><p>Puntos por bucle (precisión de 10, escala de 2).</p>
+</dd>
+<dt>number_of_sweeps<span class="classifier">decimal</span></dt><dd><p>Número de barridos (precisión de 10, escala de 2).</p>
+</dd>
+<dt>geometry<span class="classifier">str</span></dt><dd><p>Geometría del experimento.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.dac_dc_level">
+<span class="sig-name descname"><span class="pre">dac_dc_level</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.dac_dc_level" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.dac_dc_voltage_range">
+<span class="sig-name descname"><span class="pre">dac_dc_voltage_range</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.dac_dc_voltage_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.dac_field_driving_current">
+<span class="sig-name descname"><span class="pre">dac_field_driving_current</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.dac_field_driving_current" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.dac_input_intensity">
+<span class="sig-name descname"><span class="pre">dac_input_intensity</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.dac_input_intensity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.dac_input_temperature">
+<span class="sig-name descname"><span class="pre">dac_input_temperature</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.dac_input_temperature" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.dac_sampling_rate">
+<span class="sig-name descname"><span class="pre">dac_sampling_rate</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.dac_sampling_rate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.dac_temperature_voltaje_range">
+<span class="sig-name descname"><span class="pre">dac_temperature_voltaje_range</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.dac_temperature_voltaje_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.dac_voltaje_range">
+<span class="sig-name descname"><span class="pre">dac_voltaje_range</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.dac_voltaje_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.dwell_time">
+<span class="sig-name descname"><span class="pre">dwell_time</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.dwell_time" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.geometry">
+<span class="sig-name descname"><span class="pre">geometry</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.geometry" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.id_experimento">
+<span class="sig-name descname"><span class="pre">id_experimento</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.id_experimento" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.integration_time">
+<span class="sig-name descname"><span class="pre">integration_time</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.integration_time" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.lock_sensitivity">
+<span class="sig-name descname"><span class="pre">lock_sensitivity</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.lock_sensitivity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.lock_time_constant">
+<span class="sig-name descname"><span class="pre">lock_time_constant</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.lock_time_constant" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.magnetic_field">
+<span class="sig-name descname"><span class="pre">magnetic_field</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.magnetic_field" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.number_of_sweeps">
+<span class="sig-name descname"><span class="pre">number_of_sweeps</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.number_of_sweeps" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionMoke.points_per_loop">
+<span class="sig-name descname"><span class="pre">points_per_loop</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionMoke.points_per_loop" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.clases.</span></span><span class="sig-name descname"><span class="pre">ConfiguracionTeas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/clases.html#ConfiguracionTeas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.modelo.clases.Base" title="src.modelo.clases.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code></a></p>
+<p>Representa la configuración de un experimento TEAS almacenado en la base de datos.</p>
+<p>Esta clase mapea a la tabla “configuracion_teas” en la base de datos y contiene
+los campos necesarios para almacenar la configuración de un experimento TEAS.</p>
+<section id="id1">
+<h3>Atributos:<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>id_experimento<span class="classifier">int</span></dt><dd><p>Identificador del experimento al que pertenece esta configuración (clave primaria).</p>
+</dd>
+<dt>dac_input_intensity<span class="classifier">str</span></dt><dd><p>Intensidad de entrada DAC.</p>
+</dd>
+<dt>dac_teas_voltaje_range<span class="classifier">str</span></dt><dd><p>Rango de voltaje DAC para TEAS.</p>
+</dd>
+<dt>dac_input_temperature<span class="classifier">str</span></dt><dd><p>Temperatura de entrada DAC.</p>
+</dd>
+<dt>dac_temperature_voltaje_range<span class="classifier">str</span></dt><dd><p>Rango de voltaje de temperatura DAC.</p>
+</dd>
+<dt>dac_sampling_rate<span class="classifier">decimal</span></dt><dd><p>Tasa de muestreo DAC (precisión de 10, escala de 2).</p>
+</dd>
+<dt>aml_input_pressure<span class="classifier">str</span></dt><dd><p>Presión de entrada AML.</p>
+</dd>
+<dt>aml_voltage_range<span class="classifier">str</span></dt><dd><p>Rango de voltaje AML.</p>
+</dd>
+<dt>aml_sensitivity<span class="classifier">str</span></dt><dd><p>Sensibilidad AML.</p>
+</dd>
+<dt>aml_presure_units<span class="classifier">str</span></dt><dd><p>Unidades de presión AML.</p>
+</dd>
+<dt>aml_emission_current<span class="classifier">str</span></dt><dd><p>Corriente de emisión AML.</p>
+</dd>
+<dt>lock_sensitivity<span class="classifier">str</span></dt><dd><p>Sensibilidad del lock-in.</p>
+</dd>
+<dt>lock_time_constant<span class="classifier">str</span></dt><dd><p>Constante de tiempo del lock-in.</p>
+</dd>
+<dt>integration_time<span class="classifier">decimal</span></dt><dd><p>Tiempo de integración (precisión de 10, escala de 2).</p>
+</dd>
+<dt>channeltron_voltage<span class="classifier">str</span></dt><dd><p>Voltaje del Channeltron.</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">configuracion</span> <span class="o">=</span> <span class="n">ConfiguracionTeas</span><span class="p">(</span>
+    <span class="n">id_experimento</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">dac_input_intensity</span><span class="o">=</span><span class="s2">&quot;10V&quot;</span><span class="p">,</span>
+    <span class="n">dac_teas_voltaje_range</span><span class="o">=</span><span class="s2">&quot;5V&quot;</span><span class="p">,</span>
+    <span class="n">dac_input_temperature</span><span class="o">=</span><span class="s2">&quot;25C&quot;</span><span class="p">,</span>
+    <span class="n">dac_temperature_voltaje_range</span><span class="o">=</span><span class="s2">&quot;10V&quot;</span><span class="p">,</span>
+    <span class="n">dac_sampling_rate</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+    <span class="n">aml_input_pressure</span><span class="o">=</span><span class="s2">&quot;1 atm&quot;</span><span class="p">,</span>
+    <span class="n">aml_voltage_range</span><span class="o">=</span><span class="s2">&quot;5V&quot;</span><span class="p">,</span>
+    <span class="n">aml_sensitivity</span><span class="o">=</span><span class="s2">&quot;High&quot;</span><span class="p">,</span>
+    <span class="n">aml_presure_units</span><span class="o">=</span><span class="s2">&quot;Pa&quot;</span><span class="p">,</span>
+    <span class="n">aml_emission_current</span><span class="o">=</span><span class="s2">&quot;0.5A&quot;</span><span class="p">,</span>
+    <span class="n">lock_sensitivity</span><span class="o">=</span><span class="s2">&quot;10mV&quot;</span><span class="p">,</span>
+    <span class="n">lock_time_constant</span><span class="o">=</span><span class="s2">&quot;1s&quot;</span><span class="p">,</span>
+    <span class="n">integration_time</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">channeltron_voltage</span><span class="o">=</span><span class="s2">&quot;1000V&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.aml_emission_current">
+<span class="sig-name descname"><span class="pre">aml_emission_current</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.aml_emission_current" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.aml_input_pressure">
+<span class="sig-name descname"><span class="pre">aml_input_pressure</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.aml_input_pressure" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.aml_presure_units">
+<span class="sig-name descname"><span class="pre">aml_presure_units</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.aml_presure_units" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.aml_sensitivity">
+<span class="sig-name descname"><span class="pre">aml_sensitivity</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.aml_sensitivity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.aml_voltage_range">
+<span class="sig-name descname"><span class="pre">aml_voltage_range</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.aml_voltage_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.channeltron_voltage">
+<span class="sig-name descname"><span class="pre">channeltron_voltage</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.channeltron_voltage" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.dac_input_intensity">
+<span class="sig-name descname"><span class="pre">dac_input_intensity</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.dac_input_intensity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.dac_input_temperature">
+<span class="sig-name descname"><span class="pre">dac_input_temperature</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.dac_input_temperature" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.dac_sampling_rate">
+<span class="sig-name descname"><span class="pre">dac_sampling_rate</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.dac_sampling_rate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.dac_teas_voltaje_range">
+<span class="sig-name descname"><span class="pre">dac_teas_voltaje_range</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.dac_teas_voltaje_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.dac_temperature_voltaje_range">
+<span class="sig-name descname"><span class="pre">dac_temperature_voltaje_range</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.dac_temperature_voltaje_range" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.id_experimento">
+<span class="sig-name descname"><span class="pre">id_experimento</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.id_experimento" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.integration_time">
+<span class="sig-name descname"><span class="pre">integration_time</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.integration_time" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.lock_sensitivity">
+<span class="sig-name descname"><span class="pre">lock_sensitivity</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.lock_sensitivity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ConfiguracionTeas.lock_time_constant">
+<span class="sig-name descname"><span class="pre">lock_time_constant</span></span><a class="headerlink" href="#src.modelo.clases.ConfiguracionTeas.lock_time_constant" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.clases.Experimento">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.clases.</span></span><span class="sig-name descname"><span class="pre">Experimento</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/clases.html#Experimento"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.clases.Experimento" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.modelo.clases.Base" title="src.modelo.clases.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code></a></p>
+<p>Modelo de base de datos para representar un experimento en la aplicación.</p>
+<p>Esta clase define la estructura de la tabla <cite>experimentos</cite> en la base de datos,
+incluyendo columnas para la descripción, ruta del archivo CSV, fecha de creación
+y tipo de experimento.</p>
+<section id="id2">
+<h3>Atributos:<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>id<span class="classifier">int</span></dt><dd><p>Identificador único del experimento (clave primaria, autoincremental).</p>
+</dd>
+<dt>descripcion<span class="classifier">str</span></dt><dd><p>Descripción del experimento, opcional.</p>
+</dd>
+<dt>rutaCsv<span class="classifier">str</span></dt><dd><p>Ruta del archivo CSV asociado con el experimento, obligatorio.</p>
+</dd>
+<dt>fecha_creacion<span class="classifier">datetime</span></dt><dd><p>Fecha y hora en que se creó el registro, se autogenera al insertar un nuevo registro.</p>
+</dd>
+<dt>tipo<span class="classifier">str</span></dt><dd><p>Tipo de experimento, obligatorio.</p>
+</dd>
+<dt>configuracion<span class="classifier">dict</span></dt><dd><p>Diccionario para almacenar configuraciones adicionales del experimento.</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nuevo_experimento</span> <span class="o">=</span> <span class="n">Experimento</span><span class="p">(</span>
+    <span class="n">descripcion</span><span class="o">=</span><span class="s2">&quot;Descripción del experimento&quot;</span><span class="p">,</span>
+    <span class="n">rutaCsv</span><span class="o">=</span><span class="s2">&quot;ruta/al/archivo.csv&quot;</span><span class="p">,</span>
+    <span class="n">tipo</span><span class="o">=</span><span class="s2">&quot;Tipo de experimento&quot;</span>
+<span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nuevo_experimento</span><span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Experimento.configuracion">
+<span class="sig-name descname"><span class="pre">configuracion</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#src.modelo.clases.Experimento.configuracion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Experimento.descripcion">
+<span class="sig-name descname"><span class="pre">descripcion</span></span><a class="headerlink" href="#src.modelo.clases.Experimento.descripcion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Experimento.fecha_creacion">
+<span class="sig-name descname"><span class="pre">fecha_creacion</span></span><a class="headerlink" href="#src.modelo.clases.Experimento.fecha_creacion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Experimento.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#src.modelo.clases.Experimento.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Experimento.rutaCsv">
+<span class="sig-name descname"><span class="pre">rutaCsv</span></span><a class="headerlink" href="#src.modelo.clases.Experimento.rutaCsv" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Experimento.tipo">
+<span class="sig-name descname"><span class="pre">tipo</span></span><a class="headerlink" href="#src.modelo.clases.Experimento.tipo" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.clases.Marcador">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.clases.</span></span><span class="sig-name descname"><span class="pre">Marcador</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/clases.html#Marcador"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.clases.Marcador" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.modelo.clases.Base" title="src.modelo.clases.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code></a></p>
+<p>Representa un marcador asociado a un experimento almacenado en la base de datos.</p>
+<p>Esta clase mapea a la tabla “marcadores” en la base de datos y contiene
+los campos necesarios para almacenar la información de un marcador.</p>
+<section id="id3">
+<h3>Atributos:<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>eje_x_id<span class="classifier">int</span></dt><dd><p>Identificador del eje X del marcador (parte de la clave primaria compuesta).</p>
+</dd>
+<dt>id_experimento<span class="classifier">int</span></dt><dd><p>Identificador del experimento al que pertenece este marcador (parte de la clave primaria compuesta).</p>
+</dd>
+<dt>descripcion<span class="classifier">str</span></dt><dd><p>Descripción del marcador.</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">marcador</span> <span class="o">=</span> <span class="n">Marcador</span><span class="p">(</span>
+    <span class="n">eje_x_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">id_experimento</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span>
+    <span class="n">descripcion</span><span class="o">=</span><span class="s2">&quot;Marcador de referencia inicial&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Marcador.descripcion">
+<span class="sig-name descname"><span class="pre">descripcion</span></span><a class="headerlink" href="#src.modelo.clases.Marcador.descripcion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Marcador.eje_x_id">
+<span class="sig-name descname"><span class="pre">eje_x_id</span></span><a class="headerlink" href="#src.modelo.clases.Marcador.eje_x_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.Marcador.id_experimento">
+<span class="sig-name descname"><span class="pre">id_experimento</span></span><a class="headerlink" href="#src.modelo.clases.Marcador.id_experimento" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.clases.ResultadoMoke">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.clases.</span></span><span class="sig-name descname"><span class="pre">ResultadoMoke</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/clases.html#ResultadoMoke"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.clases.ResultadoMoke" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.modelo.clases.Base" title="src.modelo.clases.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code></a></p>
+<p>Representa un resultado del experimento MOKE almacenado en la base de datos.</p>
+<p>Esta clase mapea a la tabla “resultados_moke” en la base de datos y contiene
+los campos necesarios para almacenar los resultados de un experimento MOKE.</p>
+<section id="id4">
+<h3>Atributos:<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>id_resultado_exp<span class="classifier">int</span></dt><dd><p>Identificador único autoincremental del resultado del experimento.</p>
+</dd>
+<dt>id_experimento<span class="classifier">int</span></dt><dd><p>Identificador del experimento al que pertenece este resultado.</p>
+</dd>
+<dt>magnetic_field<span class="classifier">decimal</span></dt><dd><p>Campo magnético medido durante el experimento (precisión de 10, escala de 2).</p>
+</dd>
+<dt>intensity<span class="classifier">decimal</span></dt><dd><p>Intensidad medida durante el experimento (precisión de 10, escala de 2).</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">resultado</span> <span class="o">=</span> <span class="n">ResultadoMoke</span><span class="p">(</span>
+    <span class="n">id_experimento</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">magnetic_field</span><span class="o">=</span><span class="mf">5.75</span><span class="p">,</span>
+    <span class="n">intensity</span><span class="o">=</span><span class="mf">3.42</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ResultadoMoke.id_experimento">
+<span class="sig-name descname"><span class="pre">id_experimento</span></span><a class="headerlink" href="#src.modelo.clases.ResultadoMoke.id_experimento" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ResultadoMoke.id_resultado_exp">
+<span class="sig-name descname"><span class="pre">id_resultado_exp</span></span><a class="headerlink" href="#src.modelo.clases.ResultadoMoke.id_resultado_exp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ResultadoMoke.intensity">
+<span class="sig-name descname"><span class="pre">intensity</span></span><a class="headerlink" href="#src.modelo.clases.ResultadoMoke.intensity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ResultadoMoke.magnetic_field">
+<span class="sig-name descname"><span class="pre">magnetic_field</span></span><a class="headerlink" href="#src.modelo.clases.ResultadoMoke.magnetic_field" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.clases.ResultadoTeas">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.clases.</span></span><span class="sig-name descname"><span class="pre">ResultadoTeas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/clases.html#ResultadoTeas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.clases.ResultadoTeas" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.modelo.clases.Base" title="src.modelo.clases.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code></a></p>
+<p>Modelo de base de datos para representar un resultado TEAS en la aplicación.</p>
+<p>Esta clase define la estructura de la tabla <cite>resultados_teas</cite> en la base de datos,
+incluyendo columnas para el identificador del resultado, el identificador del experimento
+asociado, el tiempo y la intensidad.</p>
+<section id="id5">
+<h3>Atributos:<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>id_resultado_exp<span class="classifier">int</span></dt><dd><p>Identificador único del resultado del experimento (clave primaria, autoincremental).</p>
+</dd>
+<dt>id_experimento<span class="classifier">int</span></dt><dd><p>Identificador del experimento al que pertenece este resultado (clave foránea).</p>
+</dd>
+<dt>time<span class="classifier">decimal</span></dt><dd><p>Tiempo asociado al resultado, con precisión y escala definidas.</p>
+</dd>
+<dt>intensity<span class="classifier">decimal</span></dt><dd><p>Intensidad asociada al resultado, con precisión y escala definidas.</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nuevo_resultado</span> <span class="o">=</span> <span class="n">ResultadoTeas</span><span class="p">(</span>
+    <span class="n">id_experimento</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">time</span><span class="o">=</span><span class="mf">12.34</span><span class="p">,</span>
+    <span class="n">intensity</span><span class="o">=</span><span class="mf">56.78</span>
+<span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">nuevo_resultado</span><span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ResultadoTeas.id_experimento">
+<span class="sig-name descname"><span class="pre">id_experimento</span></span><a class="headerlink" href="#src.modelo.clases.ResultadoTeas.id_experimento" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ResultadoTeas.id_resultado_exp">
+<span class="sig-name descname"><span class="pre">id_resultado_exp</span></span><a class="headerlink" href="#src.modelo.clases.ResultadoTeas.id_resultado_exp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ResultadoTeas.intensity">
+<span class="sig-name descname"><span class="pre">intensity</span></span><a class="headerlink" href="#src.modelo.clases.ResultadoTeas.intensity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.modelo.clases.ResultadoTeas.time">
+<span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#src.modelo.clases.ResultadoTeas.time" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="dao">
+<h2>DAO<a class="headerlink" href="#dao" title="Link to this heading"></a></h2>
+<p>El módulo <cite>dao</cite> contiene las clases que se encargan de la lógica de acceso a la base de datos. Estas clases son las siguientes:</p>
+<dl class="py class" id="module-src.modelo.dao">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionMokeDAO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.dao.</span></span><span class="sig-name descname"><span class="pre">ConfiguracionMokeDAO</span></span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionMokeDAO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionMokeDAO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Data Access Object (DAO) para la clase ConfiguracionMoke.</p>
+<p>Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
+en la tabla ‘configuracion_moke’ de la base de datos.</p>
+<section id="metodos">
+<h3>Métodos:<a class="headerlink" href="#metodos" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>crear(configuracion):</dt><dd><p>Crea una nueva configuración MOKE en la base de datos.</p>
+</dd>
+<dt>obtener_por_id(id):</dt><dd><p>Obtiene una configuración MOKE por su ID.</p>
+</dd>
+<dt>obtener_todos():</dt><dd><p>Obtiene todas las configuraciones MOKE de la base de datos.</p>
+</dd>
+<dt>actualizar(configuracion):</dt><dd><p>Actualiza una configuración MOKE existente en la base de datos.</p>
+</dd>
+<dt>eliminar(configuracion):</dt><dd><p>Elimina una configuración MOKE de la base de datos.</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear una nueva configuración MOKE</span>
+<span class="n">nueva_configuracion</span> <span class="o">=</span> <span class="n">ConfiguracionMoke</span><span class="p">(</span><span class="n">dac_input_intensity</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">dac_voltaje_range</span><span class="o">=</span><span class="s2">&quot;20 V&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">ConfiguracionMokeDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="n">nueva_configuracion</span><span class="p">)</span>
+
+<span class="c1"># Obtener una configuración MOKE por ID</span>
+<span class="n">configuracion</span> <span class="o">=</span> <span class="n">ConfiguracionMokeDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Obtener todas las configuraciones MOKE</span>
+<span class="n">todas_configuraciones</span> <span class="o">=</span> <span class="n">ConfiguracionMokeDAO</span><span class="o">.</span><span class="n">obtener_todos</span><span class="p">()</span>
+
+<span class="c1"># Actualizar una configuración MOKE</span>
+<span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_intensity</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span>
+<span class="n">ConfiguracionMokeDAO</span><span class="o">.</span><span class="n">actualizar</span><span class="p">(</span><span class="n">configuracion</span><span class="p">)</span>
+
+<span class="c1"># Eliminar una configuración MOKE</span>
+<span class="n">ConfiguracionMokeDAO</span><span class="o">.</span><span class="n">eliminar</span><span class="p">(</span><span class="n">configuracion</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionMokeDAO.actualizar">
+<span class="sig-name descname"><span class="pre">actualizar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionMokeDAO.actualizar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionMokeDAO.actualizar" title="Link to this definition"></a></dt>
+<dd><p>Actualiza una configuración MOKE existente en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>configuracion</strong> (<a class="reference internal" href="#src.modelo.clases.ConfiguracionMoke" title="src.modelo.clases.ConfiguracionMoke"><em>ConfiguracionMoke</em></a>) – El objeto ConfiguracionMoke a ser actualizado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionMokeDAO.crear">
+<span class="sig-name descname"><span class="pre">crear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionMokeDAO.crear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionMokeDAO.crear" title="Link to this definition"></a></dt>
+<dd><p>Crea una nueva configuración MOKE en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>configuracion</strong> (<a class="reference internal" href="#src.modelo.clases.ConfiguracionMoke" title="src.modelo.clases.ConfiguracionMoke"><em>ConfiguracionMoke</em></a>) – El objeto ConfiguracionMoke a ser creado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionMokeDAO.eliminar">
+<span class="sig-name descname"><span class="pre">eliminar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionMokeDAO.eliminar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionMokeDAO.eliminar" title="Link to this definition"></a></dt>
+<dd><p>Elimina una configuración MOKE de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>configuracion</strong> (<a class="reference internal" href="#src.modelo.clases.ConfiguracionMoke" title="src.modelo.clases.ConfiguracionMoke"><em>ConfiguracionMoke</em></a>) – El objeto ConfiguracionMoke a ser eliminado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionMokeDAO.obtener_por_id">
+<span class="sig-name descname"><span class="pre">obtener_por_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionMokeDAO.obtener_por_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionMokeDAO.obtener_por_id" title="Link to this definition"></a></dt>
+<dd><p>Obtiene una configuración MOKE por su ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – El ID de la configuración MOKE a obtener.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>La configuración MOKE con el ID especificado.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#src.modelo.clases.ConfiguracionMoke" title="src.modelo.clases.ConfiguracionMoke">ConfiguracionMoke</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionMokeDAO.obtener_todos">
+<span class="sig-name descname"><span class="pre">obtener_todos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionMokeDAO.obtener_todos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionMokeDAO.obtener_todos" title="Link to this definition"></a></dt>
+<dd><p>Obtiene todas las configuraciones MOKE de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Una lista de todas las configuraciones MOKE.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#src.modelo.clases.ConfiguracionMoke" title="src.modelo.clases.ConfiguracionMoke">ConfiguracionMoke</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionTeasDAO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.dao.</span></span><span class="sig-name descname"><span class="pre">ConfiguracionTeasDAO</span></span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionTeasDAO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionTeasDAO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Data Access Object (DAO) para la clase ConfiguracionTeas.</p>
+<p>Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
+en la tabla ‘configuracion_teas’ de la base de datos.</p>
+<section id="id6">
+<h3>Métodos:<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>crear(configuracion):</dt><dd><p>Crea una nueva configuración TEAS en la base de datos.</p>
+</dd>
+<dt>obtener_por_id(id):</dt><dd><p>Obtiene una configuración TEAS por su ID.</p>
+</dd>
+<dt>obtener_todos():</dt><dd><p>Obtiene todas las configuraciones TEAS de la base de datos.</p>
+</dd>
+<dt>actualizar(configuracion):</dt><dd><p>Actualiza una configuración TEAS existente en la base de datos.</p>
+</dd>
+<dt>eliminar(configuracion):</dt><dd><p>Elimina una configuración TEAS de la base de datos.</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear una nueva configuración TEAS</span>
+<span class="n">nueva_configuracion</span> <span class="o">=</span> <span class="n">ConfiguracionTeas</span><span class="p">(</span><span class="n">dac_input_intensity</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">dac_teas_voltaje_range</span><span class="o">=</span><span class="s2">&quot;20 V&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">ConfiguracionTeasDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="n">nueva_configuracion</span><span class="p">)</span>
+
+<span class="c1"># Obtener una configuración TEAS por ID</span>
+<span class="n">configuracion</span> <span class="o">=</span> <span class="n">ConfiguracionTeasDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Obtener todas las configuraciones TEAS</span>
+<span class="n">todas_configuraciones</span> <span class="o">=</span> <span class="n">ConfiguracionTeasDAO</span><span class="o">.</span><span class="n">obtener_todos</span><span class="p">()</span>
+
+<span class="c1"># Actualizar una configuración TEAS</span>
+<span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_intensity</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span>
+<span class="n">ConfiguracionTeasDAO</span><span class="o">.</span><span class="n">actualizar</span><span class="p">(</span><span class="n">configuracion</span><span class="p">)</span>
+
+<span class="c1"># Eliminar una configuración TEAS</span>
+<span class="n">ConfiguracionTeasDAO</span><span class="o">.</span><span class="n">eliminar</span><span class="p">(</span><span class="n">configuracion</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionTeasDAO.actualizar">
+<span class="sig-name descname"><span class="pre">actualizar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionTeasDAO.actualizar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionTeasDAO.actualizar" title="Link to this definition"></a></dt>
+<dd><p>Actualiza una configuración TEAS existente en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>configuracion</strong> (<a class="reference internal" href="#src.modelo.clases.ConfiguracionTeas" title="src.modelo.clases.ConfiguracionTeas"><em>ConfiguracionTeas</em></a>) – El objeto ConfiguracionTeas a ser actualizado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionTeasDAO.crear">
+<span class="sig-name descname"><span class="pre">crear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionTeasDAO.crear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionTeasDAO.crear" title="Link to this definition"></a></dt>
+<dd><p>Crea una nueva configuración TEAS en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>configuracion</strong> (<a class="reference internal" href="#src.modelo.clases.ConfiguracionTeas" title="src.modelo.clases.ConfiguracionTeas"><em>ConfiguracionTeas</em></a>) – El objeto ConfiguracionTeas a ser creado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionTeasDAO.eliminar">
+<span class="sig-name descname"><span class="pre">eliminar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionTeasDAO.eliminar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionTeasDAO.eliminar" title="Link to this definition"></a></dt>
+<dd><p>Elimina una configuración TEAS de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>configuracion</strong> (<a class="reference internal" href="#src.modelo.clases.ConfiguracionTeas" title="src.modelo.clases.ConfiguracionTeas"><em>ConfiguracionTeas</em></a>) – El objeto ConfiguracionTeas a ser eliminado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionTeasDAO.obtener_por_id">
+<span class="sig-name descname"><span class="pre">obtener_por_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionTeasDAO.obtener_por_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionTeasDAO.obtener_por_id" title="Link to this definition"></a></dt>
+<dd><p>Obtiene una configuración TEAS por su ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – El ID de la configuración TEAS a obtener.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>La configuración TEAS con el ID especificado.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#src.modelo.clases.ConfiguracionTeas" title="src.modelo.clases.ConfiguracionTeas">ConfiguracionTeas</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ConfiguracionTeasDAO.obtener_todos">
+<span class="sig-name descname"><span class="pre">obtener_todos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ConfiguracionTeasDAO.obtener_todos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ConfiguracionTeasDAO.obtener_todos" title="Link to this definition"></a></dt>
+<dd><p>Obtiene todas las configuraciones TEAS de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Una lista de todas las configuraciones TEAS.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#src.modelo.clases.ConfiguracionTeas" title="src.modelo.clases.ConfiguracionTeas">ConfiguracionTeas</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.dao.ExperimentoDAO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.dao.</span></span><span class="sig-name descname"><span class="pre">ExperimentoDAO</span></span><a class="reference internal" href="_modules/src/modelo/dao.html#ExperimentoDAO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ExperimentoDAO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Data Access Object (DAO) para la clase Experimento.</p>
+<p>Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
+en la tabla ‘experimentos’ de la base de datos.</p>
+<section id="id7">
+<h3>Métodos:<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>crear(experimento):</dt><dd><p>Crea un nuevo experimento en la base de datos y devuelve el último experimento creado.</p>
+</dd>
+<dt>obtener_por_id(id):</dt><dd><p>Obtiene un experimento por su ID.</p>
+</dd>
+<dt>obtener_todos():</dt><dd><p>Obtiene todos los experimentos de la base de datos.</p>
+</dd>
+<dt>obtener_ultimo():</dt><dd><p>Obtiene el último experimento creado en la base de datos.</p>
+</dd>
+<dt>actualizar(experimento):</dt><dd><p>Actualiza un experimento existente en la base de datos.</p>
+</dd>
+<dt>eliminar(experimento):</dt><dd><p>Elimina un experimento de la base de datos.</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un nuevo experimento</span>
+<span class="n">nuevo_experimento</span> <span class="o">=</span> <span class="n">Experimento</span><span class="p">(</span><span class="n">descripcion</span><span class="o">=</span><span class="s2">&quot;Nuevo experimento&quot;</span><span class="p">,</span> <span class="n">rutaCsv</span><span class="o">=</span><span class="s2">&quot;ruta/al/archivo.csv&quot;</span><span class="p">,</span> <span class="n">tipo</span><span class="o">=</span><span class="s2">&quot;Tipo de experimento&quot;</span><span class="p">)</span>
+<span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="n">nuevo_experimento</span><span class="p">)</span>
+
+<span class="c1"># Obtener un experimento por ID</span>
+<span class="n">experimento</span> <span class="o">=</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Obtener todos los experimentos</span>
+<span class="n">experimentos</span> <span class="o">=</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_todos</span><span class="p">()</span>
+
+<span class="c1"># Actualizar un experimento</span>
+<span class="n">experimento</span><span class="o">.</span><span class="n">descripcion</span> <span class="o">=</span> <span class="s2">&quot;Descripción actualizada&quot;</span>
+<span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">actualizar</span><span class="p">(</span><span class="n">experimento</span><span class="p">)</span>
+
+<span class="c1"># Eliminar un experimento</span>
+<span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">eliminar</span><span class="p">(</span><span class="n">experimento</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ExperimentoDAO.actualizar">
+<span class="sig-name descname"><span class="pre">actualizar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ExperimentoDAO.actualizar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ExperimentoDAO.actualizar" title="Link to this definition"></a></dt>
+<dd><p>Actualiza un experimento existente en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>experimento</strong> (<a class="reference internal" href="#src.modelo.clases.Experimento" title="src.modelo.clases.Experimento"><em>Experimento</em></a>) – El objeto Experimento a ser actualizado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ExperimentoDAO.crear">
+<span class="sig-name descname"><span class="pre">crear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ExperimentoDAO.crear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ExperimentoDAO.crear" title="Link to this definition"></a></dt>
+<dd><p>Crea un nuevo experimento en la base de datos y devuelve el último experimento creado.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>experimento</strong> (<a class="reference internal" href="#src.modelo.clases.Experimento" title="src.modelo.clases.Experimento"><em>Experimento</em></a>) – El objeto Experimento a ser creado.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>El último experimento creado.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#src.modelo.clases.Experimento" title="src.modelo.clases.Experimento">Experimento</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ExperimentoDAO.eliminar">
+<span class="sig-name descname"><span class="pre">eliminar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ExperimentoDAO.eliminar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ExperimentoDAO.eliminar" title="Link to this definition"></a></dt>
+<dd><p>Elimina un experimento de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>experimento</strong> (<a class="reference internal" href="#src.modelo.clases.Experimento" title="src.modelo.clases.Experimento"><em>Experimento</em></a>) – El objeto Experimento a ser eliminado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ExperimentoDAO.obtener_por_id">
+<span class="sig-name descname"><span class="pre">obtener_por_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ExperimentoDAO.obtener_por_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ExperimentoDAO.obtener_por_id" title="Link to this definition"></a></dt>
+<dd><p>Obtiene un experimento por su ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – El ID del experimento a obtener.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>El experimento con el ID especificado.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#src.modelo.clases.Experimento" title="src.modelo.clases.Experimento">Experimento</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ExperimentoDAO.obtener_todos">
+<span class="sig-name descname"><span class="pre">obtener_todos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ExperimentoDAO.obtener_todos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ExperimentoDAO.obtener_todos" title="Link to this definition"></a></dt>
+<dd><p>Obtiene todos los experimentos de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Una lista de todos los experimentos.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#src.modelo.clases.Experimento" title="src.modelo.clases.Experimento">Experimento</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ExperimentoDAO.obtener_ultimo">
+<span class="sig-name descname"><span class="pre">obtener_ultimo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ExperimentoDAO.obtener_ultimo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ExperimentoDAO.obtener_ultimo" title="Link to this definition"></a></dt>
+<dd><p>Obtiene el último experimento creado en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>El último experimento creado.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#src.modelo.clases.Experimento" title="src.modelo.clases.Experimento">Experimento</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.dao.MarcadorDAO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.dao.</span></span><span class="sig-name descname"><span class="pre">MarcadorDAO</span></span><a class="reference internal" href="_modules/src/modelo/dao.html#MarcadorDAO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.MarcadorDAO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Data Access Object (DAO) para la clase Marcador.</p>
+<p>Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
+en la tabla ‘marcadores’ de la base de datos.</p>
+<section id="id8">
+<h3>Métodos:<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>crear(marcador):</dt><dd><p>Crea un nuevo marcador en la base de datos.</p>
+</dd>
+<dt>obtener_por_id(id):</dt><dd><p>Obtiene un marcador por su ID.</p>
+</dd>
+<dt>obtener_por_id_experimento(id_experimento):</dt><dd><p>Obtiene todos los marcadores asociados a un experimento por su ID.</p>
+</dd>
+<dt>obtener_todos():</dt><dd><p>Obtiene todos los marcadores de la base de datos.</p>
+</dd>
+<dt>actualizar(marcador):</dt><dd><p>Actualiza un marcador existente en la base de datos.</p>
+</dd>
+<dt>eliminar(marcador):</dt><dd><p>Elimina un marcador de la base de datos.</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un nuevo marcador</span>
+<span class="n">nuevo_marcador</span> <span class="o">=</span> <span class="n">Marcador</span><span class="p">(</span><span class="n">eje_x_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">id_experimento</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s2">&quot;Nuevo marcador&quot;</span><span class="p">)</span>
+<span class="n">MarcadorDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="n">nuevo_marcador</span><span class="p">)</span>
+
+<span class="c1"># Obtener un marcador por ID</span>
+<span class="n">marcador</span> <span class="o">=</span> <span class="n">MarcadorDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Obtener todos los marcadores asociados a un experimento</span>
+<span class="n">marcadores_experimento</span> <span class="o">=</span> <span class="n">MarcadorDAO</span><span class="o">.</span><span class="n">obtener_por_id_experimento</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Obtener todos los marcadores</span>
+<span class="n">todos_marcadores</span> <span class="o">=</span> <span class="n">MarcadorDAO</span><span class="o">.</span><span class="n">obtener_todos</span><span class="p">()</span>
+
+<span class="c1"># Actualizar un marcador</span>
+<span class="n">marcador</span><span class="o">.</span><span class="n">descripcion</span> <span class="o">=</span> <span class="s2">&quot;Descripción actualizada&quot;</span>
+<span class="n">MarcadorDAO</span><span class="o">.</span><span class="n">actualizar</span><span class="p">(</span><span class="n">marcador</span><span class="p">)</span>
+
+<span class="c1"># Eliminar un marcador</span>
+<span class="n">MarcadorDAO</span><span class="o">.</span><span class="n">eliminar</span><span class="p">(</span><span class="n">marcador</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.MarcadorDAO.actualizar">
+<span class="sig-name descname"><span class="pre">actualizar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#MarcadorDAO.actualizar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.MarcadorDAO.actualizar" title="Link to this definition"></a></dt>
+<dd><p>Actualiza un marcador existente en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>marcador</strong> (<a class="reference internal" href="#src.modelo.clases.Marcador" title="src.modelo.clases.Marcador"><em>Marcador</em></a>) – El objeto Marcador a ser actualizado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.MarcadorDAO.crear">
+<span class="sig-name descname"><span class="pre">crear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#MarcadorDAO.crear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.MarcadorDAO.crear" title="Link to this definition"></a></dt>
+<dd><p>Crea un nuevo marcador en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>marcador</strong> (<a class="reference internal" href="#src.modelo.clases.Marcador" title="src.modelo.clases.Marcador"><em>Marcador</em></a>) – El objeto Marcador a ser creado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.MarcadorDAO.eliminar">
+<span class="sig-name descname"><span class="pre">eliminar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#MarcadorDAO.eliminar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.MarcadorDAO.eliminar" title="Link to this definition"></a></dt>
+<dd><p>Elimina un marcador de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>marcador</strong> (<a class="reference internal" href="#src.modelo.clases.Marcador" title="src.modelo.clases.Marcador"><em>Marcador</em></a>) – El objeto Marcador a ser eliminado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.MarcadorDAO.obtener_por_id">
+<span class="sig-name descname"><span class="pre">obtener_por_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#MarcadorDAO.obtener_por_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.MarcadorDAO.obtener_por_id" title="Link to this definition"></a></dt>
+<dd><p>Obtiene un marcador por su ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – El ID del marcador a obtener.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>El marcador con el ID especificado.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#src.modelo.clases.Marcador" title="src.modelo.clases.Marcador">Marcador</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.MarcadorDAO.obtener_por_id_experimento">
+<span class="sig-name descname"><span class="pre">obtener_por_id_experimento</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#MarcadorDAO.obtener_por_id_experimento"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.MarcadorDAO.obtener_por_id_experimento" title="Link to this definition"></a></dt>
+<dd><p>Obtiene un marcador por su ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – El ID del marcador a obtener.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>El marcador con el ID especificado.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#src.modelo.clases.Marcador" title="src.modelo.clases.Marcador">Marcador</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.MarcadorDAO.obtener_todos">
+<span class="sig-name descname"><span class="pre">obtener_todos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#MarcadorDAO.obtener_todos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.MarcadorDAO.obtener_todos" title="Link to this definition"></a></dt>
+<dd><p>Obtiene todos los marcadores de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Una lista de todos los marcadores.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#src.modelo.clases.Marcador" title="src.modelo.clases.Marcador">Marcador</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoMokeDAO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.dao.</span></span><span class="sig-name descname"><span class="pre">ResultadoMokeDAO</span></span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoMokeDAO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoMokeDAO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Data Access Object (DAO) para la clase ResultadoMoke.</p>
+<p>Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
+en la tabla ‘resultados_moke’ de la base de datos.</p>
+<section id="id9">
+<h3>Métodos:<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>crear(resultado):</dt><dd><p>Crea un nuevo resultado MOKE en la base de datos.</p>
+</dd>
+<dt>obtener_por_id(id):</dt><dd><p>Obtiene un resultado MOKE por su ID.</p>
+</dd>
+<dt>obtener_por_id_experimento(id_experimento):</dt><dd><p>Obtiene todos los resultados MOKE asociados a un experimento específico.</p>
+</dd>
+<dt>obtener_todos():</dt><dd><p>Obtiene todos los resultados MOKE de la base de datos.</p>
+</dd>
+<dt>actualizar(resultado):</dt><dd><p>Actualiza un resultado MOKE existente en la base de datos.</p>
+</dd>
+<dt>eliminar(resultado):</dt><dd><p>Elimina un resultado MOKE de la base de datos.</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un nuevo resultado MOKE</span>
+<span class="n">nuevo_resultado</span> <span class="o">=</span> <span class="n">ResultadoMoke</span><span class="p">(</span><span class="n">id_experimento</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">magnetic_field</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">intensity</span><span class="o">=</span><span class="mf">100.0</span><span class="p">)</span>
+<span class="n">ResultadoMokeDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="n">nuevo_resultado</span><span class="p">)</span>
+
+<span class="c1"># Obtener un resultado MOKE por ID</span>
+<span class="n">resultado</span> <span class="o">=</span> <span class="n">ResultadoMokeDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Obtener todos los resultados MOKE de un experimento</span>
+<span class="n">resultados</span> <span class="o">=</span> <span class="n">ResultadoMokeDAO</span><span class="o">.</span><span class="n">obtener_por_id_experimento</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Obtener todos los resultados MOKE</span>
+<span class="n">todos_resultados</span> <span class="o">=</span> <span class="n">ResultadoMokeDAO</span><span class="o">.</span><span class="n">obtener_todos</span><span class="p">()</span>
+
+<span class="c1"># Actualizar un resultado MOKE</span>
+<span class="n">resultado</span><span class="o">.</span><span class="n">intensity</span> <span class="o">=</span> <span class="mf">150.0</span>
+<span class="n">ResultadoMokeDAO</span><span class="o">.</span><span class="n">actualizar</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+
+<span class="c1"># Eliminar un resultado MOKE</span>
+<span class="n">ResultadoMokeDAO</span><span class="o">.</span><span class="n">eliminar</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoMokeDAO.actualizar">
+<span class="sig-name descname"><span class="pre">actualizar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoMokeDAO.actualizar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoMokeDAO.actualizar" title="Link to this definition"></a></dt>
+<dd><p>Actualiza un resultado MOKE existente en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resultado</strong> (<a class="reference internal" href="#src.modelo.clases.ResultadoMoke" title="src.modelo.clases.ResultadoMoke"><em>ResultadoMoke</em></a>) – El objeto ResultadoMoke a ser actualizado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoMokeDAO.crear">
+<span class="sig-name descname"><span class="pre">crear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoMokeDAO.crear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoMokeDAO.crear" title="Link to this definition"></a></dt>
+<dd><p>Crea un nuevo resultado MOKE en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resultado</strong> (<a class="reference internal" href="#src.modelo.clases.ResultadoMoke" title="src.modelo.clases.ResultadoMoke"><em>ResultadoMoke</em></a>) – El objeto ResultadoMoke a ser creado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoMokeDAO.eliminar">
+<span class="sig-name descname"><span class="pre">eliminar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoMokeDAO.eliminar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoMokeDAO.eliminar" title="Link to this definition"></a></dt>
+<dd><p>Elimina un resultado MOKE de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resultado</strong> (<a class="reference internal" href="#src.modelo.clases.ResultadoMoke" title="src.modelo.clases.ResultadoMoke"><em>ResultadoMoke</em></a>) – El objeto ResultadoMoke a ser eliminado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoMokeDAO.obtener_por_id">
+<span class="sig-name descname"><span class="pre">obtener_por_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoMokeDAO.obtener_por_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoMokeDAO.obtener_por_id" title="Link to this definition"></a></dt>
+<dd><p>Obtiene un resultado MOKE por su ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – El ID del resultado MOKE a obtener.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>El resultado MOKE con el ID especificado.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#src.modelo.clases.ResultadoMoke" title="src.modelo.clases.ResultadoMoke">ResultadoMoke</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoMokeDAO.obtener_por_id_experimento">
+<span class="sig-name descname"><span class="pre">obtener_por_id_experimento</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoMokeDAO.obtener_por_id_experimento"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoMokeDAO.obtener_por_id_experimento" title="Link to this definition"></a></dt>
+<dd><p>Obtiene todos los resultados MOKE asociados a un experimento específico.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id_experimento</strong> (<em>int</em>) – El ID del experimento cuyos resultados MOKE se desean obtener.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Una lista de resultados MOKE asociados al experimento especificado.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="#src.modelo.clases.ResultadoMoke" title="src.modelo.clases.ResultadoMoke">ResultadoMoke</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoMokeDAO.obtener_todos">
+<span class="sig-name descname"><span class="pre">obtener_todos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoMokeDAO.obtener_todos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoMokeDAO.obtener_todos" title="Link to this definition"></a></dt>
+<dd><p>Obtiene todos los resultados MOKE de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Una lista de todos los resultados MOKE.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#src.modelo.clases.ResultadoMoke" title="src.modelo.clases.ResultadoMoke">ResultadoMoke</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoTeasDAO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.modelo.dao.</span></span><span class="sig-name descname"><span class="pre">ResultadoTeasDAO</span></span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoTeasDAO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoTeasDAO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Data Access Object (DAO) para la clase ResultadoTeas.</p>
+<p>Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
+en la tabla ‘resultados_teas’ de la base de datos.</p>
+<section id="id10">
+<h3>Métodos:<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>crear(resultado):</dt><dd><p>Crea un nuevo resultado TEAS en la base de datos.</p>
+</dd>
+<dt>obtener_por_id(id):</dt><dd><p>Obtiene un resultado TEAS por su ID.</p>
+</dd>
+<dt>obtener_por_id_experimento(id_experimento):</dt><dd><p>Obtiene todos los resultados TEAS asociados a un experimento específico.</p>
+</dd>
+<dt>obtener_todos():</dt><dd><p>Obtiene todos los resultados TEAS de la base de datos.</p>
+</dd>
+<dt>actualizar(resultado):</dt><dd><p>Actualiza un resultado TEAS existente en la base de datos.</p>
+</dd>
+<dt>eliminar(resultado):</dt><dd><p>Elimina un resultado TEAS de la base de datos.</p>
+</dd>
+</dl>
+<p>Ejemplo de uso:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear un nuevo resultado TEAS</span>
+<span class="n">nuevo_resultado</span> <span class="o">=</span> <span class="n">ResultadoTeas</span><span class="p">(</span><span class="n">id_experimento</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">intensity</span><span class="o">=</span><span class="mf">100.0</span><span class="p">)</span>
+<span class="n">ResultadoTeasDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="n">nuevo_resultado</span><span class="p">)</span>
+
+<span class="c1"># Obtener un resultado TEAS por ID</span>
+<span class="n">resultado</span> <span class="o">=</span> <span class="n">ResultadoTeasDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Obtener todos los resultados TEAS de un experimento</span>
+<span class="n">resultados</span> <span class="o">=</span> <span class="n">ResultadoTeasDAO</span><span class="o">.</span><span class="n">obtener_por_id_experimento</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Obtener todos los resultados TEAS</span>
+<span class="n">todos_resultados</span> <span class="o">=</span> <span class="n">ResultadoTeasDAO</span><span class="o">.</span><span class="n">obtener_todos</span><span class="p">()</span>
+
+<span class="c1"># Actualizar un resultado TEAS</span>
+<span class="n">resultado</span><span class="o">.</span><span class="n">intensity</span> <span class="o">=</span> <span class="mf">150.0</span>
+<span class="n">ResultadoTeasDAO</span><span class="o">.</span><span class="n">actualizar</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+
+<span class="c1"># Eliminar un resultado TEAS</span>
+<span class="n">ResultadoTeasDAO</span><span class="o">.</span><span class="n">eliminar</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoTeasDAO.actualizar">
+<span class="sig-name descname"><span class="pre">actualizar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoTeasDAO.actualizar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoTeasDAO.actualizar" title="Link to this definition"></a></dt>
+<dd><p>Actualiza un resultado TEAS existente en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resultado</strong> (<a class="reference internal" href="#src.modelo.clases.ResultadoTeas" title="src.modelo.clases.ResultadoTeas"><em>ResultadoTeas</em></a>) – El objeto ResultadoTeas a ser actualizado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoTeasDAO.crear">
+<span class="sig-name descname"><span class="pre">crear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoTeasDAO.crear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoTeasDAO.crear" title="Link to this definition"></a></dt>
+<dd><p>Crea un nuevo resultado TEAS en la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resultado</strong> (<a class="reference internal" href="#src.modelo.clases.ResultadoTeas" title="src.modelo.clases.ResultadoTeas"><em>ResultadoTeas</em></a>) – El objeto ResultadoTeas a ser creado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoTeasDAO.eliminar">
+<span class="sig-name descname"><span class="pre">eliminar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoTeasDAO.eliminar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoTeasDAO.eliminar" title="Link to this definition"></a></dt>
+<dd><p>Elimina un resultado TEAS de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resultado</strong> (<a class="reference internal" href="#src.modelo.clases.ResultadoTeas" title="src.modelo.clases.ResultadoTeas"><em>ResultadoTeas</em></a>) – El objeto ResultadoTeas a ser eliminado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoTeasDAO.obtener_por_id">
+<span class="sig-name descname"><span class="pre">obtener_por_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoTeasDAO.obtener_por_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoTeasDAO.obtener_por_id" title="Link to this definition"></a></dt>
+<dd><p>Obtiene un resultado TEAS por su ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – El ID del resultado TEAS a obtener.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>El resultado TEAS con el ID especificado.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#src.modelo.clases.ResultadoTeas" title="src.modelo.clases.ResultadoTeas">ResultadoTeas</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoTeasDAO.obtener_por_id_experimento">
+<span class="sig-name descname"><span class="pre">obtener_por_id_experimento</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoTeasDAO.obtener_por_id_experimento"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoTeasDAO.obtener_por_id_experimento" title="Link to this definition"></a></dt>
+<dd><p>Obtiene todos los resultados TEAS asociados a un experimento específico.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id_experimento</strong> (<em>int</em>) – El ID del experimento cuyos resultados TEAS se desean obtener.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Una lista de resultados TEAS asociados al experimento especificado.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="#src.modelo.clases.ResultadoTeas" title="src.modelo.clases.ResultadoTeas">ResultadoTeas</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.modelo.dao.ResultadoTeasDAO.obtener_todos">
+<span class="sig-name descname"><span class="pre">obtener_todos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/modelo/dao.html#ResultadoTeasDAO.obtener_todos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.modelo.dao.ResultadoTeasDAO.obtener_todos" title="Link to this definition"></a></dt>
+<dd><p>Obtiene todos los resultados TEAS de la base de datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Una lista de todos los resultados TEAS.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#src.modelo.clases.ResultadoTeas" title="src.modelo.clases.ResultadoTeas">ResultadoTeas</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-src.modelo">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.modelo" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="src.html" class="btn btn-neutral float-left" title="PAQUETES" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="src.utilidades.html" class="btn btn-neutral float-right" title="src.utilidades package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Equipo prácticas IES Sampedro: Adolfo M. Luque, Iker Carrón &amp; David Romero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

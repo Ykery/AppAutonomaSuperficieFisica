@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.vista.moke_graph &mdash; Aplicación UAM Depart. Física 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Aplicación UAM Depart. Física
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Vista General</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Aplicación UAM Depart. Física</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.vista.moke_graph</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.vista.moke_graph</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python3</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># import Qwt</span>
+<span class="kn">from</span> <span class="nn">PyQt6</span> <span class="kn">import</span> <span class="n">Qwt</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtCore</span> <span class="kn">import</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QFont</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtPrintSupport</span> <span class="kn">import</span> <span class="n">QPrintDialog</span><span class="p">,</span> <span class="n">QPrinter</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QApplication</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span>
+                             <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QSplitter</span><span class="p">,</span> <span class="n">QToolBar</span><span class="p">,</span>
+                             <span class="n">QToolButton</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">src.modelo.clases</span> <span class="kn">import</span> <span class="n">Marcador</span><span class="p">,</span> <span class="n">ResultadoMoke</span>
+<span class="kn">from</span> <span class="nn">src.modelo.dao</span> <span class="kn">import</span> <span class="n">ExperimentoDAO</span><span class="p">,</span> <span class="n">MarcadorDAO</span><span class="p">,</span> <span class="n">ResultadoMokeDAO</span>
+<span class="kn">from</span> <span class="nn">src.utilidades.utilidades</span> <span class="kn">import</span> <span class="n">escribir_csv</span><span class="p">,</span> <span class="n">pedir_ruta_exportar_pdf</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.grafica</span> <span class="kn">import</span> <span class="n">Plot</span><span class="p">,</span> <span class="n">Zoomer</span>
+
+
+<div class="viewcode-block" id="logSpace">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.logSpace">[docs]</a>
+<span class="k">def</span> <span class="nf">logSpace</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">xmin</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">array</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">imax</span> <span class="o">=</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">xmin</span>
+    <span class="n">array</span><span class="p">[</span><span class="n">imax</span><span class="p">]</span> <span class="o">=</span> <span class="n">xmax</span>
+    <span class="n">lxmin</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">xmin</span><span class="p">)</span>
+    <span class="n">lxmax</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">xmax</span><span class="p">)</span>
+    <span class="n">lstep</span> <span class="o">=</span> <span class="p">(</span><span class="n">lxmax</span> <span class="o">-</span> <span class="n">lxmin</span><span class="p">)</span> <span class="o">/</span> <span class="n">imax</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">imax</span><span class="p">):</span>
+        <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">lxmin</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">lstep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">array</span></div>
+
+
+
+<span class="n">play_xpm</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;32 32 2 1 &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  c None&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;. c black&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  .                             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ...                           &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  .....                         &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ......                        &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ........                      &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ..........                    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ............                  &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  .............                 &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ...............               &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  .................             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ..................            &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ....................          &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ......................        &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ........................      &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  .........................     &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ...........................   &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ...........................   &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  .........................     &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ........................      &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ......................        &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ....................          &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ..................            &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  .................             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ...............               &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  .............                 &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ............                  &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ..........                    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ........                      &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ......                        &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  .....                         &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  ...                           &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  .                             &quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">pause_xpm</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;32 32 2 1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  c None&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;. c black&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    .......          .......    &quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">mark_xpm</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;32 32 2 1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  c None&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;. c black&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;................................&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;................................&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;................................&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;................................&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;................................&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;             ......             &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">print_xpm</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;32 32 12 1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;a c #ffffff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;h c #ffff00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;c c #ffffff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;f c #dcdcdc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;b c #c0c0c0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;j c #a0a0a4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;e c #808080&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;g c #808000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;d c #585858&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;i c #00ff00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;# c #000000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;. c None&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;................................&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;................................&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;...........###..................&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;..........#abb###...............&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.........#aabbbbb###............&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.........#ddaaabbbbb###.........&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;........#ddddddaaabbbbb###......&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.......#deffddddddaaabbbbb###...&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;......#deaaabbbddddddaaabbbbb###&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.....#deaaaaaaabbbddddddaaabbbb#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;....#deaaabbbaaaa#ddedddfggaaad#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;...#deaaaaaaaaaa#ddeeeeafgggfdd#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;..#deaaabbbaaaa#ddeeeeabbbbgfdd#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.#deeefaaaaaaa#ddeeeeabbhhbbadd#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aabbbeeefaaa#ddeeeeabbbbbbaddd#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bbaaabbbeee#ddeeeeabbiibbadddd#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bbbbbaaabbbeeeeeeabbbbbbaddddd#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bjbbbbbbaaabbbbeabbbbbbadddddd#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bjjjjbbbbbbaaaeabbbbbbaddddddd#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bjaaajjjbbbbbbaaabbbbadddddddd#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bbbbbaaajjjbbbbbbaaaaddddddddd#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bjbbbbbbaaajjjbbbbbbddddddddd#.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bjjjjbbbbbbaaajjjbbbdddddddd#..&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bjaaajjjbbbbbbjaajjbddddddd#...&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bbbbbaaajjjbbbjbbaabdddddd#....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;###bbbbbbaaajjjjbbbbbddddd#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;...###bbbbbbaaajbbbbbdddd#......&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;......###bbbbbbjbbbbbddd#.......&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.........###bbbbbbbbbdd#........&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;............###bbbbbbd#.........&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;...............###bbb#..........&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;..................###...........&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">zoom_xpm</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;32 32 8 1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;# c #000000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;b c #c0c0c0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;a c #ffffff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;e c #585858&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;d c #a0a0a4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;c c #0000ff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;f c #00ffff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;. c None&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;..######################........&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;.#a#baaaaaaaaaaaaaaaaaa#........&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aa#baaaaaaaaaaaaaccaca#........&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;####baaaaaaaaaaaaaaaaca####.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#bbbbaaaaaaaaaaaacccaaa#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaaaaaaaaaaaacccaca#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaaaaaaaaaaaaaccaca#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaaaaaabe###ebaaaaa#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaaaaa#########aaaa#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaaaa###dbbbb###aaa#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaaa###aaaaffb###aa#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaab##aaccaaafb##ba#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaae#daaccaccaad#ea#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaa##aaaaaaccaab##a#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaa##aacccaaaaab##a#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaa##aaccccaccab##a#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaae#daccccaccad#ea#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaab##aacccaaaa##da#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaccacd###aaaaaaa###da#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaacad###daaad#####a#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#acccaaaad##########da##da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#acccacaaadde###edd#eda#da#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaccacaaaabdddddbdd#eda#a#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaaaaaaaaaaaaaadd#eda##.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaaaaaaaaaaaaaaadd#eda#.....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaaaccacaaaaaaaaadd#eda#....&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaaaaaacaaaaaaaaaad##eda#...&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;#aaaaaacccaaaaaaaaaaaaa#d#eda#..&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;########################dd#eda#.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;...#dddddddddddddddddddddd##eda#&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;...#aaaaaaaaaaaaaaaaaaaaaa#.####&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;...########################..##.&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">finish_xpm</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;32 32 2 1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;  c None&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;. c red&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;    ........................    &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;                                &quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="MokeGraph">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph">[docs]</a>
+<span class="k">class</span> <span class="nc">MokeGraph</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">load_results</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TIEMPO_ACTUALIZACION_GRAFICA</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cargando_resultados</span> <span class="o">=</span> <span class="n">load_results</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminado</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">haciendo_zoom</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subir</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span> <span class="o">=</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The experiment with id &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; does not exist.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tiempo</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cargando_resultados</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cargar_resultados</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">escribir_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">rutaCsv</span><span class="p">,</span> <span class="s2">&quot;magnetic_field&quot;</span><span class="p">,</span> <span class="s2">&quot;intensity&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datos_x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temporizador</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temporizador</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actualizar_datos</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temporizador</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TIEMPO_ACTUALIZACION_GRAFICA</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crear_toolbar</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crear_cuerpo</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crear_footer</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_zoom_mode</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cargando_resultados</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pausado</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_btn_pause</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btn_marcador</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btn_terminar</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lb_estado</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Visualizyng results&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">actualizar_datos</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MokeGraph.cargar_resultados">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.cargar_resultados">[docs]</a>
+    <span class="k">def</span> <span class="nf">cargar_resultados</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Carga los resultados del experimento actual desde la base de datos.</span>
+
+<span class="sd">        Este método obtiene los resultados del experimento actual utilizando el identificador del experimento</span>
+<span class="sd">        almacenado en la variable `self.experimento.id`. Luego, extrae los datos de campo magnético e intensidad</span>
+<span class="sd">        de cada resultado y los almacena en las listas `self.datos_x` y `self.datos_y`, respectivamente.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        Los resultados se cargan en las siguientes listas:</span>
+
+<span class="sd">        - `self.datos_x`: Lista de datos de campo magnético.</span>
+<span class="sd">        - `self.datos_y`: Lista de datos de intensidad.</span>
+
+<span class="sd">        Este método asume que existe una clase `ResultadoMokeDAO` con un método estático `obtener_por_id_experimento`</span>
+<span class="sd">        que recibe el identificador de un experimento y devuelve una lista de resultados asociados a ese experimento.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            cargar_resultados()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">resultados_cargados</span> <span class="o">=</span> <span class="n">ResultadoMokeDAO</span><span class="o">.</span><span class="n">obtener_por_id_experimento</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datos_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">resultado</span> <span class="ow">in</span> <span class="n">resultados_cargados</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datos_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resultado</span><span class="o">.</span><span class="n">magnetic_field</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resultado</span><span class="o">.</span><span class="n">intensity</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.crear_toolbar">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.crear_toolbar">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear_toolbar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea una barra de herramientas con varios controles para interactuar con el sistema.</span>
+
+<span class="sd">        Este método configura una barra de herramientas con botones para pausar, habilitar el modo de zoom,</span>
+<span class="sd">        añadir marcadores, imprimir, exportar y finalizar el experimento. Además, muestra el estado actual</span>
+<span class="sd">        del sistema, ya sea &quot;Paused&quot; o &quot;Running&quot;.</span>
+
+<span class="sd">        :return: La barra de herramientas configurada.</span>
+<span class="sd">        :rtype: QToolBar</span>
+
+<span class="sd">        Configura los siguientes controles:</span>
+
+<span class="sd">        - `btn_pausar`: Botón para pausar el sistema.</span>
+<span class="sd">        - `btn_zoom`: Botón para habilitar el modo de zoom.</span>
+<span class="sd">        - `btn_marcador`: Botón para añadir marcadores.</span>
+<span class="sd">        - `btn_imprimir`: Botón para imprimir los resultados.</span>
+<span class="sd">        - `btn_exportar`: Botón para exportar los resultados.</span>
+<span class="sd">        - `btn_terminar`: Botón para finalizar el experimento.</span>
+
+<span class="sd">        Se conectan varios eventos a sus correspondientes manejadores para realizar acciones específicas</span>
+<span class="sd">        cuando se interactúa con los controles.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            toolbar = self.crear_toolbar()</span>
+<span class="sd">            layout.addWidget(toolbar)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span> <span class="o">=</span> <span class="n">QToolBar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pausado</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Pause&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">pause_xpm</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="o">.</span><span class="n">setMinimumWidth</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonStyle</span><span class="o">.</span><span class="n">ToolButtonTextUnderIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pause</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_btn_pause</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_zoom</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_zoom</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Zoom&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_zoom</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">zoom_xpm</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_zoom</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_zoom</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonStyle</span><span class="o">.</span><span class="n">ToolButtonTextUnderIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_zoom</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_marcador</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_marcador</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Add marker&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_marcador</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">mark_xpm</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_marcador</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonStyle</span><span class="o">.</span><span class="n">ToolButtonTextUnderIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_marcador</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_marcador</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_anadir_marcador</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_zoom</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">enable_zoom_mode</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_imprimir</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_imprimir</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Print&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_imprimir</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">print_xpm</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_imprimir</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonStyle</span><span class="o">.</span><span class="n">ToolButtonTextUnderIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_imprimir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_imprimir</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mprint</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_exportar</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_exportar</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Export&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_exportar</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">print_xpm</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_exportar</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonStyle</span><span class="o">.</span><span class="n">ToolButtonTextUnderIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_exportar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_exportar</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">export_document</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_terminar</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_terminar</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Finish&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_terminar</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">finish_xpm</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_terminar</span><span class="o">.</span><span class="n">setToolButtonStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ToolButtonStyle</span><span class="o">.</span><span class="n">ToolButtonTextUnderIcon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_terminar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_terminar</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">finish_experiment</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_estado</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Paused&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pausado</span> <span class="k">else</span> <span class="s2">&quot;Running&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_estado</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_estado</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_estado</span><span class="o">.</span><span class="n">setMinimumWidth</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_estado</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span>
+            <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Policy</span><span class="o">.</span><span class="n">MinimumExpanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Policy</span><span class="o">.</span><span class="n">Minimum</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lb_estado</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.crear_cuerpo">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.crear_cuerpo">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear_cuerpo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea el cuerpo principal del widget para mostrar el gráfico del experimento MOKE.</span>
+
+<span class="sd">        Este método inicializa un objeto de tipo Plot para mostrar el gráfica del experimento MOKE.</span>
+<span class="sd">        Configura el título del gráfico, las etiquetas de los ejes y el color del gráfico.</span>
+<span class="sd">        Además, establece márgenes en el gráfico, deshabilita el menú contextual y configura herramientas</span>
+<span class="sd">        de zoom, desplazamiento y selección.</span>
+
+<span class="sd">        :return: El objeto Plot configurado para mostrar el gráfico del experimento MOKE.</span>
+<span class="sd">        :rtype: Plot</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            cuerpo = self.crear_cuerpo()</span>
+<span class="sd">            layout.addWidget(cuerpo)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plt_experimento</span> <span class="o">=</span> <span class="n">Plot</span><span class="p">(</span>
+            <span class="s2">&quot;Moke Loop Graph&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Magnetic field (Oe)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intensity [arb. un.]&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">QColor</span><span class="p">(</span><span class="mi">131</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">70</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">margin</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plt_experimento</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="n">margin</span><span class="p">,</span> <span class="n">margin</span><span class="p">,</span> <span class="n">margin</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ContextMenuPolicy</span><span class="o">.</span><span class="n">NoContextMenu</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoomer_experimento</span> <span class="o">=</span> <span class="n">Zoomer</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plt_experimento</span><span class="o">.</span><span class="n">canvas</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">panner_experimento</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPlotPanner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plt_experimento</span><span class="o">.</span><span class="n">canvas</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">panner_experimento</span><span class="o">.</span><span class="n">setMouseButton</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">MouseButton</span><span class="o">.</span><span class="n">MiddleButton</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">picker_experimento</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPlotPicker</span><span class="p">(</span>
+            <span class="mi">2</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPlotPicker</span><span class="o">.</span><span class="n">RubberBand</span><span class="o">.</span><span class="n">CrossRubberBand</span><span class="p">,</span>
+            <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPicker</span><span class="o">.</span><span class="n">DisplayMode</span><span class="o">.</span><span class="n">AlwaysOn</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plt_experimento</span><span class="o">.</span><span class="n">canvas</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">picker_experimento</span><span class="o">.</span><span class="n">setStateMachine</span><span class="p">(</span><span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPickerDragPointMachine</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">picker_experimento</span><span class="o">.</span><span class="n">setRubberBandPen</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">GlobalColor</span><span class="o">.</span><span class="n">green</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">picker_experimento</span><span class="o">.</span><span class="n">setRubberBand</span><span class="p">(</span><span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPicker</span><span class="o">.</span><span class="n">RubberBand</span><span class="o">.</span><span class="n">CrossRubberBand</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">picker_experimento</span><span class="o">.</span><span class="n">setTrackerPen</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">GlobalColor</span><span class="o">.</span><span class="n">white</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plt_experimento</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.crear_footer">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.crear_footer">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear_footer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea el pie de página del widget que muestra información adicional sobre el experimento.</span>
+
+<span class="sd">        Este método configura un QLabel para mostrar el tiempo transcurrido desde el inicio del experimento,</span>
+<span class="sd">        otro QLabel para mostrar el número de puntos de datos del experimento y un QLabel adicional para mostrar</span>
+<span class="sd">        la ruta del archivo CSV asociado al experimento.</span>
+
+<span class="sd">        :return: El widget configurado para mostrar el pie de página.</span>
+<span class="sd">        :rtype: QWidget</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            footer = self.crear_footer()</span>
+<span class="sd">            layout.addWidget(footer)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_tiempo_experimento</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Time: 0&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cargando_resultados</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temporizador</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actualizar_tiempo</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">footer_datos</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">layout_footer_datos</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">layout_footer_datos</span><span class="o">.</span><span class="n">setDirection</span><span class="p">(</span><span class="n">QHBoxLayout</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">LeftToRight</span><span class="p">)</span>
+        <span class="n">layout_footer_datos</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lb_tiempo_experimento</span><span class="p">)</span>
+        <span class="n">layout_footer_datos</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QSplitter</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datapoints_number</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Number of datapoints: 0&quot;</span><span class="p">)</span>
+        <span class="n">layout_footer_datos</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datapoints_number</span><span class="p">)</span>
+        <span class="n">layout_footer_datos</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QSplitter</span><span class="p">())</span>
+        <span class="n">layout_footer_datos</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">rutaCsv</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">footer_datos</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout_footer_datos</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">footer_datos</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.actualizar_tiempo">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.actualizar_tiempo">[docs]</a>
+    <span class="k">def</span> <span class="nf">actualizar_tiempo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">tiempo_experimento</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tiempo</span>
+        <span class="n">horas</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tiempo_experimento</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">//</span> <span class="mi">3600</span><span class="p">)</span>
+        <span class="n">tiempo_experimento</span> <span class="o">=</span> <span class="n">tiempo_experimento</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">horas</span><span class="p">)</span>
+        <span class="n">minutos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tiempo_experimento</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">//</span> <span class="mi">60</span><span class="p">)</span>
+        <span class="n">tiempo_experimento</span> <span class="o">=</span> <span class="n">tiempo_experimento</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="n">minutos</span><span class="p">)</span>
+        <span class="n">segundos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tiempo_experimento</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_tiempo_experimento</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="s2">&quot;Time: &quot;</span>
+            <span class="o">+</span> <span class="n">time</span><span class="p">(</span>
+                <span class="n">hour</span><span class="o">=</span><span class="n">horas</span><span class="p">,</span>
+                <span class="n">minute</span><span class="o">=</span><span class="n">minutos</span><span class="p">,</span>
+                <span class="n">second</span><span class="o">=</span><span class="n">segundos</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.finish_experiment">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.finish_experiment">[docs]</a>
+    <span class="k">def</span> <span class="nf">finish_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finaliza el experimento actual.</span>
+
+<span class="sd">        Este método detiene el temporizador utilizado para seguir el tiempo transcurrido del experimento,</span>
+<span class="sd">        y deshabilita algunos controles como el botón de pausa, el botón para añadir marcadores y el botón</span>
+<span class="sd">        para finalizar el experimento. Además, cambia el texto del estado a &quot;Finished&quot; y establece la bandera</span>
+<span class="sd">        `terminado` en True.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            finish_experiment()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temporizador</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_marcador</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_terminar</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_estado</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Finished&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminado</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.pause">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.pause">[docs]</a>
+    <span class="k">def</span> <span class="nf">pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pausa o reanuda el experimento actual.</span>
+
+<span class="sd">        Este método alterna entre pausar y reanudar el experimento actual cambiando el estado de la variable</span>
+<span class="sd">        `pausado`. Además, crea un marcador en la base de datos indicando el momento en que se pausa o se reanuda</span>
+<span class="sd">        el experimento. Actualiza el texto del estado en función del estado de pausa, mostrando &quot;Paused&quot; si el</span>
+<span class="sd">        experimento está pausado y &quot;Running&quot; si está en curso.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            pause()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pausado</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pausado</span>
+        <span class="n">marcador</span> <span class="o">=</span> <span class="n">Marcador</span><span class="p">()</span>
+        <span class="n">marcador</span><span class="o">.</span><span class="n">eje_x_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datos_x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">marcador</span><span class="o">.</span><span class="n">id_experimento</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">marcador</span><span class="o">.</span><span class="n">descripcion</span> <span class="o">=</span> <span class="s2">&quot;Paused&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pausado</span> <span class="k">else</span> <span class="s2">&quot;Resumed&quot;</span>
+        <span class="n">MarcadorDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="n">marcador</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_estado</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Paused&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pausado</span> <span class="k">else</span> <span class="s2">&quot;Running&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_btn_pause</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.mostrar_btn_pause">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.mostrar_btn_pause">[docs]</a>
+    <span class="k">def</span> <span class="nf">mostrar_btn_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza el texto y el ícono del botón de pausa según el estado del experimento.</span>
+
+<span class="sd">        Este método cambia el texto y el ícono del botón de pausa en función del estado del experimento.</span>
+<span class="sd">        Si el experimento está pausado, el texto del botón se establece como &quot;Resume&quot; y se muestra un ícono</span>
+<span class="sd">        de reproducción. Si el experimento está en curso, el texto del botón se establece como &quot;Pause&quot; y se</span>
+<span class="sd">        muestra un ícono de pausa.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            mostrar_btn_pause()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Resume&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pausado</span> <span class="k">else</span> <span class="s2">&quot;Pause&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_pausar</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span>
+            <span class="n">QIcon</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">play_xpm</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pausado</span> <span class="k">else</span> <span class="n">QIcon</span><span class="p">(</span><span class="n">QPixmap</span><span class="p">(</span><span class="n">pause_xpm</span><span class="p">))</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.manejar_anadir_marcador">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.manejar_anadir_marcador">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_anadir_marcador</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la acción de añadir un marcador al experimento.</span>
+
+<span class="sd">        Este método obtiene el valor del eje x del último punto de datos del experimento.</span>
+<span class="sd">        Luego, solicita al usuario que ingrese el texto del marcador mediante un cuadro de diálogo.</span>
+<span class="sd">        Si el usuario confirma la entrada, crea un nuevo marcador con el valor del eje x, el identificador</span>
+<span class="sd">        del experimento y el texto ingresado. Si se produce algún error durante la creación del marcador,</span>
+<span class="sd">        muestra un mensaje de error al usuario.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            manejar_anadir_marcador()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valor_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datos_x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">texto</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">QInputDialog</span><span class="o">.</span><span class="n">getText</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Text entry&quot;</span><span class="p">,</span> <span class="s2">&quot;Introduce the text of the marker:&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+            <span class="n">marcador</span> <span class="o">=</span> <span class="n">Marcador</span><span class="p">()</span>
+            <span class="n">marcador</span><span class="o">.</span><span class="n">eje_x_id</span> <span class="o">=</span> <span class="n">valor_x</span>
+            <span class="n">marcador</span><span class="o">.</span><span class="n">id_experimento</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">marcador</span><span class="o">.</span><span class="n">descripcion</span> <span class="o">=</span> <span class="n">texto</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">MarcadorDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="n">marcador</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.actualizar_datos">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.actualizar_datos">[docs]</a>
+    <span class="k">def</span> <span class="nf">actualizar_datos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza los datos del experimento.</span>
+<span class="sd">        </span>
+<span class="sd">        Este método actualiza los datos del experimento MOKE. Si el experimento no está cargando resultados y no ha</span>
+<span class="sd">        finalizado, genera un nuevo par de valores aleatorios para el campo magnético y la intensidad. Luego, persiste</span>
+<span class="sd">        los datos en un archivo CSV y en la base de datos. Finalmente, actualiza el número de puntos de datos y muestra</span>
+<span class="sd">        el gráfico actualizado.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        </span>
+<span class="sd">        Ejemplo de uso:</span>
+<span class="sd">        </span>
+<span class="sd">        .. code-block:: python</span>
+<span class="sd">        </span>
+<span class="sd">            actualizar_datos()</span>
+<span class="sd">            </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cargando_resultados</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminado</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datos_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">datos_x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">TIEMPO_ACTUALIZACION_GRAFICA</span> <span class="o">/</span> <span class="mi">1000</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">subir</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">subir</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subir</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="c1"># Persistir los datos</span>
+            <span class="n">resultado</span> <span class="o">=</span> <span class="n">ResultadoMoke</span><span class="p">()</span>
+            <span class="n">resultado</span><span class="o">.</span><span class="n">id_experimento</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">resultado</span><span class="o">.</span><span class="n">magnetic_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datos_x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">resultado</span><span class="o">.</span><span class="n">intensity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">escribir_csv</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">rutaCsv</span><span class="p">,</span> <span class="n">resultado</span><span class="o">.</span><span class="n">magnetic_field</span><span class="p">,</span> <span class="n">resultado</span><span class="o">.</span><span class="n">intensity</span>
+            <span class="p">)</span>
+            <span class="n">ResultadoMokeDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datapoints_number</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="s2">&quot;Number of datapoints: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plt_experimento</span><span class="o">.</span><span class="n">showData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datos_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">datos_y</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.mprint">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.mprint">[docs]</a>
+    <span class="k">def</span> <span class="nf">mprint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Imprime el gráfico actual.</span>
+
+<span class="sd">        Este método muestra un cuadro de diálogo de impresión estándar de Qt para permitir al usuario seleccionar</span>
+<span class="sd">        las opciones de impresión. Luego, utiliza un renderizador de gráficos para renderizar el contenido del gráfico</span>
+<span class="sd">        actual en la impresora seleccionada.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            mprint()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">printer</span> <span class="o">=</span> <span class="n">QPrinter</span><span class="p">()</span>
+        <span class="n">printer</span><span class="o">.</span><span class="n">setCreator</span><span class="p">(</span><span class="s2">&quot;UAM app&quot;</span><span class="p">)</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">QPrintDialog</span><span class="p">(</span><span class="n">printer</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dialog</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+            <span class="n">renderer</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPlotRenderer</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">printer</span><span class="o">.</span><span class="n">colorMode</span><span class="p">()</span> <span class="o">==</span> <span class="n">QPrinter</span><span class="o">.</span><span class="n">ColorMode</span><span class="o">.</span><span class="n">GrayScale</span><span class="p">:</span>
+                <span class="n">renderer</span><span class="o">.</span><span class="n">setDiscardFlag</span><span class="p">(</span><span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPlotRenderer</span><span class="o">.</span><span class="n">DiscardBackground</span><span class="p">)</span>
+                <span class="n">renderer</span><span class="o">.</span><span class="n">setDiscardFlag</span><span class="p">(</span><span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPlotRenderer</span><span class="o">.</span><span class="n">DiscardCanvasBackground</span><span class="p">)</span>
+                <span class="n">renderer</span><span class="o">.</span><span class="n">setDiscardFlag</span><span class="p">(</span><span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPlotRenderer</span><span class="o">.</span><span class="n">DiscardCanvasFrame</span><span class="p">)</span>
+                <span class="n">renderer</span><span class="o">.</span><span class="n">setLayoutFlag</span><span class="p">(</span><span class="n">Qwt</span><span class="o">.</span><span class="n">QwtPlotRenderer</span><span class="o">.</span><span class="n">FrameWithScales</span><span class="p">)</span>
+            <span class="n">renderer</span><span class="o">.</span><span class="n">renderTo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plt_experimento</span><span class="p">,</span> <span class="n">printer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.export_document">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.export_document">[docs]</a>
+    <span class="k">def</span> <span class="nf">export_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exporta el documento asociado al experimento actual.</span>
+
+<span class="sd">        Este método inicia el proceso de exportación del documento asociado al experimento actual. Para completar</span>
+<span class="sd">        la exportación, delega la tarea de solicitar al usuario la ruta de exportación a la función</span>
+<span class="sd">        `pedir_ruta_exportar_pdf`.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            export_document()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pedir_ruta_exportar_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.enable_zoom_mode">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.enable_zoom_mode">[docs]</a>
+    <span class="k">def</span> <span class="nf">enable_zoom_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Habilita o deshabilita el modo de zoom en el gráfico.</span>
+
+<span class="sd">        Este método permite habilitar o deshabilitar el modo de zoom en el gráfico. Cuando el parámetro `on`</span>
+<span class="sd">        es True, se habilita el modo de zoom y se deshabilitan otras funcionalidades como la selección de puntos.</span>
+<span class="sd">        Si `on` es False y el modo de zoom estaba activado anteriormente, se recarga el gráfico. Además, actualiza</span>
+<span class="sd">        el estado de los objetos `picker_experimento`, `panner_experimento` y `zoomer_experimento` para reflejar</span>
+<span class="sd">        el cambio en el modo de zoom.</span>
+
+<span class="sd">        :param on: Indica si se debe activar o desactivar el modo de zoom.</span>
+<span class="sd">        :type on: bool</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            enable_zoom_mode(True)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">on</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">haciendo_zoom</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">on</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">haciendo_zoom</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recargar_grafica</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">picker_experimento</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="ow">not</span> <span class="n">on</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">panner_experimento</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">on</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoomer_experimento</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">on</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoomer_experimento</span><span class="o">.</span><span class="n">zoom</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.recargar_grafica">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.recargar_grafica">[docs]</a>
+    <span class="k">def</span> <span class="nf">recargar_grafica</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recarga el gráfico del experimento.</span>
+
+<span class="sd">        Este método borra y recrea el gráfico del experimento, restaurando la configuración inicial. Se utiliza</span>
+<span class="sd">        cuando se desactiva el modo de zoom para volver al estado original del gráfico. Además, se reinicia el</span>
+<span class="sd">        temporizador para actualizar los datos del experimento.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            recargar_grafica()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plt_experimento</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">haciendo_zoom</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crear_cuerpo</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footer_datos</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_zoom_mode</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temporizador</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temporizador</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actualizar_datos</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temporizador</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeGraph.closeEvent">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.MokeGraph.closeEvent">[docs]</a>
+    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el evento de cierre de la ventana.</span>
+
+<span class="sd">        Este método es invocado cuando se intenta cerrar la ventana. Si el proceso de carga de resultados está</span>
+<span class="sd">        en curso o el experimento ha finalizado, se cierra la ventana sin mostrar ningún mensaje. De lo contrario,</span>
+<span class="sd">        se muestra un mensaje de advertencia solicitando confirmación antes de cerrar la ventana y detener el experimento.</span>
+<span class="sd">        Si el usuario confirma la acción, se detiene el temporizador, se borran los elementos gráficos y se cierra la ventana.</span>
+<span class="sd">        Si el usuario cancela la acción, se ignora el evento de cierre y la ventana permanece abierta.</span>
+
+<span class="sd">        :param event: El evento de cierre.</span>
+<span class="sd">        :type event: QCloseEvent</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            closeEvent(event)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cargando_resultados</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminado</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="n">reply</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">&quot;Warning&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Are you sure you want to close the window and stop the experiment?&quot;</span><span class="p">,</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">No</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">reply</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temporizador</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plt_experimento</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">toolBar</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">footer_datos</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_graph.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">MokeGraph</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">540</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">exec</span><span class="p">())</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Equipo prácticas IES Sampedro: Adolfo M. Luque, Iker Carrón &amp; David Romero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.vista.vista_experimentos &mdash; Aplicación UAM Depart. Física 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Aplicación UAM Depart. Física
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Vista General</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Aplicación UAM Depart. Física</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.vista.vista_experimentos</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.vista.vista_experimentos</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">PyQt6</span> <span class="kn">import</span> <span class="n">Qwt</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtWidgets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt6.Qwt</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">src.modelo.dao</span> <span class="kn">import</span> <span class="n">ExperimentoDAO</span>
+<span class="kn">from</span> <span class="nn">src.utilidades.utilidades</span> <span class="kn">import</span> <span class="n">pedir_ruta_exportar_pdf</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.boton</span> <span class="kn">import</span> <span class="n">BotonModificadoExit</span><span class="p">,</span> <span class="n">BotonModificadoRun</span>
+<span class="kn">from</span> <span class="nn">src.vista.moke_config</span> <span class="kn">import</span> <span class="n">MokeWindow</span>
+<span class="kn">from</span> <span class="nn">src.vista.moke_graph</span> <span class="kn">import</span> <span class="n">MokeGraph</span>
+<span class="kn">from</span> <span class="nn">src.vista.teas_config</span> <span class="kn">import</span> <span class="n">TeasWindow</span>
+<span class="kn">from</span> <span class="nn">src.vista.teas_graph</span> <span class="kn">import</span> <span class="n">TeasGraph</span>
+
+
+<div class="viewcode-block" id="ExperimentosWindow">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow">[docs]</a>
+<span class="k">class</span> <span class="nc">ExperimentosWindow</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ventana para mostrar una lista de experimentos realizados.</span>
+
+<span class="sd">    Esta ventana proporciona una interfaz para mostrar una lista de experimentos realizados,</span>
+<span class="sd">    filtrar los experimentos por tipo y fecha, exportar experimentos a PDF, visualizar experimentos</span>
+<span class="sd">    y cargar configuraciones asociadas a los experimentos.</span>
+
+<span class="sd">    :param parent: El widget padre de la ventana.</span>
+<span class="sd">    :type parent: QWidget</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inicializa la ventana de Experimentos.</span>
+
+<span class="sd">        Se establece el título de la ventana, se configura el diseño principal, se crean los filtros</span>
+<span class="sd">        para tipo de experimento y fecha, se crea la zona de acciones y se conectan los eventos de los botones.</span>
+
+<span class="sd">        :type parent: QWidget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;EXPERIMENTOS REALIZADOS&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experimentos</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;background-color: rgb(176, 213, 212); color: black;&quot;</span><span class="p">)</span>
+        <span class="n">btn_volver</span> <span class="o">=</span> <span class="n">BotonModificadoExit</span><span class="p">(</span><span class="s2">&quot;Volver&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtro_tipo</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtro_fecha_desde</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtro_fecha_hasta</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crear_scroll_area</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crear_filtros_tipo_experimento</span><span class="p">(),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crear_filtros_fechas</span><span class="p">(),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crear_zona_acciones</span><span class="p">(),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_volver</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="p">)</span>
+        <span class="n">btn_volver</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volver</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExperimentosWindow.volver">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.volver">[docs]</a>
+    <span class="k">def</span> <span class="nf">volver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cierra la ventana actual.</span>
+
+<span class="sd">        Este método cierra la ventana actual en la que se encuentra el usuario.</span>
+
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            ventana_principal.volver()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.cerrar_ventana">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.cerrar_ventana">[docs]</a>
+    <span class="k">def</span> <span class="nf">cerrar_ventana</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cierra la ventana actual.</span>
+
+<span class="sd">    Este método cierra la ventana actual cuando es llamado</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Cerrar la ventana actual</span>
+<span class="sd">        self.cerrar_ventana()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.crear_scroll_area">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.crear_scroll_area">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear_scroll_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un área de desplazamiento con una tabla de experimentos.</span>
+
+<span class="sd">    Este método configura un área de desplazamiento que contiene una tabla de experimentos. </span>
+<span class="sd">    La tabla incluye columnas para el tipo de experimento, fecha de creación, descripción y nombre/ruta. </span>
+<span class="sd">    La tabla permite la selección de filas, tiene alternancia de colores en las filas y está habilitada para la clasificación.</span>
+
+<span class="sd">    :return: Un layout de cuadrícula que contiene la tabla de experimentos.</span>
+<span class="sd">    :rtype: QGridLayout</span>
+
+<span class="sd">    Configura los siguientes widgets:</span>
+
+<span class="sd">    - :class:`QGridLayout`: Layout principal que contiene la tabla de experimentos.</span>
+<span class="sd">    - :class:`QTableWidget`: Tabla para mostrar los experimentos.</span>
+<span class="sd">    - :class:`QHeaderView`: Configura el modo de ajuste de las secciones del encabezado horizontal y vertical.</span>
+
+<span class="sd">    Las señales conectadas incluyen:</span>
+
+<span class="sd">    - `self.tb_experimentos.itemClicked`: Conectada a `self.seleccionar_experimento` para manejar la selección de un experimento.</span>
+<span class="sd">    - `indices_tabla.sectionClicked`: Conectada a `self.manejar_indices_tabla` para manejar la selección de una sección de la tabla.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        layout = self.crear_scroll_area()</span>
+<span class="sd">        self.setLayout(layout)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;Tipo experimento&quot;</span><span class="p">,</span> <span class="s2">&quot;Fecha creación&quot;</span><span class="p">,</span> <span class="s2">&quot;Descripción&quot;</span><span class="p">,</span> <span class="s2">&quot;Nombre/Ruta&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setSectionResizeMode</span><span class="p">(</span>
+            <span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeMode</span><span class="o">.</span><span class="n">ResizeToContents</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">itemClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">seleccionar_experimento</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">UserRole</span><span class="p">))</span>
+        <span class="p">)</span>
+
+        <span class="n">indices_tabla</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span>
+        <span class="n">indices_tabla</span><span class="o">.</span><span class="n">sectionClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_indices_tabla</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cargar_lista_experimentos</span><span class="p">()</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+        <span class="n">ultima_columna</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">ultima_columna</span><span class="o">.</span><span class="n">setSectionResizeMode</span><span class="p">(</span>
+                <span class="n">i</span><span class="p">,</span> <span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeMode</span><span class="o">.</span><span class="n">ResizeToContents</span>
+            <span class="p">)</span>
+
+        <span class="n">ultima_columna</span><span class="o">.</span><span class="n">setSectionResizeMode</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeMode</span><span class="o">.</span><span class="n">Stretch</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setSizeAdjustPolicy</span><span class="p">(</span>
+            <span class="n">QAbstractScrollArea</span><span class="o">.</span><span class="n">SizeAdjustPolicy</span><span class="o">.</span><span class="n">AdjustToContents</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setSectionResizeMode</span><span class="p">(</span>
+            <span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeMode</span><span class="o">.</span><span class="n">Stretch</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setSectionResizeMode</span><span class="p">(</span>
+            <span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeMode</span><span class="o">.</span><span class="n">ResizeToContents</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span>
+            <span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">EditTrigger</span><span class="o">.</span><span class="n">NoEditTriggers</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setSelectionBehavior</span><span class="p">(</span>
+            <span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">SelectionBehavior</span><span class="o">.</span><span class="n">SelectRows</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setSelectionMode</span><span class="p">(</span>
+            <span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">SelectionMode</span><span class="o">.</span><span class="n">SingleSelection</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setAlternatingRowColors</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setShowGrid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setGridStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PenStyle</span><span class="o">.</span><span class="n">SolidLine</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setWordWrap</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setCornerButtonEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">layout</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.cargar_lista_experimentos">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.cargar_lista_experimentos">[docs]</a>
+    <span class="k">def</span> <span class="nf">cargar_lista_experimentos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Carga la lista de experimentos en la tabla de experimentos.</span>
+
+<span class="sd">    Este método obtiene todos los experimentos utilizando el `ExperimentoDAO` si no están ya cargados,</span>
+<span class="sd">    y los muestra en la tabla `self.tb_experimentos`. Cada fila de la tabla incluye el tipo de experimento,</span>
+<span class="sd">    fecha de creación, descripción y ruta del CSV. Además, se añade el ID del experimento como dato asociado </span>
+<span class="sd">    a cada celda de la fila</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.cargar_lista_experimentos()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimentos</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">experimentos</span> <span class="o">=</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_todos</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">experimento</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimentos</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">insertRow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">experimento</span><span class="o">.</span><span class="n">tipo</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span>
+                <span class="n">row</span><span class="p">,</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="n">QTableWidgetItem</span><span class="p">(</span>
+                    <span class="n">experimento</span><span class="o">.</span><span class="n">fecha_creacion</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y - %H:%M:%S&quot;</span><span class="p">)</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span>
+                <span class="n">row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">experimento</span><span class="o">.</span><span class="n">descripcion</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">experimento</span><span class="o">.</span><span class="n">rutaCsv</span><span class="p">))</span>
+
+            <span class="c1"># Añadir el id del experimento como data en toda la fila</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span>
+                    <span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">UserRole</span><span class="p">,</span> <span class="n">experimento</span><span class="o">.</span><span class="n">id</span>
+                <span class="p">)</span>  <span class="c1"># Obtener el id del experimento seleccionado</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.manejar_indices_tabla">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.manejar_indices_tabla">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_indices_tabla</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja los eventos de clic en los índices de la tabla.</span>
+
+<span class="sd">        Este método se encarga de manejar los clics del usuario en los índices verticales</span>
+<span class="sd">        de la tabla de experimentos. Cuando el usuario hace clic en un índice, se selecciona</span>
+<span class="sd">        el experimento correspondiente en función del identificador asociado al índice.</span>
+
+<span class="sd">        :param int row: El índice de la fila en la tabla donde se hizo clic.</span>
+
+<span class="sd">        Este método obtiene el identificador del experimento asociado al índice de la fila</span>
+<span class="sd">        y lo utiliza para seleccionar dicho experimento mediante el método</span>
+<span class="sd">        ``seleccionar_experimento``.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            self.tb_experimentos.verticalHeader().sectionClicked.connect(self.manejar_indices_tabla)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">experiment_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">experiment_id</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">UserRole</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seleccionar_experimento</span><span class="p">(</span><span class="n">experiment_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.filtrar_lista_experimentos">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.filtrar_lista_experimentos">[docs]</a>
+    <span class="k">def</span> <span class="nf">filtrar_lista_experimentos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filtra la lista de experimentos en la tabla según los filtros aplicados.</span>
+
+<span class="sd">    Este método filtra las filas de la tabla `self.tb_experimentos` basándose en el tipo de experimento </span>
+<span class="sd">    y el rango de fechas proporcionados por los atributos `self.filtro_tipo`, `self.filtro_fecha_desde`, </span>
+<span class="sd">    y `self.filtro_fecha_hasta`. Las filas que no cumplen con los criterios de filtro son ocultadas</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.filtrar_lista_experimentos()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()):</span>
+            <span class="n">tipo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">fecha_creacion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filtro_tipo</span> <span class="o">!=</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">tipo</span><span class="o">.</span><span class="n">text</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filtro_tipo</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setRowHidden</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filtro_fecha_desde</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                <span class="n">fecha_creacion</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y - %H:%M:%S&quot;</span>
+            <span class="p">)</span> <span class="o">&lt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filtro_fecha_desde</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">time</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setRowHidden</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filtro_fecha_hasta</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                <span class="n">fecha_creacion</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y - %H:%M:%S&quot;</span>
+            <span class="p">)</span> <span class="o">&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filtro_fecha_hasta</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">time</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setRowHidden</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tb_experimentos</span><span class="o">.</span><span class="n">setRowHidden</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.mostrar_id_experimento">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.mostrar_id_experimento">[docs]</a>
+    <span class="k">def</span> <span class="nf">mostrar_id_experimento</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_experimento</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Muestra el ID del experimento en la consola.</span>
+
+<span class="sd">    Este método imprime el ID del experimento proporcionado a la consola.</span>
+
+<span class="sd">    :param id_experimento: El ID del experimento a mostrar.</span>
+<span class="sd">    :type id_experimento: i</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Mostrar el ID del experimento 123</span>
+<span class="sd">        self.mostrar_id_experimento(123)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.seleccionar_experimento">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.seleccionar_experimento">[docs]</a>
+    <span class="k">def</span> <span class="nf">seleccionar_experimento</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_experimento</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Selecciona un experimento.</span>
+
+<span class="sd">    Este método asigna el ID del experimento proporcionado como el experimento seleccionado</span>
+<span class="sd">    en la ventana.</span>
+
+<span class="sd">    :param id_experimento: El ID del experimento a seleccionar.</span>
+<span class="sd">    :type id_experimento: i</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Seleccionar el experimento con ID 123</span>
+<span class="sd">        self.seleccionar_experimento(123)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span> <span class="o">=</span> <span class="n">id_experimento</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.verificar_experimento_seleccionado">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.verificar_experimento_seleccionado">[docs]</a>
+    <span class="k">def</span> <span class="nf">verificar_experimento_seleccionado</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verifica si se ha seleccionado un experimento.</span>
+
+<span class="sd">    Este método verifica si un experimento ha sido seleccionado en la ventana. Si no se ha seleccionado</span>
+<span class="sd">    ningún experimento, muestra un mensaje de advertencia y devuelve False. De lo contrario, devuelve True.</span>
+
+<span class="sd">    :return: True si se ha seleccionado un experimento, False de lo contrario.</span>
+<span class="sd">    :rtype: bool</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        if self.verificar_experimento_seleccionado():</span>
+<span class="sd">            # Realizar alguna acción si se ha seleccionado un experimento</span>
+<span class="sd">            pass</span>
+<span class="sd">        else:</span>
+<span class="sd">            # Realizar alguna acción si no se ha seleccionado un experimento</span>
+<span class="sd">            pass</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span>
+                <span class="s2">&quot;Error&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;No se ha seleccionado ningún experimento&quot;</span><span class="p">,</span>
+                <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.filtrar_por_tipo">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.filtrar_por_tipo">[docs]</a>
+    <span class="k">def</span> <span class="nf">filtrar_por_tipo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tipo</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filtra la lista de experimentos por tipo.</span>
+
+<span class="sd">    Este método establece el tipo de filtro para la lista de experimentos y luego</span>
+<span class="sd">    filtra la lista en función del tipo especificado.</span>
+
+<span class="sd">    :param tipo: El tipo de experimento por el cual filtrar la lista.</span>
+<span class="sd">    :type tipo: s</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Filtrar la lista de experimentos por el tipo &quot;Física&quot;</span>
+<span class="sd">        ventana.filtrar_por_tipo(&quot;Física&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtro_tipo</span> <span class="o">=</span> <span class="n">tipo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtrar_lista_experimentos</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.filtrar_desde">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.filtrar_desde">[docs]</a>
+    <span class="k">def</span> <span class="nf">filtrar_desde</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fecha</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filtra la lista de experimentos desde una fecha específica.</span>
+
+<span class="sd">    Este método establece el filtro de fecha de inicio para la lista de experimentos y luego</span>
+<span class="sd">    filtra la lista para mostrar solo los experimentos realizados a partir de esa fecha.</span>
+
+<span class="sd">    :param fecha: La fecha de inicio desde la cual filtrar los experimentos (en formato `datetime.date`).</span>
+<span class="sd">    :type fecha: datetime.da</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        from datetime import date</span>
+<span class="sd">        </span>
+<span class="sd">        # Filtrar la lista de experimentos desde el 1 de enero de 2023</span>
+<span class="sd">        ventana.filtrar_desde(date(2023, 1, 1))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtro_fecha_desde</span> <span class="o">=</span> <span class="n">fecha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtrar_lista_experimentos</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.filtrar_hasta">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.filtrar_hasta">[docs]</a>
+    <span class="k">def</span> <span class="nf">filtrar_hasta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fecha</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filtra la lista de experimentos hasta una fecha específica.</span>
+
+<span class="sd">    Este método establece el filtro de fecha de fin para la lista de experimentos y luego</span>
+<span class="sd">    filtra la lista para mostrar solo los experimentos realizados hasta esa fecha.</span>
+
+<span class="sd">    :param fecha: La fecha de fin hasta la cual filtrar los experimentos (en formato `datetime.date`).</span>
+<span class="sd">    :type fecha: datetime.da</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        from datetime import date</span>
+<span class="sd">        </span>
+<span class="sd">        # Filtrar la lista de experimentos hasta el 31 de diciembre de 2023</span>
+<span class="sd">        ventana.filtrar_hasta(date(2023, 12, 31))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtro_fecha_hasta</span> <span class="o">=</span> <span class="n">fecha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtrar_lista_experimentos</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.crear_filtros_tipo_experimento">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.crear_filtros_tipo_experimento">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear_filtros_tipo_experimento</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un grupo de botones de radio para filtrar por tipo de experimento.</span>
+
+<span class="sd">    Este método configura un grupo de botones de radio dentro de un QGroupBox</span>
+<span class="sd">    para permitir al usuario filtrar los experimentos por tipo: TEAS, MOKE o Todos.</span>
+
+<span class="sd">    :return: Un QGroupBox con botones de radio para filtrar por tipo de experimento.</span>
+<span class="sd">    :rtype: QGroupBox</span>
+
+<span class="sd">    Los botones de radio configurados son:</span>
+
+<span class="sd">    - `rb_teas`: Filtrar por tipo de experimento TEAS.</span>
+<span class="sd">    - `rb_moke`: Filtrar por tipo de experimento MOKE.</span>
+<span class="sd">    - `rb_todos`: Mostrar todos los tipos de experimentos sin filtrar.</span>
+
+<span class="sd">    Se conectan señales a los botones de radio para llamar a la función `filtrar_por_tipo`</span>
+<span class="sd">    con el tipo de experimento correspondiente cuando se selecciona un botón.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        filtros_tipo_experimento = self.crear_filtros_tipo_experimento()</span>
+<span class="sd">        layout.addWidget(filtros_tipo_experimento)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="c1"># layout = QGridLayout()</span>
+        <span class="n">gb_filtrado_tipo_experimento</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Filtrar por tipo experimento&quot;</span><span class="p">)</span>
+        <span class="n">radio_buttons_layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">rb_teas</span> <span class="o">=</span> <span class="n">QRadioButton</span><span class="p">(</span><span class="s2">&quot;TEAS&quot;</span><span class="p">)</span>
+        <span class="n">rb_moke</span> <span class="o">=</span> <span class="n">QRadioButton</span><span class="p">(</span><span class="s2">&quot;MOKE&quot;</span><span class="p">)</span>
+        <span class="n">rb_todos</span> <span class="o">=</span> <span class="n">QRadioButton</span><span class="p">(</span><span class="s2">&quot;Todo&quot;</span><span class="p">)</span>
+        <span class="n">rb_teas</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filtrar_por_tipo</span><span class="p">(</span><span class="s2">&quot;teas&quot;</span><span class="p">))</span>
+        <span class="n">rb_moke</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filtrar_por_tipo</span><span class="p">(</span><span class="s2">&quot;moke&quot;</span><span class="p">))</span>
+        <span class="n">rb_todos</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filtrar_por_tipo</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+        <span class="c1"># rb_teas.setChecked(True)</span>
+
+        <span class="n">radio_buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">rb_teas</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">radio_buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">rb_moke</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">radio_buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">rb_todos</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">gb_filtrado_tipo_experimento</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">radio_buttons_layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_filtrado_tipo_experimento</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.crear_filtros_fechas">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.crear_filtros_fechas">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear_filtros_fechas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un grupo de filtros para seleccionar fechas de inicio y fin.</span>
+
+<span class="sd">    Este método configura un grupo de widgets dentro de un QGroupBox</span>
+<span class="sd">    para permitir al usuario filtrar los experimentos por fechas de inicio y fin.</span>
+
+<span class="sd">    :return: Un QGroupBox con filtros para seleccionar fechas de inicio y fin.</span>
+<span class="sd">    :rtype: QGroupBox</span>
+
+<span class="sd">    Los controles configurados son:</span>
+
+<span class="sd">    - `btn_desde`: Botón para seleccionar la fecha de inicio.</span>
+<span class="sd">    - `btn_hasta`: Botón para seleccionar la fecha de fin.</span>
+<span class="sd">    - `le_desde`: LineEdit para mostrar y editar la fecha de inicio.</span>
+<span class="sd">    - `le_hasta`: LineEdit para mostrar y editar la fecha de fin.</span>
+<span class="sd">    - `calendario`: Calendario para seleccionar las fechas.</span>
+
+<span class="sd">    Los LineEdit `le_desde` y `le_hasta` están inicialmente deshabilitados y</span>
+<span class="sd">    se activan cuando se hace clic en los botones correspondientes.</span>
+
+<span class="sd">    Se conectan señales a los botones para llamar a la función `control_fechas`</span>
+<span class="sd">    cuando se hace clic en ellos, para mostrar el calendario y seleccionar la fecha.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        filtros_fecha = self.crear_filtros_fechas()</span>
+<span class="sd">        layout.addWidget(filtros_fecha)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="n">gb_filtrado_fecha</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Filtrar por fecha&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calendario</span> <span class="o">=</span> <span class="n">QCalendarWidget</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_desde</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Desde&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_hasta</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Hasta&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_desde</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_desde</span><span class="o">.</span><span class="n">setPlaceholderText</span><span class="p">(</span><span class="s2">&quot;dd/mm/aaaa&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_desde</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;background-color: #f0f0f0&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_desde</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_desde</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_hasta</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_hasta</span><span class="o">.</span><span class="n">setPlaceholderText</span><span class="p">(</span><span class="s2">&quot;dd/mm/aaaa&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_hasta</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;background-color: #f0f0f0&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_hasta</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_hasta</span><span class="o">.</span><span class="n">setDisabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_desde</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_hasta</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_desde</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_hasta</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Conectamos los botones con el calendario</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_desde</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_fechas</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btn_hasta</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_fechas</span><span class="p">)</span>
+
+        <span class="n">gb_filtrado_fecha</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_filtrado_fecha</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.control_fechas">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.control_fechas">[docs]</a>
+    <span class="k">def</span> <span class="nf">control_fechas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Controla la interacción con el calendario para seleccionar fechas.</span>
+
+<span class="sd">    Este método muestra el calendario y configura la interacción con los botones</span>
+<span class="sd">    &#39;Desde&#39; y &#39;Hasta&#39; para seleccionar fechas de inicio y fin respectivamente.</span>
+
+<span class="sd">    :return: El calendario para seleccionar fechas.</span>
+<span class="sd">    :rtype: QCalendarWidget</span>
+
+<span class="sd">    Cuando se hace clic en el botón &#39;Desde&#39;, se muestra el calendario y se conecta</span>
+<span class="sd">    la señal de clic a la función `mostrar_fecha` con el parámetro &quot;desde&quot;.</span>
+<span class="sd">    De manera similar, cuando se hace clic en el botón &#39;Hasta&#39;, se conecta la señal</span>
+<span class="sd">    de clic a la función `mostrar_fecha` con el parámetro &quot;hasta&quot;.</span>
+
+<span class="sd">    Una vez seleccionada la fecha, el calendario se oculta automáticamente.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        calendario = self.control_fechas()</span>
+<span class="sd">        calendario.show()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calendario</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calendario</span><span class="o">.</span><span class="n">setGridVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">btn_desde</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calendario</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">fecha</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_fecha</span><span class="p">(</span><span class="n">fecha</span><span class="p">,</span> <span class="s2">&quot;desde&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">btn_hasta</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calendario</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">fecha</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_fecha</span><span class="p">(</span><span class="n">fecha</span><span class="p">,</span> <span class="s2">&quot;hasta&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># self.calendario.clicked.connect(self.mostrar_fecha)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calendario</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calendario</span><span class="o">.</span><span class="n">hide</span><span class="p">)</span>
+        <span class="c1"># eliminar el evento de click para que no se ejecute varias veces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calendario</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calendario</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">disconnect</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calendario</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.mostrar_fecha">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.mostrar_fecha">[docs]</a>
+    <span class="k">def</span> <span class="nf">mostrar_fecha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fecha</span><span class="p">,</span> <span class="n">tipo_fecha</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Muestra la fecha seleccionada en el campo correspondiente y filtra según el tipo de fecha.</span>
+
+<span class="sd">    Este método recibe la fecha seleccionada y el tipo de fecha (&#39;desde&#39; o &#39;hasta&#39;) y muestra</span>
+<span class="sd">    la fecha en el campo correspondiente (&#39;Desde&#39; o &#39;Hasta&#39;). También realiza el filtrado según</span>
+<span class="sd">    el tipo de fecha seleccionado.</span>
+
+<span class="sd">    :param fecha: La fecha seleccionada en el calendario.</span>
+<span class="sd">    :type fecha: QDate</span>
+<span class="sd">    :param tipo_fecha: El tipo de fecha (&#39;desde&#39; o &#39;hasta&#39;).</span>
+<span class="sd">    :type tipo_fecha: s</span>
+
+<span class="sd">    Si se selecciona una fecha &quot;hasta&quot; anterior a la fecha &quot;desde&quot;, se ajusta la fecha seleccionada</span>
+<span class="sd">    para que sea igual o posterior a la fecha &quot;desde&quot;. Además, se controla que no se pueda seleccionar</span>
+<span class="sd">    una fecha futura.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        fecha_seleccionada = QDate.currentDate()</span>
+<span class="sd">        mostrar_fecha(fecha_seleccionada, &quot;desde&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="c1"># control de fechas para que no se pueda seleccionar una fecha &quot;hasta&quot; anterior a la fecha &quot;desde&quot;</span>
+        <span class="k">if</span> <span class="n">tipo_fecha</span> <span class="o">==</span> <span class="s2">&quot;hasta&quot;</span><span class="p">:</span>
+            <span class="n">fecha_desde</span> <span class="o">=</span> <span class="n">QDate</span><span class="o">.</span><span class="n">fromString</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_desde</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="s2">&quot;dd/MM/yyyy&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fecha</span> <span class="o">&lt;</span> <span class="n">fecha_desde</span><span class="p">:</span>
+                <span class="n">fecha</span> <span class="o">=</span> <span class="n">fecha_desde</span>
+
+        <span class="c1"># control de fechas para que no se pueda seleccionar una fecha futura</span>
+        <span class="k">if</span> <span class="n">fecha</span> <span class="o">&gt;</span> <span class="n">QDate</span><span class="o">.</span><span class="n">currentDate</span><span class="p">():</span>
+            <span class="n">fecha</span> <span class="o">=</span> <span class="n">QDate</span><span class="o">.</span><span class="n">currentDate</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">tipo_fecha</span> <span class="o">==</span> <span class="s2">&quot;desde&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">le_desde</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formatear_fecha</span><span class="p">(</span><span class="n">fecha</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">le_desde</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: black&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filtrar_desde</span><span class="p">(</span><span class="n">fecha</span><span class="o">.</span><span class="n">toPyDate</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">tipo_fecha</span> <span class="o">==</span> <span class="s2">&quot;hasta&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">le_hasta</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formatear_fecha</span><span class="p">(</span><span class="n">fecha</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">le_hasta</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: black&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filtrar_hasta</span><span class="p">(</span><span class="n">fecha</span><span class="o">.</span><span class="n">toPyDate</span><span class="p">())</span></div>
+
+        <span class="c1"># return fecha.toString(&quot;dd/MM/yyyy&quot;)</span>
+
+<div class="viewcode-block" id="ExperimentosWindow.formatear_fecha">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.formatear_fecha">[docs]</a>
+    <span class="k">def</span> <span class="nf">formatear_fecha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fecha</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Formatea la fecha en el formato &quot;dd/MM/yyyy&quot;.</span>
+
+<span class="sd">    Este método toma un objeto de fecha y lo formatea en el formato &quot;dd/MM/yyyy&quot;.</span>
+
+<span class="sd">    :param fecha: La fecha a formatear.</span>
+<span class="sd">    :type fecha: QDate</span>
+<span class="sd">    :return: La fecha formateada en el formato &quot;dd/MM/yyyy&quot;.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        fecha = QDate.currentDate()</span>
+<span class="sd">        fecha_formateada = formatear_fecha(fecha)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">fecha</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="s2">&quot;dd/MM/yyyy&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.crear_zona_acciones">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.crear_zona_acciones">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear_zona_acciones</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea una zona de acciones con botones personalizados.</span>
+
+<span class="sd">    Este método configura una zona de acciones que contiene botones personalizados</span>
+<span class="sd">    para realizar diferentes acciones, como exportar a PDF, visualizar experimentos</span>
+<span class="sd">    y cargar configuraciones.</span>
+
+<span class="sd">    :return: Un layout que contiene los botones de acción.</span>
+<span class="sd">    :rtype: QGridLayout</span>
+
+<span class="sd">    Configura los siguientes botones:</span>
+
+<span class="sd">    - `btn_exportar`: Botón para exportar a PDF.</span>
+<span class="sd">    - `btn_visualizar`: Botón para visualizar experimentos.</span>
+<span class="sd">    - `btn_configuraciones`: Botón para cargar configuraciones.</span>
+
+<span class="sd">    Se conectan las señales de clic de los botones a sus correspondientes manejadores de eventos.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        zona_acciones = crear_zona_acciones()</span>
+<span class="sd">        layout.addWidget(zona_acciones)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">btn_exportar</span> <span class="o">=</span> <span class="n">BotonModificadoRun</span><span class="p">(</span><span class="s2">&quot;Exportar a PDF&quot;</span><span class="p">)</span>
+        <span class="n">btn_visualizar</span> <span class="o">=</span> <span class="n">BotonModificadoRun</span><span class="p">(</span><span class="s2">&quot;Visualizar experimento&quot;</span><span class="p">)</span>
+        <span class="n">btn_configuraciones</span> <span class="o">=</span> <span class="n">BotonModificadoRun</span><span class="p">(</span><span class="s2">&quot;Cargar configuraciones&quot;</span><span class="p">)</span>
+
+        <span class="n">btn_exportar</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_exportar_pdf</span><span class="p">)</span>
+        <span class="n">btn_visualizar</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">visualizar_resultados</span><span class="p">)</span>
+        <span class="n">btn_configuraciones</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cargar_configuraciones</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_exportar</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_visualizar</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_configuraciones</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">layout</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.manejar_exportar_pdf">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.manejar_exportar_pdf">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_exportar_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja la exportación del experimento actual a un archivo PDF.</span>
+
+<span class="sd">    Este método verifica si se ha seleccionado un experimento antes de proceder</span>
+<span class="sd">    con la exportación a PDF. Si no se ha seleccionado ningún experimento, muestra</span>
+<span class="sd">    un mensaje de advertencia. Si hay un experimento seleccionado, invoca la función</span>
+<span class="sd">    para pedir la ruta donde guardar el PDF</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        ventana_principal.manejar_exportar_pdf()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="c1"># Preguntar la ruta donde guardar el pdf</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">verificar_experimento_seleccionado</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="n">pedir_ruta_exportar_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.cargar_configuraciones">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.cargar_configuraciones">[docs]</a>
+    <span class="k">def</span> <span class="nf">cargar_configuraciones</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Carga las configuraciones para el experimento seleccionado.</span>
+
+<span class="sd">    Este método verifica si se ha seleccionado un experimento antes de proceder</span>
+<span class="sd">    con la carga de configuraciones. Si no se ha seleccionado ningún experimento, muestra</span>
+<span class="sd">    un mensaje de advertencia. Si hay un experimento seleccionado, determina el tipo de</span>
+<span class="sd">    experimento y abre una nueva ventana correspondiente para cargar las configuraciones</span>
+<span class="sd">    específicas</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        ventana_principal.cargar_configuraciones()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="c1"># Preguntar la ruta donde guardar el pdf</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">verificar_experimento_seleccionado</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span><span class="p">)</span><span class="o">.</span><span class="n">tipo</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="o">==</span> <span class="s2">&quot;teas&quot;</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">abrir_nueva_ventana</span><span class="p">(</span><span class="n">TeasWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span><span class="p">)</span><span class="o">.</span><span class="n">tipo</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="o">==</span> <span class="s2">&quot;moke&quot;</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">abrir_nueva_ventana</span><span class="p">(</span><span class="n">MokeWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.visualizar_resultados">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.visualizar_resultados">[docs]</a>
+    <span class="k">def</span> <span class="nf">visualizar_resultados</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualiza los resultados del experimento seleccionado.</span>
+
+<span class="sd">    Este método verifica si se ha seleccionado un experimento antes de proceder</span>
+<span class="sd">    con la visualización de resultados. Si no se ha seleccionado ningún experimento, muestra</span>
+<span class="sd">    un mensaje de advertencia. Si hay un experimento seleccionado, determina el tipo de</span>
+<span class="sd">    experimento y abre una nueva ventana correspondiente para visualizar los resultados</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        ventana_principal.visualizar_resultados()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="c1"># Preguntar la ruta donde guardar el pdf</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">verificar_experimento_seleccionado</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="n">experimento</span> <span class="o">=</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">experimento</span><span class="o">.</span><span class="n">tipo</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;teas&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">abrir_nueva_ventana</span><span class="p">(</span><span class="n">TeasGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">experimento</span><span class="o">.</span><span class="n">tipo</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;moke&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">abrir_nueva_ventana</span><span class="p">(</span><span class="n">MokeGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento_seleccionado</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="ExperimentosWindow.abrir_nueva_ventana">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.ExperimentosWindow.abrir_nueva_ventana">[docs]</a>
+    <span class="k">def</span> <span class="nf">abrir_nueva_ventana</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nueva_ventana</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abre una nueva ventana y cierra la ventana actual.</span>
+
+<span class="sd">    Este método abre una nueva ventana especificada y cierra la ventana actual.</span>
+
+<span class="sd">    :param nueva_ventana: La instancia de la nueva ventana a abrir.</span>
+<span class="sd">    :type nueva_ventana: QWidg</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        nueva_ventana = MiNuevaVentana()</span>
+<span class="sd">        ventana_actual.abrir_nueva_ventana(nueva_ventana)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nuevaVentana</span> <span class="o">=</span> <span class="n">nueva_ventana</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nuevaVentana</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.vista_experimentos.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Función principal para iniciar la aplicación.</span>
+
+<span class="sd">    Esta función crea una aplicación QApplication, instancia la ventana de Experimentos,</span>
+<span class="sd">    la muestra y ejecuta el bucle de eventos de la aplicación hasta que se cierra la ventana</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        if __name__ == &quot;__main__&quot;:</span>
+<span class="sd">            main()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">experimentos_window</span> <span class="o">=</span> <span class="n">ExperimentosWindow</span><span class="p">()</span>
+    <span class="n">experimentos_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec</span><span class="p">())</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Equipo prácticas IES Sampedro: Adolfo M. Luque, Iker Carrón &amp; David Romero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

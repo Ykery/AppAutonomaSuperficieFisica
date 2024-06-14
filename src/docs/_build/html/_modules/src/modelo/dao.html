@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.modelo.dao &mdash; Aplicación UAM Depart. Física 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Aplicación UAM Depart. Física
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Vista General</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Aplicación UAM Depart. Física</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.modelo.dao</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.modelo.dao</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.clases</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="ExperimentoDAO">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ExperimentoDAO">[docs]</a>
+<span class="k">class</span> <span class="nc">ExperimentoDAO</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Data Access Object (DAO) para la clase Experimento.</span>
+
+<span class="sd">    Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)</span>
+<span class="sd">    en la tabla &#39;experimentos&#39; de la base de datos.</span>
+
+<span class="sd">    Métodos:</span>
+<span class="sd">    --------</span>
+<span class="sd">    crear(experimento):</span>
+<span class="sd">        Crea un nuevo experimento en la base de datos y devuelve el último experimento creado.</span>
+<span class="sd">    obtener_por_id(id):</span>
+<span class="sd">        Obtiene un experimento por su ID.</span>
+<span class="sd">    obtener_todos():</span>
+<span class="sd">        Obtiene todos los experimentos de la base de datos.</span>
+<span class="sd">    obtener_ultimo():</span>
+<span class="sd">        Obtiene el último experimento creado en la base de datos.</span>
+<span class="sd">    actualizar(experimento):</span>
+<span class="sd">        Actualiza un experimento existente en la base de datos.</span>
+<span class="sd">    eliminar(experimento):</span>
+<span class="sd">        Elimina un experimento de la base de datos.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Crear un nuevo experimento</span>
+<span class="sd">        nuevo_experimento = Experimento(descripcion=&quot;Nuevo experimento&quot;, rutaCsv=&quot;ruta/al/archivo.csv&quot;, tipo=&quot;Tipo de experimento&quot;)</span>
+<span class="sd">        ExperimentoDAO.crear(nuevo_experimento)</span>
+
+<span class="sd">        # Obtener un experimento por ID</span>
+<span class="sd">        experimento = ExperimentoDAO.obtener_por_id(1)</span>
+
+<span class="sd">        # Obtener todos los experimentos</span>
+<span class="sd">        experimentos = ExperimentoDAO.obtener_todos()</span>
+
+<span class="sd">        # Actualizar un experimento</span>
+<span class="sd">        experimento.descripcion = &quot;Descripción actualizada&quot;</span>
+<span class="sd">        ExperimentoDAO.actualizar(experimento)</span>
+
+<span class="sd">        # Eliminar un experimento</span>
+<span class="sd">        ExperimentoDAO.eliminar(experimento)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ExperimentoDAO.crear">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ExperimentoDAO.crear">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear</span><span class="p">(</span><span class="n">experimento</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea un nuevo experimento en la base de datos y devuelve el último experimento creado.</span>
+
+<span class="sd">        :param experimento: El objeto Experimento a ser creado.</span>
+<span class="sd">        :type experimento: Experimento</span>
+<span class="sd">        :return: El último experimento creado.</span>
+<span class="sd">        :rtype: Experimento</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">experimento</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_ultimo</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ExperimentoDAO.obtener_por_id">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ExperimentoDAO.obtener_por_id">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_por_id</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene un experimento por su ID.</span>
+
+<span class="sd">        :param id: El ID del experimento a obtener.</span>
+<span class="sd">        :type id: int</span>
+<span class="sd">        :return: El experimento con el ID especificado.</span>
+<span class="sd">        :rtype: Experimento</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">experimento</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Experimento</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Experimento</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">experimento</span></div>
+
+
+<div class="viewcode-block" id="ExperimentoDAO.obtener_todos">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ExperimentoDAO.obtener_todos">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_todos</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene todos los experimentos de la base de datos.</span>
+
+<span class="sd">        :return: Una lista de todos los experimentos.</span>
+<span class="sd">        :rtype: list[Experimento]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">experimentos</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Experimento</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">experimentos</span></div>
+
+
+<div class="viewcode-block" id="ExperimentoDAO.obtener_ultimo">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ExperimentoDAO.obtener_ultimo">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_ultimo</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene el último experimento creado en la base de datos.</span>
+
+<span class="sd">        :return: El último experimento creado.</span>
+<span class="sd">        :rtype: Experimento</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">experimento</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Experimento</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">Experimento</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">experimento</span></div>
+
+
+<div class="viewcode-block" id="ExperimentoDAO.actualizar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ExperimentoDAO.actualizar">[docs]</a>
+    <span class="k">def</span> <span class="nf">actualizar</span><span class="p">(</span><span class="n">experimento</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza un experimento existente en la base de datos.</span>
+
+<span class="sd">        :param experimento: El objeto Experimento a ser actualizado.</span>
+<span class="sd">        :type experimento: Experimento</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">experimento</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ExperimentoDAO.eliminar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ExperimentoDAO.eliminar">[docs]</a>
+    <span class="k">def</span> <span class="nf">eliminar</span><span class="p">(</span><span class="n">experimento</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Elimina un experimento de la base de datos.</span>
+
+<span class="sd">        :param experimento: El objeto Experimento a ser eliminado.</span>
+<span class="sd">        :type experimento: Experimento</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">experimento</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ResultadoTeasDAO">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoTeasDAO">[docs]</a>
+<span class="k">class</span> <span class="nc">ResultadoTeasDAO</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Data Access Object (DAO) para la clase ResultadoTeas.</span>
+
+<span class="sd">    Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)</span>
+<span class="sd">    en la tabla &#39;resultados_teas&#39; de la base de datos.</span>
+
+<span class="sd">    Métodos:</span>
+<span class="sd">    --------</span>
+<span class="sd">    crear(resultado):</span>
+<span class="sd">        Crea un nuevo resultado TEAS en la base de datos.</span>
+<span class="sd">    obtener_por_id(id):</span>
+<span class="sd">        Obtiene un resultado TEAS por su ID.</span>
+<span class="sd">    obtener_por_id_experimento(id_experimento):</span>
+<span class="sd">        Obtiene todos los resultados TEAS asociados a un experimento específico.</span>
+<span class="sd">    obtener_todos():</span>
+<span class="sd">        Obtiene todos los resultados TEAS de la base de datos.</span>
+<span class="sd">    actualizar(resultado):</span>
+<span class="sd">        Actualiza un resultado TEAS existente en la base de datos.</span>
+<span class="sd">    eliminar(resultado):</span>
+<span class="sd">        Elimina un resultado TEAS de la base de datos.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Crear un nuevo resultado TEAS</span>
+<span class="sd">        nuevo_resultado = ResultadoTeas(id_experimento=1, time=10.0, intensity=100.0)</span>
+<span class="sd">        ResultadoTeasDAO.crear(nuevo_resultado)</span>
+
+<span class="sd">        # Obtener un resultado TEAS por ID</span>
+<span class="sd">        resultado = ResultadoTeasDAO.obtener_por_id(1)</span>
+
+<span class="sd">        # Obtener todos los resultados TEAS de un experimento</span>
+<span class="sd">        resultados = ResultadoTeasDAO.obtener_por_id_experimento(1)</span>
+
+<span class="sd">        # Obtener todos los resultados TEAS</span>
+<span class="sd">        todos_resultados = ResultadoTeasDAO.obtener_todos()</span>
+
+<span class="sd">        # Actualizar un resultado TEAS</span>
+<span class="sd">        resultado.intensity = 150.0</span>
+<span class="sd">        ResultadoTeasDAO.actualizar(resultado)</span>
+
+<span class="sd">        # Eliminar un resultado TEAS</span>
+<span class="sd">        ResultadoTeasDAO.eliminar(resultado)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ResultadoTeasDAO.crear">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoTeasDAO.crear">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear</span><span class="p">(</span><span class="n">resultado</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea un nuevo resultado TEAS en la base de datos.</span>
+
+<span class="sd">        :param resultado: El objeto ResultadoTeas a ser creado.</span>
+<span class="sd">        :type resultado: ResultadoTeas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ResultadoTeasDAO.obtener_por_id">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoTeasDAO.obtener_por_id">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_por_id</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene un resultado TEAS por su ID.</span>
+
+<span class="sd">        :param id: El ID del resultado TEAS a obtener.</span>
+<span class="sd">        :type id: int</span>
+<span class="sd">        :return: El resultado TEAS con el ID especificado.</span>
+<span class="sd">        :rtype: ResultadoTeas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">resultado</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ResultadoTeas</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ResultadoTeas</span><span class="o">.</span><span class="n">id_resultado_exp</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">resultado</span></div>
+
+
+<div class="viewcode-block" id="ResultadoTeasDAO.obtener_por_id_experimento">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoTeasDAO.obtener_por_id_experimento">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_por_id_experimento</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene todos los resultados TEAS asociados a un experimento específico.</span>
+
+<span class="sd">        :param id_experimento: El ID del experimento cuyos resultados TEAS se desean obtener.</span>
+<span class="sd">        :type id_experimento: int</span>
+<span class="sd">        :return: Una lista de resultados TEAS asociados al experimento especificado.</span>
+<span class="sd">        :rtype: list[ResultadoTeas]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">resultados</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ResultadoTeas</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ResultadoTeas</span><span class="o">.</span><span class="n">id_experimento</span> <span class="o">==</span> <span class="n">id_experimento</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">resultados</span></div>
+
+
+<div class="viewcode-block" id="ResultadoTeasDAO.obtener_todos">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoTeasDAO.obtener_todos">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_todos</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene todos los resultados TEAS de la base de datos.</span>
+
+<span class="sd">        :return: Una lista de todos los resultados TEAS.</span>
+<span class="sd">        :rtype: list[ResultadoTeas]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">resultados</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ResultadoTeas</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">resultados</span></div>
+
+
+<div class="viewcode-block" id="ResultadoTeasDAO.actualizar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoTeasDAO.actualizar">[docs]</a>
+    <span class="k">def</span> <span class="nf">actualizar</span><span class="p">(</span><span class="n">resultado</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza un resultado TEAS existente en la base de datos.</span>
+
+<span class="sd">        :param resultado: El objeto ResultadoTeas a ser actualizado.</span>
+<span class="sd">        :type resultado: ResultadoTeas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ResultadoTeasDAO.eliminar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoTeasDAO.eliminar">[docs]</a>
+    <span class="k">def</span> <span class="nf">eliminar</span><span class="p">(</span><span class="n">resultado</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Elimina un resultado TEAS de la base de datos.</span>
+
+<span class="sd">        :param resultado: El objeto ResultadoTeas a ser eliminado.</span>
+<span class="sd">        :type resultado: ResultadoTeas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ResultadoMokeDAO">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoMokeDAO">[docs]</a>
+<span class="k">class</span> <span class="nc">ResultadoMokeDAO</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Data Access Object (DAO) para la clase ResultadoMoke.</span>
+
+<span class="sd">    Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)</span>
+<span class="sd">    en la tabla &#39;resultados_moke&#39; de la base de datos.</span>
+
+<span class="sd">    Métodos:</span>
+<span class="sd">    --------</span>
+<span class="sd">    crear(resultado):</span>
+<span class="sd">        Crea un nuevo resultado MOKE en la base de datos.</span>
+<span class="sd">    obtener_por_id(id):</span>
+<span class="sd">        Obtiene un resultado MOKE por su ID.</span>
+<span class="sd">    obtener_por_id_experimento(id_experimento):</span>
+<span class="sd">        Obtiene todos los resultados MOKE asociados a un experimento específico.</span>
+<span class="sd">    obtener_todos():</span>
+<span class="sd">        Obtiene todos los resultados MOKE de la base de datos.</span>
+<span class="sd">    actualizar(resultado):</span>
+<span class="sd">        Actualiza un resultado MOKE existente en la base de datos.</span>
+<span class="sd">    eliminar(resultado):</span>
+<span class="sd">        Elimina un resultado MOKE de la base de datos.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Crear un nuevo resultado MOKE</span>
+<span class="sd">        nuevo_resultado = ResultadoMoke(id_experimento=1, magnetic_field=1.0, intensity=100.0)</span>
+<span class="sd">        ResultadoMokeDAO.crear(nuevo_resultado)</span>
+
+<span class="sd">        # Obtener un resultado MOKE por ID</span>
+<span class="sd">        resultado = ResultadoMokeDAO.obtener_por_id(1)</span>
+
+<span class="sd">        # Obtener todos los resultados MOKE de un experimento</span>
+<span class="sd">        resultados = ResultadoMokeDAO.obtener_por_id_experimento(1)</span>
+
+<span class="sd">        # Obtener todos los resultados MOKE</span>
+<span class="sd">        todos_resultados = ResultadoMokeDAO.obtener_todos()</span>
+
+<span class="sd">        # Actualizar un resultado MOKE</span>
+<span class="sd">        resultado.intensity = 150.0</span>
+<span class="sd">        ResultadoMokeDAO.actualizar(resultado)</span>
+
+<span class="sd">        # Eliminar un resultado MOKE</span>
+<span class="sd">        ResultadoMokeDAO.eliminar(resultado)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ResultadoMokeDAO.crear">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoMokeDAO.crear">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear</span><span class="p">(</span><span class="n">resultado</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea un nuevo resultado MOKE en la base de datos.</span>
+
+<span class="sd">        :param resultado: El objeto ResultadoMoke a ser creado.</span>
+<span class="sd">        :type resultado: ResultadoMoke</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ResultadoMokeDAO.obtener_por_id">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoMokeDAO.obtener_por_id">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_por_id</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene un resultado MOKE por su ID.</span>
+
+<span class="sd">        :param id: El ID del resultado MOKE a obtener.</span>
+<span class="sd">        :type id: int</span>
+<span class="sd">        :return: El resultado MOKE con el ID especificado.</span>
+<span class="sd">        :rtype: ResultadoMoke</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">resultado</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ResultadoMoke</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ResultadoMoke</span><span class="o">.</span><span class="n">id_resultado_exp</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">resultado</span></div>
+
+
+<div class="viewcode-block" id="ResultadoMokeDAO.obtener_por_id_experimento">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoMokeDAO.obtener_por_id_experimento">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_por_id_experimento</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene todos los resultados MOKE asociados a un experimento específico.</span>
+
+<span class="sd">        :param id_experimento: El ID del experimento cuyos resultados MOKE se desean obtener.</span>
+<span class="sd">        :type id_experimento: int</span>
+<span class="sd">        :return: Una lista de resultados MOKE asociados al experimento especificado.</span>
+<span class="sd">        :rtype: list[ResultadoMoke]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">resultados</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ResultadoMoke</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ResultadoMoke</span><span class="o">.</span><span class="n">id_experimento</span> <span class="o">==</span> <span class="n">id_experimento</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">resultados</span></div>
+
+
+<div class="viewcode-block" id="ResultadoMokeDAO.obtener_todos">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoMokeDAO.obtener_todos">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_todos</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene todos los resultados MOKE de la base de datos.</span>
+
+<span class="sd">        :return: Una lista de todos los resultados MOKE.</span>
+<span class="sd">        :rtype: list[ResultadoMoke]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">resultados</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ResultadoMoke</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">resultados</span></div>
+
+
+<div class="viewcode-block" id="ResultadoMokeDAO.actualizar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoMokeDAO.actualizar">[docs]</a>
+    <span class="k">def</span> <span class="nf">actualizar</span><span class="p">(</span><span class="n">resultado</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza un resultado MOKE existente en la base de datos.</span>
+
+<span class="sd">        :param resultado: El objeto ResultadoMoke a ser actualizado.</span>
+<span class="sd">        :type resultado: ResultadoMoke</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ResultadoMokeDAO.eliminar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ResultadoMokeDAO.eliminar">[docs]</a>
+    <span class="k">def</span> <span class="nf">eliminar</span><span class="p">(</span><span class="n">resultado</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Elimina un resultado MOKE de la base de datos.</span>
+
+<span class="sd">        :param resultado: El objeto ResultadoMoke a ser eliminado.</span>
+<span class="sd">        :type resultado: ResultadoMoke</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ConfiguracionTeasDAO">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionTeasDAO">[docs]</a>
+<span class="k">class</span> <span class="nc">ConfiguracionTeasDAO</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Data Access Object (DAO) para la clase ConfiguracionTeas.</span>
+
+<span class="sd">    Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)</span>
+<span class="sd">    en la tabla &#39;configuracion_teas&#39; de la base de datos.</span>
+
+<span class="sd">    Métodos:</span>
+<span class="sd">    --------</span>
+<span class="sd">    crear(configuracion):</span>
+<span class="sd">        Crea una nueva configuración TEAS en la base de datos.</span>
+<span class="sd">    obtener_por_id(id):</span>
+<span class="sd">        Obtiene una configuración TEAS por su ID.</span>
+<span class="sd">    obtener_todos():</span>
+<span class="sd">        Obtiene todas las configuraciones TEAS de la base de datos.</span>
+<span class="sd">    actualizar(configuracion):</span>
+<span class="sd">        Actualiza una configuración TEAS existente en la base de datos.</span>
+<span class="sd">    eliminar(configuracion):</span>
+<span class="sd">        Elimina una configuración TEAS de la base de datos.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Crear una nueva configuración TEAS</span>
+<span class="sd">        nueva_configuracion = ConfiguracionTeas(dac_input_intensity=&quot;1&quot;, dac_teas_voltaje_range=&quot;20 V&quot;, ...)</span>
+<span class="sd">        ConfiguracionTeasDAO.crear(nueva_configuracion)</span>
+
+<span class="sd">        # Obtener una configuración TEAS por ID</span>
+<span class="sd">        configuracion = ConfiguracionTeasDAO.obtener_por_id(1)</span>
+
+<span class="sd">        # Obtener todas las configuraciones TEAS</span>
+<span class="sd">        todas_configuraciones = ConfiguracionTeasDAO.obtener_todos()</span>
+
+<span class="sd">        # Actualizar una configuración TEAS</span>
+<span class="sd">        configuracion.dac_input_intensity = &quot;2&quot;</span>
+<span class="sd">        ConfiguracionTeasDAO.actualizar(configuracion)</span>
+
+<span class="sd">        # Eliminar una configuración TEAS</span>
+<span class="sd">        ConfiguracionTeasDAO.eliminar(configuracion)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConfiguracionTeasDAO.crear">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionTeasDAO.crear">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear</span><span class="p">(</span><span class="n">configuracion</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea una nueva configuración TEAS en la base de datos.</span>
+
+<span class="sd">        :param configuracion: El objeto ConfiguracionTeas a ser creado.</span>
+<span class="sd">        :type configuracion: ConfiguracionTeas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">configuracion</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ConfiguracionTeasDAO.obtener_por_id">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionTeasDAO.obtener_por_id">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_por_id</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene una configuración TEAS por su ID.</span>
+
+<span class="sd">        :param id: El ID de la configuración TEAS a obtener.</span>
+<span class="sd">        :type id: int</span>
+<span class="sd">        :return: La configuración TEAS con el ID especificado.</span>
+<span class="sd">        :rtype: ConfiguracionTeas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">configuracion</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ConfiguracionTeas</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ConfiguracionTeas</span><span class="o">.</span><span class="n">id_experimento</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">configuracion</span></div>
+
+
+<div class="viewcode-block" id="ConfiguracionTeasDAO.obtener_todos">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionTeasDAO.obtener_todos">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_todos</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene todas las configuraciones TEAS de la base de datos.</span>
+
+<span class="sd">        :return: Una lista de todas las configuraciones TEAS.</span>
+<span class="sd">        :rtype: list[ConfiguracionTeas]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">configuraciones</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ConfiguracionTeas</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">configuraciones</span></div>
+
+
+<div class="viewcode-block" id="ConfiguracionTeasDAO.actualizar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionTeasDAO.actualizar">[docs]</a>
+    <span class="k">def</span> <span class="nf">actualizar</span><span class="p">(</span><span class="n">configuracion</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza una configuración TEAS existente en la base de datos.</span>
+
+<span class="sd">        :param configuracion: El objeto ConfiguracionTeas a ser actualizado.</span>
+<span class="sd">        :type configuracion: ConfiguracionTeas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">configuracion</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ConfiguracionTeasDAO.eliminar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionTeasDAO.eliminar">[docs]</a>
+    <span class="k">def</span> <span class="nf">eliminar</span><span class="p">(</span><span class="n">configuracion</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Elimina una configuración TEAS de la base de datos.</span>
+
+<span class="sd">        :param configuracion: El objeto ConfiguracionTeas a ser eliminado.</span>
+<span class="sd">        :type configuracion: ConfiguracionTeas</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">configuracion</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ConfiguracionMokeDAO">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionMokeDAO">[docs]</a>
+<span class="k">class</span> <span class="nc">ConfiguracionMokeDAO</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Data Access Object (DAO) para la clase ConfiguracionMoke.</span>
+
+<span class="sd">    Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)</span>
+<span class="sd">    en la tabla &#39;configuracion_moke&#39; de la base de datos.</span>
+
+<span class="sd">    Métodos:</span>
+<span class="sd">    --------</span>
+<span class="sd">    crear(configuracion):</span>
+<span class="sd">        Crea una nueva configuración MOKE en la base de datos.</span>
+<span class="sd">    obtener_por_id(id):</span>
+<span class="sd">        Obtiene una configuración MOKE por su ID.</span>
+<span class="sd">    obtener_todos():</span>
+<span class="sd">        Obtiene todas las configuraciones MOKE de la base de datos.</span>
+<span class="sd">    actualizar(configuracion):</span>
+<span class="sd">        Actualiza una configuración MOKE existente en la base de datos.</span>
+<span class="sd">    eliminar(configuracion):</span>
+<span class="sd">        Elimina una configuración MOKE de la base de datos.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Crear una nueva configuración MOKE</span>
+<span class="sd">        nueva_configuracion = ConfiguracionMoke(dac_input_intensity=&quot;1&quot;, dac_voltaje_range=&quot;20 V&quot;, ...)</span>
+<span class="sd">        ConfiguracionMokeDAO.crear(nueva_configuracion)</span>
+
+<span class="sd">        # Obtener una configuración MOKE por ID</span>
+<span class="sd">        configuracion = ConfiguracionMokeDAO.obtener_por_id(1)</span>
+
+<span class="sd">        # Obtener todas las configuraciones MOKE</span>
+<span class="sd">        todas_configuraciones = ConfiguracionMokeDAO.obtener_todos()</span>
+
+<span class="sd">        # Actualizar una configuración MOKE</span>
+<span class="sd">        configuracion.dac_input_intensity = &quot;2&quot;</span>
+<span class="sd">        ConfiguracionMokeDAO.actualizar(configuracion)</span>
+
+<span class="sd">        # Eliminar una configuración MOKE</span>
+<span class="sd">        ConfiguracionMokeDAO.eliminar(configuracion)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConfiguracionMokeDAO.crear">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionMokeDAO.crear">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear</span><span class="p">(</span><span class="n">configuracion</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea una nueva configuración MOKE en la base de datos.</span>
+
+<span class="sd">        :param configuracion: El objeto ConfiguracionMoke a ser creado.</span>
+<span class="sd">        :type configuracion: ConfiguracionMoke</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">configuracion</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ConfiguracionMokeDAO.obtener_por_id">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionMokeDAO.obtener_por_id">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_por_id</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene una configuración MOKE por su ID.</span>
+
+<span class="sd">        :param id: El ID de la configuración MOKE a obtener.</span>
+<span class="sd">        :type id: int</span>
+<span class="sd">        :return: La configuración MOKE con el ID especificado.</span>
+<span class="sd">        :rtype: ConfiguracionMoke</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">configuracion</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ConfiguracionMoke</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ConfiguracionMoke</span><span class="o">.</span><span class="n">id_experimento</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">configuracion</span></div>
+
+
+<div class="viewcode-block" id="ConfiguracionMokeDAO.obtener_todos">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionMokeDAO.obtener_todos">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_todos</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene todas las configuraciones MOKE de la base de datos.</span>
+
+<span class="sd">        :return: Una lista de todas las configuraciones MOKE.</span>
+<span class="sd">        :rtype: list[ConfiguracionMoke]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">configuraciones</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ConfiguracionMoke</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">configuraciones</span></div>
+
+
+<div class="viewcode-block" id="ConfiguracionMokeDAO.actualizar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionMokeDAO.actualizar">[docs]</a>
+    <span class="k">def</span> <span class="nf">actualizar</span><span class="p">(</span><span class="n">configuracion</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza una configuración MOKE existente en la base de datos.</span>
+
+<span class="sd">        :param configuracion: El objeto ConfiguracionMoke a ser actualizado.</span>
+<span class="sd">        :type configuracion: ConfiguracionMoke</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">configuracion</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ConfiguracionMokeDAO.eliminar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.ConfiguracionMokeDAO.eliminar">[docs]</a>
+    <span class="k">def</span> <span class="nf">eliminar</span><span class="p">(</span><span class="n">configuracion</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Elimina una configuración MOKE de la base de datos.</span>
+
+<span class="sd">        :param configuracion: El objeto ConfiguracionMoke a ser eliminado.</span>
+<span class="sd">        :type configuracion: ConfiguracionMoke</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">configuracion</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MarcadorDAO">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.MarcadorDAO">[docs]</a>
+<span class="k">class</span> <span class="nc">MarcadorDAO</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Data Access Object (DAO) para la clase Marcador.</span>
+
+<span class="sd">    Esta clase proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)</span>
+<span class="sd">    en la tabla &#39;marcadores&#39; de la base de datos.</span>
+
+<span class="sd">    Métodos:</span>
+<span class="sd">    --------</span>
+<span class="sd">    crear(marcador):</span>
+<span class="sd">        Crea un nuevo marcador en la base de datos.</span>
+<span class="sd">    obtener_por_id(id):</span>
+<span class="sd">        Obtiene un marcador por su ID.</span>
+<span class="sd">    obtener_por_id_experimento(id_experimento):</span>
+<span class="sd">        Obtiene todos los marcadores asociados a un experimento por su ID.</span>
+<span class="sd">    obtener_todos():</span>
+<span class="sd">        Obtiene todos los marcadores de la base de datos.</span>
+<span class="sd">    actualizar(marcador):</span>
+<span class="sd">        Actualiza un marcador existente en la base de datos.</span>
+<span class="sd">    eliminar(marcador):</span>
+<span class="sd">        Elimina un marcador de la base de datos.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Crear un nuevo marcador</span>
+<span class="sd">        nuevo_marcador = Marcador(eje_x_id=1, id_experimento=1, descripcion=&quot;Nuevo marcador&quot;)</span>
+<span class="sd">        MarcadorDAO.crear(nuevo_marcador)</span>
+
+<span class="sd">        # Obtener un marcador por ID</span>
+<span class="sd">        marcador = MarcadorDAO.obtener_por_id(1)</span>
+
+<span class="sd">        # Obtener todos los marcadores asociados a un experimento</span>
+<span class="sd">        marcadores_experimento = MarcadorDAO.obtener_por_id_experimento(1)</span>
+
+<span class="sd">        # Obtener todos los marcadores</span>
+<span class="sd">        todos_marcadores = MarcadorDAO.obtener_todos()</span>
+
+<span class="sd">        # Actualizar un marcador</span>
+<span class="sd">        marcador.descripcion = &quot;Descripción actualizada&quot;</span>
+<span class="sd">        MarcadorDAO.actualizar(marcador)</span>
+
+<span class="sd">        # Eliminar un marcador</span>
+<span class="sd">        MarcadorDAO.eliminar(marcador)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarcadorDAO.crear">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.MarcadorDAO.crear">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear</span><span class="p">(</span><span class="n">marcador</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea un nuevo marcador en la base de datos.</span>
+
+<span class="sd">        :param marcador: El objeto Marcador a ser creado.</span>
+<span class="sd">        :type marcador: Marcador</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">marcador</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MarcadorDAO.obtener_por_id">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.MarcadorDAO.obtener_por_id">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_por_id</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene un marcador por su ID.</span>
+
+<span class="sd">        :param id: El ID del marcador a obtener.</span>
+<span class="sd">        :type id: int</span>
+<span class="sd">        :return: El marcador con el ID especificado.</span>
+<span class="sd">        :rtype: Marcador</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">marcador</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Marcador</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Marcador</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">marcador</span></div>
+
+
+<div class="viewcode-block" id="MarcadorDAO.obtener_por_id_experimento">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.MarcadorDAO.obtener_por_id_experimento">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_por_id_experimento</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene un marcador por su ID.</span>
+
+<span class="sd">        :param id: El ID del marcador a obtener.</span>
+<span class="sd">        :type id: int</span>
+<span class="sd">        :return: El marcador con el ID especificado.</span>
+<span class="sd">        :rtype: Marcador</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">marcadores</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Marcador</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Marcador</span><span class="o">.</span><span class="n">id_experimento</span> <span class="o">==</span> <span class="n">id_experimento</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">marcadores</span></div>
+
+
+<div class="viewcode-block" id="MarcadorDAO.obtener_todos">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.MarcadorDAO.obtener_todos">[docs]</a>
+    <span class="k">def</span> <span class="nf">obtener_todos</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene todos los marcadores de la base de datos.</span>
+
+<span class="sd">        :return: Una lista de todos los marcadores.</span>
+<span class="sd">        :rtype: list[Marcador]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">marcadores</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Marcador</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">marcadores</span></div>
+
+
+<div class="viewcode-block" id="MarcadorDAO.actualizar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.MarcadorDAO.actualizar">[docs]</a>
+    <span class="k">def</span> <span class="nf">actualizar</span><span class="p">(</span><span class="n">marcador</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza un marcador existente en la base de datos.</span>
+
+<span class="sd">        :param marcador: El objeto Marcador a ser actualizado.</span>
+<span class="sd">        :type marcador: Marcador</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">marcador</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MarcadorDAO.eliminar">
+<a class="viewcode-back" href="../../../src.modelo.html#src.modelo.dao.MarcadorDAO.eliminar">[docs]</a>
+    <span class="k">def</span> <span class="nf">eliminar</span><span class="p">(</span><span class="n">marcador</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Elimina un marcador de la base de datos.</span>
+
+<span class="sd">        :param marcador: El objeto Marcador a ser eliminado.</span>
+<span class="sd">        :type marcador: Marcador</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Conexion</span><span class="o">.</span><span class="n">getConexion</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">marcador</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Equipo prácticas IES Sampedro: Adolfo M. Luque, Iker Carrón &amp; David Romero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

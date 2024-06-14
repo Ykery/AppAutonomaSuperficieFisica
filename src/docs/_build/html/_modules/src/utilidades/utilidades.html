@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.utilidades.utilidades &mdash; Aplicación UAM Depart. Física 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Aplicación UAM Depart. Física
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Vista General</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Aplicación UAM Depart. Física</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.utilidades.utilidades</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.utilidades.utilidades</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">remove</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+
+<span class="kn">from</span> <span class="nn">docx2pdf</span> <span class="kn">import</span> <span class="n">convert</span>
+<span class="kn">from</span> <span class="nn">docxtpl</span> <span class="kn">import</span> <span class="n">DocxTemplate</span><span class="p">,</span> <span class="n">InlineImage</span>
+
+<span class="kn">from</span> <span class="nn">PyQt6</span> <span class="kn">import</span> <span class="n">Qwt</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtCore</span> <span class="kn">import</span> <span class="n">QBuffer</span><span class="p">,</span> <span class="n">QIODevice</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtWidgets</span> <span class="kn">import</span> <span class="n">QFileDialog</span>
+
+<span class="kn">from</span> <span class="nn">src.modelo.dao</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConfiguracionMokeDAO</span><span class="p">,</span>
+    <span class="n">ConfiguracionTeasDAO</span><span class="p">,</span>
+    <span class="n">ExperimentoDAO</span><span class="p">,</span>
+    <span class="n">MarcadorDAO</span><span class="p">,</span>
+    <span class="n">ResultadoMokeDAO</span><span class="p">,</span>
+    <span class="n">ResultadoTeasDAO</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.grafica</span> <span class="kn">import</span> <span class="n">Plot</span>
+
+
+<div class="viewcode-block" id="crear_pdf_experimento">
+<a class="viewcode-back" href="../../../src.utilidades.html#src.utilidades.utilidades.crear_pdf_experimento">[docs]</a>
+<span class="k">def</span> <span class="nf">crear_pdf_experimento</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">pdf_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un archivo PDF a partir de un documento de Word (docx) generado para un experimento.</span>
+
+<span class="sd">    Este método genera un archivo PDF utilizando un documento de Word previamente creado para un experimento específico.</span>
+
+<span class="sd">    :param id: El identificador único del experimento.</span>
+<span class="sd">    :type id: int</span>
+<span class="sd">    :param pdf_path: La ruta donde se guardará el archivo PDF generado.</span>
+<span class="sd">    :type pdf_path: str</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Crear un archivo PDF a partir del documento de Word para un experimento con ID 1</span>
+<span class="sd">        crear_pdf_experimento(1, &quot;experimento.pdf&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">docx_path</span> <span class="o">=</span> <span class="n">crear_docx_experimento</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">convertir_docx_pdf</span><span class="p">(</span><span class="n">docx_path</span><span class="p">,</span> <span class="n">pdf_path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="crear_docx_experimento">
+<a class="viewcode-back" href="../../../src.utilidades.html#src.utilidades.utilidades.crear_docx_experimento">[docs]</a>
+<span class="k">def</span> <span class="nf">crear_docx_experimento</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">docx_path</span><span class="o">=</span><span class="s2">&quot;./experimento.docx&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un documento de Word (docx) para un experimento específico.</span>
+
+<span class="sd">    Este método genera un documento de Word que contiene información sobre un experimento, incluida una descripción,</span>
+<span class="sd">    configuración, gráfico de resultados y marcadores asociados.</span>
+
+<span class="sd">    :param id: El identificador único del experimento.</span>
+<span class="sd">    :type id: int</span>
+<span class="sd">    :param docx_path: La ruta donde se guardará el documento de Word generado. Por defecto, &quot;./experimento.docx&quot;.</span>
+<span class="sd">    :type docx_path: str, optional</span>
+<span class="sd">    :return: La ruta del archivo del documento de Word generado si se crea correctamente, False si el experimento no existe.</span>
+<span class="sd">    :rtype: str or bool</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Crear un documento de Word para un experimento con ID 1</span>
+<span class="sd">        ruta_documento = crear_docx_experimento(1)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Definir la ruta por defecto para crear el documento en la carpeta raiz del proyecto</span>
+    <span class="n">TEMPLATE_PATH</span> <span class="o">=</span> <span class="s2">&quot;src/resources/plantilla_experimento.docx&quot;</span>
+
+    <span class="c1"># Obtener el experimento de la base de datos</span>
+    <span class="n">experimento</span> <span class="o">=</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="c1"># Si no existe el experimento, retorna False</span>
+    <span class="k">if</span> <span class="n">experimento</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="c1"># Obtener los marcadores asociados al experimento</span>
+    <span class="n">marcadores</span> <span class="o">=</span> <span class="n">MarcadorDAO</span><span class="o">.</span><span class="n">obtener_por_id_experimento</span><span class="p">(</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="c1"># Inicializar listas para los datos de la gráfica</span>
+    <span class="n">datos_x</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">datos_y</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Obtener la configuración del experimento</span>
+    <span class="n">configuracion</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">experimento</span><span class="o">.</span><span class="n">tipo</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;teas&quot;</span><span class="p">:</span>
+        <span class="n">configuracion</span> <span class="o">=</span> <span class="n">ConfiguracionTeasDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">resultados</span> <span class="o">=</span> <span class="n">ResultadoTeasDAO</span><span class="o">.</span><span class="n">obtener_por_id_experimento</span><span class="p">(</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">resultado</span> <span class="ow">in</span> <span class="n">resultados</span><span class="p">:</span>
+            <span class="n">datos_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resultado</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+            <span class="n">datos_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resultado</span><span class="o">.</span><span class="n">intensity</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">experimento</span><span class="o">.</span><span class="n">tipo</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;moke&quot;</span><span class="p">:</span>
+        <span class="n">configuracion</span> <span class="o">=</span> <span class="n">ConfiguracionMokeDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">resultados</span> <span class="o">=</span> <span class="n">ResultadoMokeDAO</span><span class="o">.</span><span class="n">obtener_por_id_experimento</span><span class="p">(</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">resultado</span> <span class="ow">in</span> <span class="n">resultados</span><span class="p">:</span>
+            <span class="n">datos_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resultado</span><span class="o">.</span><span class="n">magnetic_field</span><span class="p">)</span>
+            <span class="n">datos_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resultado</span><span class="o">.</span><span class="n">intensity</span><span class="p">)</span>
+
+    <span class="c1"># Si no existe la configuración, asignar un mensaje</span>
+    <span class="k">if</span> <span class="n">configuracion</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">configuracion</span> <span class="o">=</span> <span class="s2">&quot;No existe configuración asociada al experimento&quot;</span>
+
+    <span class="c1"># Crear un documento de Word utilizando la plantilla y definir el contexto</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">DocxTemplate</span><span class="p">(</span><span class="n">TEMPLATE_PATH</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;nombre_exp&quot;</span><span class="p">:</span> <span class="n">experimento</span><span class="o">.</span><span class="n">rutaCsv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;descripcion_exp&quot;</span><span class="p">:</span> <span class="n">experimento</span><span class="o">.</span><span class="n">descripcion</span><span class="p">,</span>
+        <span class="s2">&quot;configuracion_exp&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">configuracion</span><span class="p">),</span>
+        <span class="s2">&quot;grafica_exp&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;marcadores_exp&quot;</span><span class="p">:</span> <span class="n">marcadores</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Crear la gráfica según el tipo de experimento</span>
+    <span class="k">if</span> <span class="n">experimento</span><span class="o">.</span><span class="n">tipo</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;teas&quot;</span><span class="p">:</span>
+        <span class="n">plot_experimento</span> <span class="o">=</span> <span class="n">Plot</span><span class="p">(</span>
+            <span class="s2">&quot;TEAS Timescan&quot;</span><span class="p">,</span> <span class="s2">&quot;Time[sec]&quot;</span><span class="p">,</span> <span class="s2">&quot;Intensity [arb. un.]&quot;</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">experimento</span><span class="o">.</span><span class="n">tipo</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;moke&quot;</span><span class="p">:</span>
+        <span class="n">plot_experimento</span> <span class="o">=</span> <span class="n">Plot</span><span class="p">(</span>
+            <span class="s2">&quot;Moke Loop Graph&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Magnetic field (Oe)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Intensity [arb. un.]&quot;</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">QColor</span><span class="p">(</span><span class="mi">131</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">70</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="n">plot_experimento</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">270</span><span class="p">)</span>
+    <span class="n">plot_experimento</span><span class="o">.</span><span class="n">showData</span><span class="p">(</span><span class="n">datos_x</span><span class="p">,</span> <span class="n">datos_y</span><span class="p">)</span>
+
+    <span class="c1"># Guardar la gráfica como imagen y agregarla al contexto del documento</span>
+    <span class="n">printer</span><span class="p">:</span> <span class="n">QPixmap</span> <span class="o">=</span> <span class="n">plot_experimento</span><span class="o">.</span><span class="n">grab</span><span class="p">()</span>
+    <span class="n">buffer</span> <span class="o">=</span> <span class="n">QBuffer</span><span class="p">()</span>
+    <span class="n">buffer</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">.</span><span class="n">OpenModeFlag</span><span class="o">.</span><span class="n">ReadWrite</span><span class="p">)</span>
+    <span class="n">printer</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
+    <span class="n">image_bytes</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+    <span class="n">image_stream</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">)</span>
+    <span class="n">inline_image</span><span class="p">:</span> <span class="n">InlineImage</span> <span class="o">=</span> <span class="n">InlineImage</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">image_stream</span><span class="p">)</span>
+    <span class="n">context</span><span class="p">[</span><span class="s2">&quot;grafica_exp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inline_image</span>
+
+    <span class="c1"># Renderizar el documento con el contexto y guardar el documento</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">docx_path</span><span class="p">)</span>
+
+    <span class="c1"># Retornar la ruta del documento generado</span>
+    <span class="k">return</span> <span class="n">docx_path</span></div>
+
+
+
+<div class="viewcode-block" id="convertir_docx_pdf">
+<a class="viewcode-back" href="../../../src.utilidades.html#src.utilidades.utilidades.convertir_docx_pdf">[docs]</a>
+<span class="k">def</span> <span class="nf">convertir_docx_pdf</span><span class="p">(</span><span class="n">docx_path</span><span class="p">,</span> <span class="n">pdf_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convierte un archivo de Word (docx) en un archivo PDF y elimina el archivo de Word original.</span>
+
+<span class="sd">    Este método toma un archivo de Word en formato docx, lo convierte a PDF y luego elimina el archivo de Word original.</span>
+
+<span class="sd">    :param docx_path: La ruta del archivo de Word (docx) que se convertirá a PDF.</span>
+<span class="sd">    :type docx_path: str</span>
+<span class="sd">    :param pdf_path: La ruta donde se guardará el archivo PDF generado.</span>
+<span class="sd">    :type pdf_path: str</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Convertir un archivo de Word a PDF y eliminar el archivo de Word original</span>
+<span class="sd">        convertir_docx_pdf(&quot;documento.docx&quot;, &quot;documento.pdf&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">convert</span><span class="p">(</span><span class="n">docx_path</span><span class="p">,</span> <span class="n">pdf_path</span><span class="p">)</span>
+    <span class="n">remove</span><span class="p">(</span><span class="n">docx_path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="mostrar_pdf">
+<a class="viewcode-back" href="../../../src.utilidades.html#src.utilidades.utilidades.mostrar_pdf">[docs]</a>
+<span class="k">def</span> <span class="nf">mostrar_pdf</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abre el archivo PDF en el visor de PDF predeterminado del sistema operativo.</span>
+
+<span class="sd">    Este método abre el archivo PDF especificado en el visor de PDF predeterminado del sistema operativo.</span>
+
+<span class="sd">    :param path: La ruta del archivo PDF que se abrirá.</span>
+<span class="sd">    :type path: str</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Abrir un archivo PDF en el visor de PDF predeterminado del sistema operativo</span>
+<span class="sd">        mostrar_pdf(&quot;documento.pdf&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;start &quot;</span> <span class="o">+</span> <span class="n">path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="exportar_mostrar_pdf">
+<a class="viewcode-back" href="../../../src.utilidades.html#src.utilidades.utilidades.exportar_mostrar_pdf">[docs]</a>
+<span class="k">def</span> <span class="nf">exportar_mostrar_pdf</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">,</span> <span class="n">pdf_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exporta el experimento a un archivo PDF y luego lo muestra.</span>
+
+<span class="sd">    Este método exporta el experimento con el ID especificado a un archivo PDF en la ubicación especificada</span>
+<span class="sd">    y luego abre el archivo PDF en el visor de PDF predeterminado del sistema operativo.</span>
+
+<span class="sd">    :param id_experimento: El ID del experimento a exportar.</span>
+<span class="sd">    :type id_experimento: int</span>
+<span class="sd">    :param pdf_path: La ruta donde se guardará el archivo PDF exportado.</span>
+<span class="sd">    :type pdf_path: str</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Exportar el experimento con ID 123 a un archivo PDF y mostrarlo</span>
+<span class="sd">        exportar_mostrar_pdf(123, &quot;experimento.pdf&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">crear_pdf_experimento</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">,</span> <span class="n">pdf_path</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Crear un archivo PDF a partir de un documento de Word (docx) generado para un experimento.</span>
+<span class="sd">    Este método genera un archivo PDF utilizando un documento de Word previamente creado para un experimento específico.</span>
+<span class="sd">    :param id: El identificador único del experimento.</span>
+<span class="sd">    :type id: int</span>
+<span class="sd">    :param pdf_path: La ruta donde se guardará el archivo PDF generado.</span>
+<span class="sd">    :type pdf_path: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mostrar_pdf</span><span class="p">(</span><span class="n">pdf_path</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abre el archivo PDF en el visor de PDF predeterminado del sistema operativo.</span>
+<span class="sd">    Este método abre el archivo PDF especificado en el visor de PDF predeterminado del sistema operativo.</span>
+<span class="sd">    :param path: La ruta del archivo PDF que se abrirá.</span>
+<span class="sd">    :type path: str</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="pedir_ruta_exportar_pdf">
+<a class="viewcode-back" href="../../../src.utilidades.html#src.utilidades.utilidades.pedir_ruta_exportar_pdf">[docs]</a>
+<span class="k">def</span> <span class="nf">pedir_ruta_exportar_pdf</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">id_experimento</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abre un cuadro de diálogo para seleccionar la ruta de exportación y luego exporta el experimento a un archivo PDF.</span>
+
+<span class="sd">    Este método abre un cuadro de diálogo para que el usuario seleccione la ruta y el nombre del archivo PDF de destino.</span>
+<span class="sd">    Luego, exporta el experimento con el ID especificado a ese archivo PDF.</span>
+
+<span class="sd">    :param parent: El widget principal padre del cuadro de diálogo.</span>
+<span class="sd">    :type parent: QWidget</span>
+<span class="sd">    :param id_experimento: El ID del experimento a exportar.</span>
+<span class="sd">    :type id_experimento: int</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Pedir al usuario que seleccione la ruta y el nombre del archivo PDF y luego exportar el experimento</span>
+<span class="sd">        pedir_ruta_exportar_pdf(parent_widget, 123)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pdf_path</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span>
+        <span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;Guardar PDF&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF Files (*.pdf)&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">pdf_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">hilo</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span>
+        <span class="n">target</span><span class="o">=</span><span class="n">exportar_mostrar_pdf</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">,</span> <span class="n">pdf_path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="p">)</span>  <span class="c1"># pdf_path[0] es la ruta del pdf</span>
+    <span class="n">hilo</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="escribir_csv">
+<a class="viewcode-back" href="../../../src.utilidades.html#src.utilidades.utilidades.escribir_csv">[docs]</a>
+<span class="k">def</span> <span class="nf">escribir_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">valor_x</span><span class="p">,</span> <span class="n">valor_y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Escribe un par de valores en formato CSV en un archivo especificado.</span>
+
+<span class="sd">    Este método escribe un par de valores (valor_x, valor_y) en formato CSV en el archivo especificado por la ruta.</span>
+
+<span class="sd">    :param path: La ruta del archivo CSV donde se escribirán los valores.</span>
+<span class="sd">    :type path: str</span>
+<span class="sd">    :param valor_x: El valor correspondiente al eje X que se va a escribir en el archivo CSV.</span>
+<span class="sd">    :type valor_x: float or int</span>
+<span class="sd">    :param valor_y: El valor correspondiente al eje Y que se va a escribir en el archivo CSV.</span>
+<span class="sd">    :type valor_y: float or int</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Escribir un par de valores en un archivo CSV</span>
+<span class="sd">        escribir_csv(&quot;datos.csv&quot;, 10.5, 20.3)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">valor_x</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">valor_y</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Equipo prácticas IES Sampedro: Adolfo M. Luque, Iker Carrón &amp; David Romero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.vista.moke_config &mdash; Aplicación UAM Depart. Física 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Aplicación UAM Depart. Física
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Vista General</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Aplicación UAM Depart. Física</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.vista.moke_config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.vista.moke_config</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PyQt6</span> <span class="kn">import</span> <span class="n">Qwt</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtWidgets</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">src.modelo.clases</span> <span class="kn">import</span> <span class="n">Conexion</span><span class="p">,</span> <span class="n">ConfiguracionMoke</span><span class="p">,</span> <span class="n">Experimento</span>
+<span class="kn">from</span> <span class="nn">src.modelo.dao</span> <span class="kn">import</span> <span class="n">ConfiguracionMokeDAO</span><span class="p">,</span> <span class="n">ExperimentoDAO</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.boton</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BotonModificado</span><span class="p">,</span> <span class="n">BotonModificadoExit</span><span class="p">,</span>
+                                         <span class="n">BotonModificadoRun</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.combobox</span> <span class="kn">import</span> <span class="n">QComboBoxModificado</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.displayLCD</span> <span class="kn">import</span> <span class="n">DisplayLCDModificado</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.thermometer</span> <span class="kn">import</span> <span class="n">ThermometerModificado</span>
+<span class="kn">from</span> <span class="nn">src.vista.moke_graph</span> <span class="kn">import</span> <span class="n">MokeGraph</span>
+
+
+<div class="viewcode-block" id="MokeWindow">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow">[docs]</a>
+<span class="k">class</span> <span class="nc">MokeWindow</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_experimento</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span> <span class="o">=</span> <span class="n">ConfiguracionMoke</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span> <span class="o">=</span> <span class="n">Experimento</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;background-color: rgb(176, 213, 212); color: black;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;MOKE LOOP&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuenteHelvetica</span> <span class="o">=</span> <span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanVrange</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; -- Select -- &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;20 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;5 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;4 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2.5 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1.25 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1 V&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanChannelsDAC</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; -- Select -- &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #4&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unitsAML</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; -- Select -- &quot;</span><span class="p">,</span> <span class="s2">&quot;mBar&quot;</span><span class="p">,</span> <span class="s2">&quot;Pascal&quot;</span><span class="p">,</span> <span class="s2">&quot;Torr&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mokeVRange</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; -- Select -- &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;20 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;5 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;4 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2.5 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1.25 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1 V&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mokeChannelsDAC</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; -- Select -- &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #4&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mokeLockinSensVals</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; -- Select -- &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2.5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;25&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;100 &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;250 &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1 mV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2.5 mV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10 mV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;25 mV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;100 mV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;250 mV&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mokeLockinTimeConsVals</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; -- Select -- &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1 msec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10 msec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;0.1 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;0.3 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;3 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;30 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;100 sec&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">btn_run</span> <span class="o">=</span> <span class="n">BotonModificadoRun</span><span class="p">(</span><span class="s2">&quot;Run&quot;</span><span class="p">)</span>
+        <span class="n">btn_run</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span>
+        <span class="n">btn_close</span> <span class="o">=</span> <span class="n">BotonModificadoExit</span><span class="p">(</span><span class="s2">&quot;Close&quot;</span><span class="p">)</span>
+        <span class="n">btn_close</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+
+        <span class="n">buttons_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_close</span><span class="p">)</span>
+        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_run</span><span class="p">)</span>
+        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_moke_dac_box</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_lock_in_box</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_moke_loop_box</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_moke_time_box</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_lock_in_thermo</span><span class="p">(),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moke_system_id_box</span><span class="p">(),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moke_geometry_box</span><span class="p">(),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_data_file</span><span class="p">(),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">buttons_layout</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">id_experimento</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cargar_configuracion</span><span class="p">(</span><span class="n">id_experimento</span><span class="o">=</span><span class="n">id_experimento</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MokeWindow.create_moke_dac_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.create_moke_dac_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_moke_dac_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un cuadro de selección de canal DAC para el MOKE.</span>
+
+<span class="sd">    Este método configura un grupo de widgets para la selección y configuración </span>
+<span class="sd">    de canales DAC, niveles de DC, rangos de voltaje, temperatura, y tasa de </span>
+<span class="sd">    muestreo para un sistema de medición MOKE.</span>
+
+<span class="sd">    :return: Un QGroupBox configurado con varios controles para la selección de canal DAC.</span>
+<span class="sd">    :rtype: QGroupBox</span>
+
+<span class="sd">    Configura los siguientes widgets:</span>
+
+<span class="sd">    - :class:`QLabel`: Etiquetas para cada selección.</span>
+<span class="sd">    - :class:`BotonModificado`: Comboboxes personalizados para seleccionar diferentes parámetros.</span>
+<span class="sd">    - :class:`Qwt.QwtSlider`: Slider personalizado para ajustar la tasa de muestreo.</span>
+<span class="sd">    - :class:`DisplayLCDModificado`: Display LCD para mostrar la tasa de muestreo.</span>
+
+<span class="sd">    Los controles configurados son:</span>
+<span class="sd">    </span>
+<span class="sd">    - `self.cb_moke_intensity`: Selección de intensidad MOKE.</span>
+<span class="sd">    - `self.cb_moke_dc_level`: Selección de nivel DC MOKE.</span>
+<span class="sd">    - `self.cb_moke_voltage_range`: Selección de rango de voltaje MOKE.</span>
+<span class="sd">    - `self.cb_dc_level_voltage_range`: Selección de rango de voltaje del nivel DC.</span>
+<span class="sd">    - `self.cb_temperature`: Selección de temperatura de la muestra.</span>
+<span class="sd">    - `self.cb_tempVrange`: Selección de rango de voltaje para la temperatura.</span>
+<span class="sd">    - `self.cb_timeFieldDriving`: Selección de corriente de conducción de campo.</span>
+<span class="sd">    - `self.slider_samplingRate`: Ajuste de la tasa de muestreo (khz).</span>
+
+<span class="sd">    Se conectan varias señales a sus correspondientes manejadores para actualizar </span>
+<span class="sd">    los parámetros del sistema MOKE cuando los valores seleccionados cambian.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        moke_dac_box = self.create_moke_dac_box()</span>
+<span class="sd">        layout.addWidget(moke_dac_box)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>    
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="n">gb_MokeDACBox</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;DAC channel selection&quot;</span><span class="p">)</span>
+        <span class="n">gb_MokeDACBox</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gb_MokeDACBox</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_intensity</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_intensity</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mokeChannelsDAC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_intensity</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_intensity</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">texto</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_moke_intensity</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_dc_level</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_dc_level</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mokeChannelsDAC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_dc_level</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_dc_level</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">texto</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_moke_dc_level</span><span class="p">(</span><span class="n">texto</span><span class="p">))</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_voltage_range</span> <span class="o">=</span>  <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_voltage_range</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">mokeVRange</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_voltage_range</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_voltage_range</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_moke_volage_range</span><span class="p">)</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_dc_level_voltage_range</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_dc_level_voltage_range</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mokeVRange</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_dc_level_voltage_range</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_dc_level_voltage_range</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_dc_level_voltage_range</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mokeChannelsDAC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">texto</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_temperature</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mokeLockinSensVals</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_tempVrange</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_timeFieldDriving</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_timeFieldDriving</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mokeLockinTimeConsVals</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_timeFieldDriving</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_timeFieldDriving</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_timeFieldDriving</span>
+        <span class="p">)</span>
+
+        <span class="n">lb_moke_intensity</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;MOKE intensity:&quot;</span><span class="p">)</span>
+        <span class="n">lb_moke_voltage_range</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;MOKE Voltage range:&quot;</span><span class="p">)</span>
+        <span class="n">lb_moke_dc_level</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;MOKE DC level:&quot;</span><span class="p">)</span>
+        <span class="n">lb_dc_level_voltage_range</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;DC level Voltage range:&quot;</span><span class="p">)</span>
+        <span class="n">lb_sample_temperature</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Sample temperature:&quot;</span><span class="p">)</span>
+        <span class="n">lb_temperature_voltage_range</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Temperature Voltage range:&quot;</span><span class="p">)</span>
+        <span class="n">lb_field_driving_current</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Field driving current:&quot;</span><span class="p">)</span>
+        <span class="n">lb_samplig_rate</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Sampling Rate (khz):&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtSlider</span><span class="p">()</span>
+        <span class="n">lcd_samplingRateDisplay</span> <span class="o">=</span> <span class="n">DisplayLCDModificado</span><span class="p">(</span><span class="n">initial_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">digit_count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setOrientation</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setScalePosition</span><span class="p">(</span>
+            <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtSlider</span><span class="o">.</span><span class="n">ScalePosition</span><span class="o">.</span><span class="n">TrailingScale</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setTrough</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setGroove</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setHandleSize</span><span class="p">(</span><span class="n">QSize</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setScale</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setTotalSteps</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setWrapping</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setScaleMaxMinor</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_value_sampling_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">lcd_samplingRateDisplay</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_moke_intensity</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_intensity</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_moke_voltage_range</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_voltage_range</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_moke_dc_level</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_dc_level</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_dc_level_voltage_range</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_dc_level_voltage_range</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_sample_temperature</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_temperature_voltage_range</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_field_driving_current</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_timeFieldDriving</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_samplig_rate</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span>
+            <span class="n">lcd_samplingRateDisplay</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span>
+        <span class="p">)</span>
+
+        <span class="n">gb_MokeDACBox</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_MokeDACBox</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.create_lock_in_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.create_lock_in_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_lock_in_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un cuadro de configuración de Lock-in.</span>
+
+<span class="sd">    Este método configura un grupo de widgets para la selección de sensibilidad y </span>
+<span class="sd">    constante de tiempo para un sistema Lock-in.</span>
+
+<span class="sd">    :return: Un QGroupBox configurado con varios controles para la configuración de Lock-in.</span>
+<span class="sd">    :rtype: QGroupBox</span>
+
+<span class="sd">    Configura los siguientes widgets:</span>
+
+<span class="sd">    - :class:`QLabel`: Etiquetas para cada selección.</span>
+<span class="sd">    - :class:`QComboBoxModificado`: Comboboxes personalizados para seleccionar diferentes parámetros.</span>
+<span class="sd">    - :class:`QCheckBox`: Checkbox para verificar valores correctos.</span>
+
+<span class="sd">    Los controles configurados son:</span>
+<span class="sd">    </span>
+<span class="sd">    - `self.cb_sensitivity`: Selección de sensibilidad.</span>
+<span class="sd">    - `self.cb_time`: Selección de constante de tiempo.</span>
+
+<span class="sd">    Se conectan varias señales a sus correspondientes manejadores para actualizar </span>
+<span class="sd">    los parámetros del sistema Lock-in cuando los valores seleccionados cambian.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        lock_in_box = self.create_lock_in_box()</span>
+<span class="sd">        layout.addWidget(lock_in_box)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+
+        <span class="n">gb_lock_in_box</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot; Lock-in stting &quot;</span><span class="p">)</span>
+        <span class="n">gb_lock_in_box</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gb_lock_in_box</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">lb_sensitivity</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Sensitivity (/div)&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_sensitivity</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_sensitivity</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mokeVRange</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_sensitivity</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_sensitivity</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_sensitivity</span><span class="p">)</span>
+
+        <span class="n">lb_time</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Time Constant&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_time</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_time</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mokeLockinTimeConsVals</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_time</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_time</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_time_constant</span><span class="p">)</span>
+
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_sensitivity</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_sensitivity</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_time</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_time</span><span class="p">)</span>
+
+        <span class="n">gb_lock_in_box</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_lock_in_box</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.create_moke_loop_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.create_moke_loop_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_moke_loop_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un cuadro de parámetros para el bucle MOKE.</span>
+
+<span class="sd">    Este método configura un grupo de widgets para la configuración de los parámetros</span>
+<span class="sd">    del bucle MOKE, incluyendo el campo magnético, puntos por bucle y número de barridos.</span>
+
+<span class="sd">    :return: Un QGroupBox configurado con varios controles para los parámetros del bucle MOKE.</span>
+<span class="sd">    :rtype: QGroupBox</span>
+
+<span class="sd">    Configura los siguientes widgets:</span>
+
+<span class="sd">    - :class:`QLabel`: Etiquetas para cada parámetro.</span>
+<span class="sd">    - :class:`Qwt.QwtKnob`: Perillas para ajustar los valores de los parámetros.</span>
+<span class="sd">    - :class:`DisplayLCDModificado`: Displays LCD para mostrar los valores seleccionados.</span>
+
+<span class="sd">    Los controles configurados son:</span>
+<span class="sd">    </span>
+<span class="sd">    - `self.knb_magnetic_field`: Perilla para ajustar el campo magnético (Oe).</span>
+<span class="sd">    - `self.knb_per_loop`: Perilla para ajustar los puntos por bucle.</span>
+<span class="sd">    - `self.knb_number_sweeps`: Perilla para ajustar el número de barridos.</span>
+<span class="sd">    - `lcd_magnetic_Display`: Display LCD para mostrar el valor del campo magnético.</span>
+<span class="sd">    - `lcd_loop_Display`: Display LCD para mostrar los puntos por bucle.</span>
+<span class="sd">    - `lcd_sweeps_Display`: Display LCD para mostrar el número de barridos.</span>
+
+<span class="sd">    Se conectan varias señales a sus correspondientes manejadores para actualizar </span>
+<span class="sd">    los parámetros del bucle MOKE cuando los valores seleccionados cambian.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        moke_loop_box = self.create_moke_loop_box()</span>
+<span class="sd">        layout.addWidget(moke_loop_box)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">gb_moke_loop</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;MOKE loop parameters&quot;</span><span class="p">)</span>
+
+        <span class="n">lb_magnetic</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Magnetic Field (Oe)&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_magnetic_field</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtKnob</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_magnetic_field</span><span class="o">.</span><span class="n">setScale</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+        <span class="n">lcd_magnetic_Display</span> <span class="o">=</span> <span class="n">DisplayLCDModificado</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_magnetic_field</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">lcd_magnetic_Display</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_magnetic_field</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejas_magnetic_field</span><span class="p">)</span>
+
+        <span class="n">lb_loop</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Points per loop&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_per_loop</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtKnob</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_per_loop</span><span class="o">.</span><span class="n">setScale</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="n">lcd_loop_Display</span> <span class="o">=</span> <span class="n">DisplayLCDModificado</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_per_loop</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">lcd_loop_Display</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_per_loop</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_per_loop</span><span class="p">)</span>
+
+        <span class="n">lb_sweeps</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Number of sweeps&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_number_sweeps</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtKnob</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_number_sweeps</span><span class="o">.</span><span class="n">setScale</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="n">lcd_sweeps_Display</span> <span class="o">=</span> <span class="n">DisplayLCDModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_number_sweeps</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">lcd_sweeps_Display</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_number_sweeps</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_number_sweeps</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_magnetic</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">knb_magnetic_field</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lcd_magnetic_Display</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_loop</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">knb_per_loop</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lcd_loop_Display</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_sweeps</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">knb_number_sweeps</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lcd_sweeps_Display</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">gb_moke_loop</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_moke_loop</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.create_moke_time_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.create_moke_time_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_moke_time_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un cuadro de configuración de intervalos de tiempo para el experimento MOKE.</span>
+
+<span class="sd">    Este método configura un grupo de widgets para la selección de tiempos de permanencia </span>
+<span class="sd">    y tiempos de integración para un experimento MOKE.</span>
+
+<span class="sd">    :return: Un QGroupBox configurado con varios controles para los intervalos de tiempo del experimento MOKE.</span>
+<span class="sd">    :rtype: QGroupBox</span>
+
+<span class="sd">    Configura los siguientes widgets:</span>
+
+<span class="sd">    - :class:`QLabel`: Etiquetas para cada parámetro.</span>
+<span class="sd">    - :class:`Qwt.QwtKnob`: Perillas para ajustar los valores de los parámetros.</span>
+<span class="sd">    - :class:`DisplayLCDModificado`: Displays LCD para mostrar los valores seleccionados.</span>
+
+<span class="sd">    Los controles configurados son:</span>
+<span class="sd">    </span>
+<span class="sd">    - `self.knb_dweel_time`: Perilla para ajustar el tiempo de permanencia (segundos).</span>
+<span class="sd">    - `lcd_dweel_Time`: Display LCD para mostrar el valor del tiempo de permanencia.</span>
+<span class="sd">    - `self.knb_integration_time`: Perilla para ajustar el tiempo de integración (segundos).</span>
+<span class="sd">    - `lcd_integration_time`: Display LCD para mostrar el valor del tiempo de integración.</span>
+
+<span class="sd">    Se conectan varias señales a sus correspondientes manejadores para actualizar </span>
+<span class="sd">    los parámetros del experimento MOKE cuando los valores seleccionados cambian.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        moke_time_box = self.create_moke_time_box()</span>
+<span class="sd">        layout.addWidget(moke_time_box)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">gb_MokeTimeBox</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Time intervals for the experiment&quot;</span><span class="p">)</span>
+
+        <span class="n">lb_dweel_time</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Dwell Time (sec)&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_dweel_time</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtKnob</span><span class="p">()</span>
+        <span class="n">lcd_dweel_Time</span> <span class="o">=</span> <span class="n">DisplayLCDModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_dweel_time</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">lcd_dweel_Time</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_dweel_time</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manjar_dwell_time</span><span class="p">)</span>
+
+        <span class="n">lb_integration_time</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Integration Time (sec)&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_integration_time</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtKnob</span><span class="p">()</span>
+        <span class="n">lcd_integration_time</span> <span class="o">=</span> <span class="n">DisplayLCDModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_integration_time</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">lcd_integration_time</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_integration_time</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_integration_time</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_dweel_time</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">knb_dweel_time</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lcd_dweel_Time</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_integration_time</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">knb_integration_time</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lcd_integration_time</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">gb_MokeTimeBox</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_MokeTimeBox</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.create_lock_in_thermo">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.create_lock_in_thermo">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_lock_in_thermo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un cuadro de visualización del nivel de señal Lock-in actual.</span>
+
+<span class="sd">    Este método configura un grupo de widgets para mostrar el nivel de señal Lock-in </span>
+<span class="sd">    actual usando un termómetro modificado.</span>
+
+<span class="sd">    :return: Un QGroupBox configurado con un termómetro para mostrar el nivel de señal Lock-in.</span>
+<span class="sd">    :rtype: QGroupBox</span>
+
+<span class="sd">    Configura los siguientes widgets:</span>
+
+<span class="sd">    - :class:`ThermometerModificado`: Un termómetro personalizado para mostrar el nivel de señal Lock-in.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        lock_in_thermo_box = self.create_lock_in_thermo()</span>
+<span class="sd">        layout.addWidget(lock_in_thermo_box)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">gb_lock_in</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Current lock-in signal level&quot;</span><span class="p">)</span>
+
+        <span class="n">thermo_lock_in</span> <span class="o">=</span> <span class="n">ThermometerModificado</span><span class="p">()</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">thermo_lock_in</span><span class="p">)</span>
+        <span class="n">gb_lock_in</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_lock_in</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.moke_system_id_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.moke_system_id_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">moke_system_id_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un cuadro de descripción para el sistema/muestra en un experimento MOKE.</span>
+
+<span class="sd">    Este método configura un grupo de widgets para permitir la entrada y visualización </span>
+<span class="sd">    de la descripción de la muestra o del sistema utilizado en el experimento MOKE.</span>
+
+<span class="sd">    :return: Un QGroupBox configurado con un campo de entrada para la descripción de la muestra/sistema.</span>
+<span class="sd">    :rtype: QGroupBox</span>
+
+<span class="sd">    Configura los siguientes widgets:</span>
+
+<span class="sd">    - :class:`QLineEdit`: Un campo de entrada para escribir la descripción de la muestra o sistema.</span>
+
+<span class="sd">    Se conecta la señal de cambio de texto del QLineEdit a un manejador para procesar </span>
+<span class="sd">    cualquier cambio en la descripción.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        description_box = self.moke_system_id_box()</span>
+<span class="sd">        layout.addWidget(description_box)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="n">gb_description</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Sample/system description&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_description</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_description</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_lb_description</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_description</span><span class="p">)</span>
+        <span class="n">gb_description</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_description</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.moke_geometry_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.moke_geometry_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">moke_geometry_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un cuadro de selección de geometría para el experimento MOKE.</span>
+
+<span class="sd">    Este método configura un grupo de widgets para permitir la selección de la geometría </span>
+<span class="sd">    utilizada en el experimento MOKE.</span>
+
+<span class="sd">    :return: Un QGroupBox configurado con un combo box para seleccionar la geometría MOKE.</span>
+<span class="sd">    :rtype: QGroupBox</span>
+
+<span class="sd">    Configura los siguientes widgets:</span>
+
+<span class="sd">    - :class:`QComboBoxModificado`: Un combo box personalizado para seleccionar la geometría MOKE.</span>
+
+<span class="sd">    Se conecta la señal de cambio de texto del combo box a un manejador para procesar </span>
+<span class="sd">    cualquier cambio en la selección de la geometría.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        geometry_box = self.moke_geometry_box()</span>
+<span class="sd">        layout.addWidget(geometry_box)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">gb_moke_geomery</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Moke geometry&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_geometry</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_geometry</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mokeVRange</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_geometry</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_geometry</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_geometry</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_geometry</span><span class="p">)</span>
+        <span class="n">gb_moke_geomery</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_moke_geomery</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.open_file_dialog">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.open_file_dialog">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_file_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abre un cuadro de diálogo para seleccionar un archivo y actualiza un campo de texto con la ruta del archivo seleccionado.</span>
+
+<span class="sd">    Este método utiliza QFileDialog para abrir un cuadro de diálogo que permite al usuario seleccionar un archivo.</span>
+<span class="sd">    Después de que el usuario haya seleccionado un archivo válido y cerrado el diálogo, la ruta del archivo seleccionado</span>
+<span class="sd">    se mostrará en el campo de texto especificado.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.open_file_dialog()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">FileMode</span><span class="o">.</span><span class="n">AnyFile</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">setViewMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">ViewMode</span><span class="o">.</span><span class="n">List</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">setAcceptMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">AcceptMode</span><span class="o">.</span><span class="n">AcceptSave</span><span class="p">)</span>
+
+        <span class="c1"># Si se escribe una ruta y existe, que apareza en el cuadro de diálogo del sistema de gestor de archivos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archivo_incio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">le_datafile</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archivo_incio</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archivo_incio</span><span class="p">):</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">setDirectory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archivo_incio</span><span class="p">)</span>
+
+        <span class="c1"># Comprobar si el diálogo se cerró con una selección válida de archivo</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nombre_file</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">le_datafile</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nombre_file</span><span class="p">)</span>
+
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.set_data_file">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.set_data_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_data_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configura un campo de texto para la selección de un archivo de datos y un botón para abrir un cuadro de diálogo de selección de archivo.</span>
+
+<span class="sd">    Este método crea un grupo de widgets que incluye un campo de texto para mostrar la ruta del archivo de datos seleccionado</span>
+<span class="sd">    y un botón &quot;Browse&quot; para abrir un cuadro de diálogo de selección de archivo. Cuando se selecciona un archivo en el cuadro de</span>
+<span class="sd">    diálogo y se cierra, la ruta del archivo seleccionado se muestra en el campo de texto.</span>
+
+<span class="sd">    :return: Un QGroupBox configurado con un campo de texto y un botón para la selección de un archivo de datos.</span>
+<span class="sd">    :rtype: QGroupBox</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        datafile_box = self.set_data_file()</span>
+<span class="sd">        layout.addWidget(datafile_box)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+
+        <span class="n">gb_datafile_selection</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Datafile selection&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_datafile</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_datafile</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_le_datafile</span><span class="p">)</span>
+        <span class="n">btn_browse_button</span> <span class="o">=</span> <span class="n">BotonModificado</span><span class="p">(</span><span class="s2">&quot;Browse&quot;</span><span class="p">)</span>
+        <span class="n">btn_browse_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_file_dialog</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_datafile</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_browse_button</span><span class="p">)</span>
+
+        <span class="n">gb_datafile_selection</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_datafile_selection</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.mostrar_error">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.mostrar_error">[docs]</a>
+    <span class="k">def</span> <span class="nf">mostrar_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Muestra un cuadro de diálogo de error con un mensaje específico.</span>
+
+<span class="sd">    Este método crea un cuadro de diálogo de error utilizando QMessageBox con un ícono de error,</span>
+<span class="sd">    un título específico, un mensaje de error y un botón &quot;Ok&quot; para cerrar el cuadro de diálogo.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.mostrar_error()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">error_dialog</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Icon</span><span class="o">.</span><span class="n">Critical</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Error de Input&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Input selecionado no valido.&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;font: 12pt&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.mostrar_error_ruta_CSV">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.mostrar_error_ruta_CSV">[docs]</a>
+    <span class="k">def</span> <span class="nf">mostrar_error_ruta_CSV</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Muestra un cuadro de diálogo de error indicando que la ruta del archivo CSV no ha sido ingresada.</span>
+
+<span class="sd">    Este método crea un cuadro de diálogo de error utilizando QMessageBox con un ícono de error,</span>
+<span class="sd">    un título específico, un mensaje indicando que la ruta del archivo CSV no ha sido ingresada y un botón &quot;Ok&quot;</span>
+<span class="sd">    para cerrar el cuadro de diálogo.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.mostrar_error_ruta_CSV()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">error_dialog</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Icon</span><span class="o">.</span><span class="n">Critical</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Error de Datafile&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Ingrese la ruta del archivo.&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;font: 12pt&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.mostrar_error_faltan_datos">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.mostrar_error_faltan_datos">[docs]</a>
+    <span class="k">def</span> <span class="nf">mostrar_error_faltan_datos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Muestra un cuadro de diálogo de error indicando que faltan datos necesarios para correr el experimento.</span>
+
+<span class="sd">    Este método crea un cuadro de diálogo de error utilizando QMessageBox con un ícono de error,</span>
+<span class="sd">    un título específico, un mensaje indicando que faltan datos necesarios para correr el experimento y no incluye</span>
+<span class="sd">    un botón de cierre ya que se asume que el usuario debe tomar acción y completar los datos faltantes.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.mostrar_error_faltan_datos()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">error_dialog</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Icon</span><span class="o">.</span><span class="n">Critical</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Error de Datos&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="s2">&quot;Ingrese todos los datos necesarios para correr el experimento.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;font: 12pt&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.error_input">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.error_input">[docs]</a>
+    <span class="k">def</span> <span class="nf">error_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combobox</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Muestra un cuadro de diálogo de error y restablece un QComboBox.</span>
+
+<span class="sd">    Este método muestra un cuadro de diálogo de error utilizando la función `mostrar_error` y luego restablece</span>
+<span class="sd">    el índice seleccionado del QComboBox pasado como argumento a 0, lo que efectivamente lo restablece a su valor predeterminado.</span>
+
+<span class="sd">    :param combobox: El QComboBox que se restablecerá después de mostrar el error.</span>
+<span class="sd">    :type combobox: QComboBox</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.error_input(my_combobox)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_error</span><span class="p">()</span>
+        <span class="n">combobox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.control_validar_datos">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.control_validar_datos">[docs]</a>
+    <span class="k">def</span> <span class="nf">control_validar_datos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verifica si todos los datos necesarios están presentes en la configuración.</span>
+
+<span class="sd">    Este método verifica si todas las variables de configuración necesarias no son None.</span>
+<span class="sd">    Si alguna de estas variables es None, devuelve False, lo que indica que falta algún dato.</span>
+<span class="sd">    En caso contrario, devuelve True, indicando que todos los datos necesarios están presentes.</span>
+
+<span class="sd">    :return: True si todos los datos necesarios están presentes, False de lo contrario.</span>
+<span class="sd">    :rtype: bool</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        if self.control_validar_datos():</span>
+<span class="sd">            print(&quot;Todos los datos necesarios están presentes.&quot;)</span>
+<span class="sd">        else:</span>
+<span class="sd">            print(&quot;Faltan algunos datos necesarios.&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_intensity</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_dc_level</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_temperature</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_voltaje_range</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_dc_voltage_range</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_temperature_voltaje_range</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_field_driving_current</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">lock_sensitivity</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">lock_time_constant</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">geometry</span> <span class="o">==</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_cb_moke_volage_range">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_cb_moke_volage_range">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_moke_volage_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de selección en el combo box de rango de voltaje MOKE.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `dac_voltaje_range` con el texto seleccionado en el combo box.</span>
+
+<span class="sd">    :param texto: El texto seleccionado en el combo box de rango de voltaje MOKE.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_cb_moke_volage_range(&quot;Alto&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_voltaje_range</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_cb_dc_level_voltage_range">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_cb_dc_level_voltage_range">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_dc_level_voltage_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de selección en el combo box de rango de voltaje para el nivel de corriente continua (DC) MOKE.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `dac_dc_voltage_range` con el texto seleccionado en el combo box.</span>
+
+<span class="sd">    :param texto: El texto seleccionado en el combo box de rango de voltaje para el nivel de corriente continua (DC) MOKE.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_cb_dc_level_voltage_range(&quot;Alto&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_dc_voltage_range</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_cb_tempVrange">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_cb_tempVrange">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_tempVrange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de selección en el combo box de rango de voltaje de temperatura MOKE.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `dac_temperature_voltaje_range` con el texto seleccionado en el combo box.</span>
+
+<span class="sd">    :param texto: El texto seleccionado en el combo box de rango de voltaje de temperatura MOKE.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_cb_tempVrange(&quot;Alto&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_temperature_voltaje_range</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_cb_timeFieldDriving">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_cb_timeFieldDriving">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_timeFieldDriving</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de selección en el combo box de corriente de conducción de campo MOKE.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `dac_field_driving_current` con el texto seleccionado en el combo box.</span>
+
+<span class="sd">    :param texto: El texto seleccionado en el combo box de corriente de conducción de campo MOKE.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_cb_timeFieldDriving(&quot;Alto&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_field_driving_current</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_value_sampling_rate">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_value_sampling_rate">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_value_sampling_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de valor en la tasa de muestreo del DAC.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `dac_sampling_rate` con el valor seleccionado en el control deslizante.</span>
+
+<span class="sd">    :param valor: El valor seleccionado en el control deslizante de la tasa de muestreo del DAC.</span>
+<span class="sd">    :type valor: int or float</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_value_sampling_rate(10000)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_sampling_rate</span> <span class="o">=</span> <span class="n">valor</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_cb_sensitivity">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_cb_sensitivity">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_sensitivity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de selección en el combo box de sensibilidad del lock-in.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `lock_sensitivity` con el texto seleccionado en el combo box.</span>
+
+<span class="sd">    :param texto: El texto seleccionado en el combo box de sensibilidad del lock-in.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_cb_sensitivity(&quot;Alta&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">lock_sensitivity</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_cb_time_constant">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_cb_time_constant">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_time_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de selección en el combo box de constante de tiempo del lock-in.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `lock_time_constant` con el texto seleccionado en el combo box.</span>
+
+<span class="sd">    :param texto: El texto seleccionado en el combo box de constante de tiempo del lock-in.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_cb_time_constant(&quot;Alta&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">lock_time_constant</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejas_magnetic_field">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejas_magnetic_field">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejas_magnetic_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de valor en el campo magnético.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `magnetic_field` con el valor seleccionado en el control de knob.</span>
+
+<span class="sd">    :param valor: El valor seleccionado en el control de knob del campo magnético.</span>
+<span class="sd">    :type valor: int or float</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejas_magnetic_field(500)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">magnetic_field</span> <span class="o">=</span> <span class="n">valor</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_per_loop">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_per_loop">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_per_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de valor en el número de puntos por ciclo.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `points_per_loop` con el valor seleccionado en el control de knob.</span>
+
+<span class="sd">    :param valor: El valor seleccionado en el control de knob del número de puntos por ciclo.</span>
+<span class="sd">    :type valor: int or float</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_per_loop(100)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">points_per_loop</span> <span class="o">=</span> <span class="n">valor</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_number_sweeps">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_number_sweeps">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_number_sweeps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de valor en el número de barridos.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `number_of_sweeps` con el valor seleccionado en el control de knob.</span>
+
+<span class="sd">    :param valor: El valor seleccionado en el control de knob del número de barridos.</span>
+<span class="sd">    :type valor: int or float</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_number_sweeps(10)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">number_of_sweeps</span> <span class="o">=</span> <span class="n">valor</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manjar_dwell_time">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manjar_dwell_time">[docs]</a>
+    <span class="k">def</span> <span class="nf">manjar_dwell_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de valor en el tiempo de espera.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `dwell_time` con el valor seleccionado.</span>
+
+<span class="sd">    :param valor: El valor seleccionado para el tiempo de espera.</span>
+<span class="sd">    :type valor: int or float</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manjar_dwell_time(5)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dwell_time</span> <span class="o">=</span> <span class="n">valor</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_integration_time">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_integration_time">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_integration_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de valor en el tiempo de integración.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `integration_time` con el valor seleccionado.</span>
+
+<span class="sd">    :param valor: El valor seleccionado para el tiempo de integración.</span>
+<span class="sd">    :type valor: int or float</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_integration_time(10)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">integration_time</span> <span class="o">=</span> <span class="n">valor</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_lb_description">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_lb_description">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_lb_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de texto en la descripción del experimento.</span>
+
+<span class="sd">    Este método actualiza la descripción del experimento con el texto proporcionado, eliminando los espacios en blanco al principio y al final.</span>
+<span class="sd">    Si el texto está vacío después de quitar los espacios en blanco, se asigna `None` a la descripción del experimento.</span>
+
+<span class="sd">    :param texto: El texto de la descripción del experimento.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_lb_description(&quot;Descripción del experimento&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">texto</span> <span class="o">=</span> <span class="n">texto</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">texto</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">texto</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">descripcion</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_geometry">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_geometry">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de selección en el combo box de geometría MOKE.</span>
+
+<span class="sd">    Este método actualiza la variable de configuración `geometry` con el texto seleccionado en el combo box.</span>
+<span class="sd">    </span>
+<span class="sd">    :param texto: El texto seleccionado en el combo box de geometría MOKE.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_geometry(&quot;Circular&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_le_datafile">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_le_datafile">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_le_datafile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de texto en el campo de ruta de archivo de datos.</span>
+
+<span class="sd">    Este método actualiza la ruta del archivo CSV del experimento con el texto proporcionado.</span>
+
+<span class="sd">    :param texto: La ruta del archivo CSV de datos del experimento.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_le_datafile(&quot;/path/to/datafile.csv&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">rutaCsv</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_cb_moke_intensity">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_cb_moke_intensity">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_moke_intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de texto en el combo box de intensidad MOKE.</span>
+
+<span class="sd">    Este método actualiza la configuración de la intensidad de entrada del DAC (Convertidor Digital-Analógico) con el texto seleccionado en el combo box, siempre que el texto seleccionado no sea igual al texto actual en otros combo boxes relevantes.</span>
+
+<span class="sd">    :param texto: El texto seleccionado en el combo box de intensidad MOKE.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_cb_moke_intensity(&quot;Alta&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">texto</span> <span class="o">==</span> <span class="s2">&quot; -- Select -- &quot;</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_dc_level</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_timeFieldDriving</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_intensity</span> <span class="o">=</span> <span class="n">texto</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_input</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_intensity</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_cb_moke_dc_level">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_cb_moke_dc_level">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_moke_dc_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de texto en el combo box de nivel DC MOKE.</span>
+
+<span class="sd">    Este método actualiza la configuración del nivel DC del DAC (Convertidor Digital-Analógico) con el texto seleccionado en el combo box, siempre que el texto seleccionado no sea igual al texto actual en otros combo boxes relevantes.</span>
+
+<span class="sd">    :param texto: El texto seleccionado en el combo box de nivel DC MOKE.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_cb_moke_dc_level(&quot;Medio&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">texto</span> <span class="o">==</span> <span class="s2">&quot; -- Select -- &quot;</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_intensity</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_timeFieldDriving</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_dc_level</span> <span class="o">=</span> <span class="n">texto</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_input</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_dc_level</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.manejar_cb_temperature">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.manejar_cb_temperature">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maneja el cambio de texto en el combo box de temperatura MOKE.</span>
+
+<span class="sd">    Este método actualiza la configuración de la temperatura de entrada del DAC (Convertidor Digital-Analógico) con el texto seleccionado en el combo box, siempre que el texto seleccionado no sea igual al texto actual en otros combo boxes relevantes.</span>
+
+<span class="sd">    :param texto: El texto seleccionado en el combo box de temperatura MOKE.</span>
+<span class="sd">    :type texto: str</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.manejar_cb_temperature(&quot;Alta&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">texto</span> <span class="o">==</span> <span class="s2">&quot; -- Select -- &quot;</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_intensity</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_dc_level</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_timeFieldDriving</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_temperature</span> <span class="o">=</span> <span class="n">texto</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_input</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.run">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ejecuta el experimento MOKE.</span>
+
+<span class="sd">    Este método verifica si se han proporcionado todos los datos necesarios para ejecutar el experimento MOKE. Si falta algún dato, muestra un mensaje de error correspondiente. Si todos los datos están presentes, crea un nuevo experimento MOKE en la base de datos y abre la pantalla gráfica para visualizar los resultados.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.run()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">rutaCsv</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_error_ruta_CSV</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_validar_datos</span><span class="p">()</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_error_faltan_datos</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">tipo</span> <span class="o">=</span> <span class="s2">&quot;MOKE&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span> <span class="o">=</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">id_experimento</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">ConfiguracionMokeDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">abrir_pantalla_grafica</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.cargar_configuracion">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.cargar_configuracion">[docs]</a>
+    <span class="k">def</span> <span class="nf">cargar_configuracion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_experimento</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Carga la configuración de un experimento MOKE desde la base de datos y actualiza los campos del formulario.</span>
+
+<span class="sd">    Este método recupera los datos de un experimento y su configuración asociada desde la base de datos usando </span>
+<span class="sd">    el identificador del experimento. Luego, actualiza los widgets del formulario con los valores recuperados.</span>
+
+<span class="sd">    :param id_experimento: Identificador del experimento a cargar.</span>
+<span class="sd">    :type id_experimento: int</span>
+
+<span class="sd">    La configuración cargada incluye los siguientes parámetros:</span>
+<span class="sd">    </span>
+<span class="sd">    - Descripción del experimento.</span>
+<span class="sd">    - Ruta del archivo de datos.</span>
+<span class="sd">    - Intensidad MOKE (DAC).</span>
+<span class="sd">    - Rango de voltaje MOKE (DAC).</span>
+<span class="sd">    - Nivel DC MOKE (DAC).</span>
+<span class="sd">    - Rango de voltaje del nivel DC (DAC).</span>
+<span class="sd">    - Temperatura de entrada (DAC).</span>
+<span class="sd">    - Rango de voltaje de la temperatura (DAC).</span>
+<span class="sd">    - Corriente de conducción de campo (DAC).</span>
+<span class="sd">    - Sensibilidad del Lock-in.</span>
+<span class="sd">    - Constante de tiempo del Lock-in.</span>
+<span class="sd">    - Campo magnético.</span>
+<span class="sd">    - Puntos por bucle.</span>
+<span class="sd">    - Número de barridos.</span>
+<span class="sd">    - Tiempo de permanencia.</span>
+<span class="sd">    - Tiempo de integración.</span>
+<span class="sd">    - Geometría.</span>
+<span class="sd">    - Tasa de muestreo (DAC).</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.cargar_configuracion(123)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="n">experimento_cargado</span> <span class="o">=</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">)</span>
+        <span class="n">configuracion_cargada</span> <span class="o">=</span> <span class="n">ConfiguracionMokeDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">configuracion_cargada</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_description</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">experimento_cargado</span><span class="o">.</span><span class="n">descripcion</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_datafile</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">experimento_cargado</span><span class="o">.</span><span class="n">rutaCsv</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_intensity</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_input_intensity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_voltage_range</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span>
+            <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_voltaje_range</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_moke_dc_level</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_dc_level</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_dc_level_voltage_range</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span>
+            <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_dc_voltage_range</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_input_temperature</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span>
+            <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_temperature_voltaje_range</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_timeFieldDriving</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span>
+            <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_field_driving_current</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_sensitivity</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">lock_sensitivity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_time</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">lock_time_constant</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_magnetic_field</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">magnetic_field</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_per_loop</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">points_per_loop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_number_sweeps</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">number_of_sweeps</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_dweel_time</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dwell_time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_integration_time</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">integration_time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_geometry</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_sampling_rate</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MokeWindow.abrir_pantalla_grafica">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.MokeWindow.abrir_pantalla_grafica">[docs]</a>
+    <span class="k">def</span> <span class="nf">abrir_pantalla_grafica</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abre la pantalla gráfica para visualizar los resultados del experimento MOKE.</span>
+
+<span class="sd">    Este método oculta la ventana actual y muestra la pantalla gráfica que visualiza los resultados del experimento MOKE.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        self.abrir_pantalla_grafica()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grafica</span> <span class="o">=</span> <span class="n">MokeGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grafica</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.moke_config.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Función principal para iniciar la aplicación MOKE.</span>
+
+<span class="sd">    Esta función inicia la conexión con la base de datos, crea una aplicación Qt, muestra la ventana principal de la aplicación y ejecuta el bucle de eventos de la aplicación hasta que se cierra la ventana principal.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        main()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Conexion</span><span class="o">.</span><span class="n">iniciar_bbdd</span><span class="p">()</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">([])</span>
+    <span class="n">vista_moke_loop</span> <span class="o">=</span> <span class="n">MokeWindow</span><span class="p">()</span>
+    <span class="n">vista_moke_loop</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec</span><span class="p">())</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Equipo prácticas IES Sampedro: Adolfo M. Luque, Iker Carrón &amp; David Romero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

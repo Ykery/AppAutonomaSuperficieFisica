@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.vista.teas_config &mdash; Aplicación UAM Depart. Física 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Aplicación UAM Depart. Física
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Vista General</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Aplicación UAM Depart. Física</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.vista.teas_config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.vista.teas_config</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtCore</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtGui</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtWidgets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PyQt6</span> <span class="kn">import</span> <span class="n">Qwt</span>
+<span class="kn">from</span> <span class="nn">PyQt6.Qwt</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">from</span> <span class="nn">src.modelo.dao</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">src.modelo.clases</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.displayLCD</span> <span class="kn">import</span> <span class="n">DisplayLCDModificado</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.thermometer</span> <span class="kn">import</span> <span class="n">ThermometerModificado</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.combobox</span> <span class="kn">import</span> <span class="n">QComboBoxModificado</span>
+
+<span class="kn">from</span> <span class="nn">src.vista.teas_graph</span> <span class="kn">import</span> <span class="n">TeasGraph</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">src.vista.componentes.boton</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BotonModificado</span><span class="p">,</span>
+    <span class="n">BotonModificadoExit</span><span class="p">,</span>
+    <span class="n">BotonModificadoRun</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="TeasWindow">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow">[docs]</a>
+<span class="k">class</span> <span class="nc">TeasWindow</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ventana principal para la gestión de un sistema TEAS.</span>
+
+<span class="sd">    Esta clase crea y configura la interfaz de usuario para gestionar un sistema TEAS,</span>
+<span class="sd">    incluyendo la configuración de parámetros de DAC, Lock-in, canales y otras configuraciones específicas.</span>
+
+<span class="sd">    :param id_experimento: ID opcional del experimento para cargar una configuración previa.</span>
+<span class="sd">    :type id_experimento: int, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_experimento</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inicializa una nueva instancia de la ventana de gestión de TEAS.</span>
+
+<span class="sd">        Este método configura la ventana principal, inicializa las variables necesarias,</span>
+<span class="sd">        crea y organiza los diferentes widgets y layouts necesarios para la interfaz de usuario.</span>
+
+<span class="sd">        :param id_experimento: ID opcional del experimento para cargar una configuración previa.</span>
+<span class="sd">        :type id_experimento: int, optional</span>
+
+<span class="sd">        Configura los siguientes elementos:</span>
+
+<span class="sd">        - Estilo de la ventana.</span>
+<span class="sd">        - Objetos `configuracion` y `experimento` vacíos de las clases `ConfiguracionTeas` y `Experimento`.</span>
+<span class="sd">        - Título de la ventana.</span>
+<span class="sd">        - Variables generales `teasDACParams` e `indicesList`.</span>
+<span class="sd">        - Diseño principal (`QGridLayout`).</span>
+<span class="sd">        - Fuente utilizada (`QFont`).</span>
+<span class="sd">        - Listas desplegables para varios parámetros del sistema.</span>
+<span class="sd">        - Botones de ejecución y cierre con sus respectivos layouts.</span>
+<span class="sd">        - Conexión de señales de botones a sus manejadores.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            app = QApplication([])</span>
+<span class="sd">            window = TeasWindow(id_experimento=1)</span>
+<span class="sd">            window.show()</span>
+<span class="sd">            app.exec_()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;background-color: rgb(176, 213, 212); color: black;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Se crea el objeto &#39;configuracion&#39; vacío y el objeto &#39;experimento&#39; vacío de la clase ConfiguracionTeas y Experimento</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span> <span class="o">=</span> <span class="n">ConfiguracionTeas</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span> <span class="o">=</span> <span class="n">Experimento</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;TEAS MANAGEMENT&quot;</span><span class="p">)</span>
+        <span class="c1"># self.setContentsMargins(10, 10, 10, 10)</span>
+
+        <span class="c1"># variables generales</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicesList</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuenteHelvetica</span> <span class="o">=</span> <span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanVrange</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; -- Select -- &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;20 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;5 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;4 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2.5 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1.25 V&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1 V&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanChannelsDAC</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; -- Select -- &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Analog Input #4&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unitsAML</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; -- Select -- &quot;</span><span class="p">,</span> <span class="s2">&quot;mBar&quot;</span><span class="p">,</span> <span class="s2">&quot;Pascal&quot;</span><span class="p">,</span> <span class="s2">&quot;Torr&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanLockinTimeConsVals</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; --- Select --- &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1 msec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10 msec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;0.1 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;0.3 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;3 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;30 sec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;100 sec&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanLockinSensVals</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot; --- Select --- &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2.5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;25&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;100&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;250&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;1 mV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;2.5 mV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;10 mV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;25 mV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;100 mV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;250 mV&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="p">)</span>
+
+        <span class="n">btn_run</span> <span class="o">=</span> <span class="n">BotonModificadoRun</span><span class="p">(</span><span class="s2">&quot;Run&quot;</span><span class="p">)</span>
+        <span class="n">btn_close</span> <span class="o">=</span> <span class="n">BotonModificadoExit</span><span class="p">(</span><span class="s2">&quot;Close&quot;</span><span class="p">)</span>
+        <span class="n">buttons_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_close</span><span class="p">)</span>
+        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_run</span><span class="p">)</span>
+        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_teas_DAC_box</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_teas_lock_in_box</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_scan_AML_gauge_box</span><span class="p">(),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_teas_time_box</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_lock_in_thermo</span><span class="p">(),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_teas_channeltron_box</span><span class="p">(),</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">teas_system_ID_box</span><span class="p">(),</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_data_file</span><span class="p">(),</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">buttons_layout</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="p">)</span>
+
+        <span class="n">btn_run</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span>
+        <span class="n">btn_close</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">id_experimento</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cargar_configuracion</span><span class="p">(</span><span class="n">id_experimento</span><span class="o">=</span><span class="n">id_experimento</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TeasWindow.run">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ejecuta el proceso principal de la ventana de gestión de TEAS.</span>
+
+<span class="sd">        Este método valida la configuración actual y, si todo es correcto, guarda el experimento</span>
+<span class="sd">        y su configuración en la base de datos, y luego abre la pantalla de gráficos.</span>
+
+<span class="sd">        Realiza las siguientes acciones:</span>
+
+<span class="sd">        - Verifica si la ruta del archivo CSV está especificada.</span>
+<span class="sd">        - Valida los datos de configuración.</span>
+<span class="sd">        - Establece el tipo de experimento como &quot;TEAS&quot;.</span>
+<span class="sd">        - Crea un nuevo registro de experimento en la base de datos.</span>
+<span class="sd">        - Asocia la configuración con el experimento y guarda la configuración en la base de datos.</span>
+<span class="sd">        - Abre la pantalla de gráficos para visualizar los resultados.</span>
+
+<span class="sd">        Muestra mensajes de error si:</span>
+
+<span class="sd">        - No se ha especificado la ruta del archivo CSV (`mostrar_error_ruta_CSV`).</span>
+<span class="sd">        - Los datos de configuración no son válidos (`mostrar_error_faltan_datos`).</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            window = TeasWindow()</span>
+<span class="sd">            window.run()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">rutaCsv</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_error_ruta_CSV</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_validar_datos</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_error_faltan_datos</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">tipo</span> <span class="o">=</span> <span class="s2">&quot;TEAS&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span> <span class="o">=</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">id_experimento</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">ConfiguracionTeasDAO</span><span class="o">.</span><span class="n">crear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">abrir_pantalla_grafica</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.mostrar_error">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.mostrar_error">[docs]</a>
+    <span class="k">def</span> <span class="nf">mostrar_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Muestra un cuadro de diálogo de error con un mensaje de entrada no válido.</span>
+
+<span class="sd">        Este método crea y configura una ventana de mensaje de error con un icono crítico,</span>
+<span class="sd">        un título y un texto de error. La ventana de mensaje se muestra con un botón &quot;Ok&quot;.</span>
+
+<span class="sd">        Configura los siguientes elementos:</span>
+
+<span class="sd">        - Icono del cuadro de diálogo como crítico.</span>
+<span class="sd">        - Título de la ventana como &quot;Error de Input&quot;.</span>
+<span class="sd">        - Texto del mensaje como &quot;Input selecionado no valido.&quot;.</span>
+<span class="sd">        - Estilo de la fuente con tamaño 12 puntos.</span>
+<span class="sd">        - Botón &quot;Ok&quot; para cerrar la ventana.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            window = TeasWindow()</span>
+<span class="sd">            window.mostrar_error()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Crear y configurar la ventana de error</span>
+        <span class="n">error_dialog</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Icon</span><span class="o">.</span><span class="n">Critical</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Error de Input&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Input selecionado no valido.&quot;</span><span class="p">)</span>
+        <span class="c1"># aumentar tamaño de la letra</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;font: 12pt&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+        <span class="c1"># Mostrar la ventana de error</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.mostrar_error_ruta_CSV">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.mostrar_error_ruta_CSV">[docs]</a>
+    <span class="k">def</span> <span class="nf">mostrar_error_ruta_CSV</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Muestra un cuadro de diálogo de error indicando que se debe ingresar la ruta del archivo CSV.</span>
+
+<span class="sd">        Este método crea y configura una ventana de mensaje de error con un ícono crítico,</span>
+<span class="sd">        un título y un texto de error indicando al usuario que debe ingresar la ruta del archivo CSV.</span>
+<span class="sd">        La ventana de mensaje se muestra con un botón &quot;Ok&quot;.</span>
+
+<span class="sd">        Configura los siguientes elementos:</span>
+
+<span class="sd">        - Ícono del cuadro de diálogo como crítico.</span>
+<span class="sd">        - Título de la ventana como &quot;Error de Datafile&quot;.</span>
+<span class="sd">        - Texto del mensaje como &quot;Ingrese la ruta del archivo.&quot;.</span>
+<span class="sd">        - Estilo de la fuente con tamaño 12 puntos.</span>
+<span class="sd">        - Botón &quot;Ok&quot; para cerrar la ventana.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            window = TeasWindow()</span>
+<span class="sd">            window.mostrar_error_ruta_CSV()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Crear y configurar la ventana de error</span>
+        <span class="n">error_dialog</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Icon</span><span class="o">.</span><span class="n">Critical</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Error de Datafile&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Ingrese la ruta del archivo.&quot;</span><span class="p">)</span>
+        <span class="c1"># aumentar tamaño de la letra</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;font: 12pt&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+        <span class="c1"># Mostrar la ventana de error</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.mostrar_error_faltan_datos">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.mostrar_error_faltan_datos">[docs]</a>
+    <span class="k">def</span> <span class="nf">mostrar_error_faltan_datos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Muestra un cuadro de diálogo de error indicando que faltan datos para correr el experimento.</span>
+
+<span class="sd">        Este método crea y configura una ventana de mensaje de error con un ícono crítico,</span>
+<span class="sd">        un título y un texto de error indicando al usuario que deben ingresar todos los datos necesarios</span>
+<span class="sd">        para correr el experimento. La ventana de mensaje se muestra con un botón &quot;Ok&quot;.</span>
+
+<span class="sd">        Configura los siguientes elementos:</span>
+
+<span class="sd">        - Ícono del cuadro de diálogo como crítico.</span>
+<span class="sd">        - Título de la ventana como &quot;Error de Datos&quot;.</span>
+<span class="sd">        - Texto del mensaje como &quot;Ingrese todos los datos necesarios para correr el experimento.&quot;.</span>
+<span class="sd">        - Estilo de la fuente con tamaño 12 puntos.</span>
+<span class="sd">        - Botón &quot;Ok&quot; para cerrar la ventana.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            window = TeasWindow()</span>
+<span class="sd">            window.mostrar_error_faltan_datos()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Crear y configurar la ventana de error</span>
+        <span class="n">error_dialog</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Icon</span><span class="o">.</span><span class="n">Critical</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Error de Datos&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="s2">&quot;Ingrese todos los datos necesarios para correr el experimento.&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># aumentar tamaño de la letra</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;font: 12pt&quot;</span><span class="p">)</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+        <span class="c1"># Mostrar la ventana de error</span>
+        <span class="n">error_dialog</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.control_validar_datos">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.control_validar_datos">[docs]</a>
+    <span class="k">def</span> <span class="nf">control_validar_datos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verifica si se han ingresado todos los datos necesarios para correr el experimento.</span>
+
+<span class="sd">        Este método verifica si todos los atributos de configuración necesarios para ejecutar</span>
+<span class="sd">        el experimento tienen un valor distinto de `None`. Devuelve True si todos los datos</span>
+<span class="sd">        necesarios están presentes y False en caso contrario.</span>
+
+<span class="sd">        Retorna:</span>
+<span class="sd">        --------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True si todos los datos necesarios están presentes, False de lo contrario.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            window = TeasWindow()</span>
+<span class="sd">            if window.control_validar_datos():</span>
+<span class="sd">                window.run()</span>
+<span class="sd">            else:</span>
+<span class="sd">                window.mostrar_error_faltan_datos()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_intensity</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_teas_voltaje_range</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_temperature</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_temperature_voltaje_range</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_sampling_rate</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_input_pressure</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_sensitivity</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_presure_units</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_emission_current</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">lock_sensitivity</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">lock_time_constant</span> <span class="o">==</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">channeltron_voltage</span> <span class="o">==</span> <span class="kc">None</span>
+        <span class="p">):</span>
+
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.create_teas_lock_in_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.create_teas_lock_in_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_teas_lock_in_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea un cuadro de configuración de Lock-in.</span>
+
+<span class="sd">        Este método configura un grupo de widgets para la selección de sensibilidad y</span>
+<span class="sd">        constante de tiempo para un sistema Lock-in.</span>
+
+<span class="sd">        :return: Un QGroupBox configurado con varios controles para la configuración de Lock-in.</span>
+<span class="sd">        :rtype: QGroupBox</span>
+
+<span class="sd">        Configura los siguientes widgets:</span>
+
+<span class="sd">        - :class:`QLabel`: Etiquetas para cada selección.</span>
+<span class="sd">        - :class:`QComboBoxModificado`: Comboboxes personalizados para seleccionar diferentes parámetros.</span>
+<span class="sd">        - :class:`QCheckBox`: Checkbox para verificar valores correctos.</span>
+
+<span class="sd">        Los controles configurados son:</span>
+
+<span class="sd">        - `self.cb_lockinTimeCons`: Selección de constante de tiempo.</span>
+<span class="sd">        - `self.cb_lockinSens`: Selección de sensibilidad.</span>
+
+<span class="sd">        Se conectan varias señales a sus correspondientes manejadores para actualizar</span>
+<span class="sd">        los parámetros del sistema Lock-in cuando los valores seleccionados cambian.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            lock_in_box = self.create_teas_lock_in_box()</span>
+<span class="sd">            layout.addWidget(lock_in_box)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+
+        <span class="n">gb_teasLockinBox</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Lock-in settings&quot;</span><span class="p">)</span>
+        <span class="n">gb_teasLockinBox</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fuenteHelvetica</span><span class="p">)</span>
+        <span class="n">gb_teasLockinBox</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gb_teasLockinBox</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">lb_sensLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Sensitivity (/div)&quot;</span><span class="p">)</span>
+        <span class="n">lb_timeConsLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Time constant&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinTimeCons</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinSens</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinTimeCons</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanLockinSensVals</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinTimeCons</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinTimeCons</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_lockinTimeCons</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinSens</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanLockinTimeConsVals</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinSens</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinSens</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_lockinSens</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_sensLabel</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinTimeCons</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_timeConsLabel</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinSens</span><span class="p">)</span>
+
+        <span class="n">gb_teasLockinBox</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_teasLockinBox</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.create_teas_DAC_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.create_teas_DAC_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_teas_DAC_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea un cuadro de configuración de selección de canal DAC.</span>
+
+<span class="sd">        Este método configura un grupo de widgets para la selección de canales y rangos de voltaje</span>
+<span class="sd">        para el DAC, así como la tasa de muestreo.</span>
+
+<span class="sd">        :return: Un QGroupBox configurado con varios controles para la configuración del DAC.</span>
+<span class="sd">        :rtype: QGroupBox</span>
+
+<span class="sd">        Configura los siguientes widgets:</span>
+
+<span class="sd">        - :class:`QLabel`: Etiquetas para cada selección.</span>
+<span class="sd">        - :class:`QComboBoxModificado`: Comboboxes personalizados para seleccionar canales y rangos de voltaje.</span>
+<span class="sd">        - :class:`QwtSlider`: Slider personalizado para ajustar la tasa de muestreo.</span>
+<span class="sd">        - :class:`DisplayLCDModificado`: Pantalla LCD para mostrar la tasa de muestreo seleccionada.</span>
+<span class="sd">        - :class:`QCheckBox`: Checkbox para verificar la configuración.</span>
+
+<span class="sd">        Los controles configurados son:</span>
+
+<span class="sd">        - `self.cb_teasVrange`: Selección de rango de voltaje para TEAS.</span>
+<span class="sd">        - `self.cb_tempVrange`: Selección de rango de voltaje para temperatura.</span>
+<span class="sd">        - `self.cb_teas`: Selección de canal DAC para TEAS.</span>
+<span class="sd">        - `self.cb_temperature`: Selección de canal DAC para temperatura.</span>
+<span class="sd">        - `self.slider_samplingRate`: Slider para ajustar la tasa de muestreo.</span>
+
+<span class="sd">        Se conectan varias señales a sus correspondientes manejadores para actualizar</span>
+<span class="sd">        los parámetros del DAC cuando los valores seleccionados cambian.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            dac_box = self.create_teas_DAC_box()</span>
+<span class="sd">            layout.addWidget(dac_box)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">gb_teasDACbox</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;DAC channel selection&quot;</span><span class="p">)</span>
+
+        <span class="n">gb_teasDACbox</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gb_teasDACbox</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">gb_teasDACbox</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fuenteHelvetica</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_teasVrange</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_teas</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+
+        <span class="n">lb_teasLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;TEAS intensity:&quot;</span><span class="p">)</span>
+        <span class="n">lb_teasVrangeLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;TEAS DAC Voltage range:&quot;</span><span class="p">)</span>
+        <span class="n">lb_temperatureLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Sample temperature:&quot;</span><span class="p">)</span>
+        <span class="n">lb_tempVrangeLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Temperature DAC Voltage range:&quot;</span><span class="p">)</span>
+        <span class="n">lb_samplingRateLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Sampling Rate (kHz):&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtSlider</span><span class="p">()</span>
+
+        <span class="n">lcd_samplingRateDisplay</span> <span class="o">=</span> <span class="n">DisplayLCDModificado</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_silder_samplingRate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">lcd_samplingRateDisplay</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_teas</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanChannelsDAC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_teas</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">texto</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_teas</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_teasVrange</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanVrange</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_teasVrange</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_teasVrange</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_DAC_parameters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_teasVrange</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_teasVrange</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanChannelsDAC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">texto</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_temperature</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanVrange</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_DAC_parameters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_tempVrange</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setOrientation</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setScalePosition</span><span class="p">(</span>
+            <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtSlider</span><span class="o">.</span><span class="n">ScalePosition</span><span class="o">.</span><span class="n">TrailingScale</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setTrough</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setGroove</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setHandleSize</span><span class="p">(</span><span class="n">QSize</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setScale</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setTotalSteps</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setWrapping</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setScaleMaxMinor</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_teasLabel</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_teas</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_teasVrangeLabel</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_teasVrange</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_temperatureLabel</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_tempVrangeLabel</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_samplingRateLabel</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lcd_samplingRateDisplay</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">gb_teasDACbox</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_teasDACbox</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.create_scan_AML_gauge_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.create_scan_AML_gauge_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_scan_AML_gauge_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea un cuadro de configuración del medidor de presión AML.</span>
+
+<span class="sd">        Este método configura un grupo de widgets para la selección de canales, rangos de voltaje,</span>
+<span class="sd">        sensibilidad del medidor y unidades de presión para el medidor de presión AML, así como</span>
+<span class="sd">        opciones de corriente de emisión.</span>
+
+<span class="sd">        :return: Un QGroupBox configurado con varios controles para la configuración del medidor de presión AML.</span>
+<span class="sd">        :rtype: QGroupBox</span>
+
+<span class="sd">        Configura los siguientes widgets:</span>
+
+<span class="sd">        - :class:`QLabel`: Etiquetas para cada selección.</span>
+<span class="sd">        - :class:`QComboBoxModificado`: Comboboxes personalizados para seleccionar canales, rangos de voltaje y unidades de presión.</span>
+<span class="sd">        - :class:`QLineEdit`: Campo de texto para la sensibilidad del medidor.</span>
+<span class="sd">        - :class:`QRadioButton`: Botones de radio para seleccionar la corriente de emisión.</span>
+
+<span class="sd">        Los controles configurados son:</span>
+
+<span class="sd">        - `self.cb_scanAMLGaugeVrangeComboBox`: Selección de rango de voltaje para el medidor de presión.</span>
+<span class="sd">        - `self.cb_scanAMLGaugeDACcomboBox`: Selección de canal DAC para el medidor de presión.</span>
+<span class="sd">        - `self.cb_scanAMLUnitsComboBox`: Selección de unidades de presión para el medidor de presión.</span>
+<span class="sd">        - `self.le_scanSensLineEdit`: Campo de texto para la sensibilidad del medidor.</span>
+<span class="sd">        - `self.rb_scanEmission_1`: Botón de radio para seleccionar una corriente de emisión de 0.5 mA.</span>
+<span class="sd">        - `self.rb_scanEmission_2`: Botón de radio para seleccionar una corriente de emisión de 5.0 mA.</span>
+
+<span class="sd">        Se conectan varias señales a sus correspondientes manejadores para actualizar</span>
+<span class="sd">        los parámetros del medidor de presión AML cuando los valores seleccionados cambian.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            aml_gauge_box = self.create_scan_AML_gauge_box()</span>
+<span class="sd">            layout.addWidget(aml_gauge_box)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">gb_scanAMLgaugeBox</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;AML Pressure gauge&quot;</span><span class="p">)</span>
+        <span class="n">gb_scanAMLgaugeBox</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gb_scanAMLgaugeBox</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">gb_scanAMLgaugeBox</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fuenteHelvetica</span><span class="p">)</span>
+
+        <span class="n">lb_scanBoxLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Input channel:&quot;</span><span class="p">)</span>
+        <span class="n">lb_scanVrangeLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Channel voltage range (V)     &quot;</span><span class="p">)</span>
+        <span class="n">lb_scanSensLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Gauge sensitivity (1/[Pres]): &quot;</span><span class="p">)</span>
+        <span class="n">lb_scanAMLunitsLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Pressure gauge units: &quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lb_emissionLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Emission current:&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_scanSensLineEdit</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_scanSensLineEdit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_le_scanSensLineEdit</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rb_scanEmission_1</span> <span class="o">=</span> <span class="n">QRadioButton</span><span class="p">(</span><span class="s2">&quot;0.5 mA&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rb_scanEmission_2</span> <span class="o">=</span> <span class="n">QRadioButton</span><span class="p">(</span><span class="s2">&quot;5.0 mA&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rb_scanEmission_1</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seleccionar_rb_scanEmission</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rb_scanEmission_2</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seleccionar_rb_scanEmission</span><span class="p">)</span>
+
+        <span class="n">scanEmission_layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="n">scanEmission_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lb_emissionLabel</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span>
+        <span class="p">)</span>
+        <span class="n">scanEmission_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rb_scanEmission_1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span>
+        <span class="p">)</span>
+        <span class="n">scanEmission_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rb_scanEmission_2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeVrangeComboBox</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeDACcomboBox</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLUnitsComboBox</span> <span class="o">=</span> <span class="n">QComboBoxModificado</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeDACcomboBox</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanChannelsDAC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeDACcomboBox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeDACcomboBox</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">texto</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_scanAMLGaugeDACcomboBox</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeVrangeComboBox</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanVrange</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeVrangeComboBox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeVrangeComboBox</span><span class="o">.</span><span class="n">currentIndexChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_DAC_parameters</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeVrangeComboBox</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_scanAMLGaugeVrangeComboBox</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLUnitsComboBox</span><span class="o">.</span><span class="n">insertItems</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitsAML</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLUnitsComboBox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLUnitsComboBox</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manejar_cb_scanAMLUnitsComboBox</span>
+        <span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_scanBoxLabel</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeDACcomboBox</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_scanVrangeLabel</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeVrangeComboBox</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_scanSensLabel</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_scanSensLineEdit</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_scanAMLunitsLabel</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLUnitsComboBox</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">scanEmission_layout</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">gb_scanAMLgaugeBox</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_scanAMLgaugeBox</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.create_teas_time_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.create_teas_time_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_teas_time_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea un cuadro de configuración de tiempo de integración.</span>
+
+<span class="sd">        Este método configura un grupo de widgets para la selección de tiempo de integración</span>
+<span class="sd">        por punto de datos.</span>
+
+<span class="sd">        :return: Un QGroupBox configurado con varios controles para la configuración del tiempo de integración.</span>
+<span class="sd">        :rtype: QGroupBox</span>
+
+<span class="sd">        Configura los siguientes widgets:</span>
+
+<span class="sd">        - :class:`QLabel`: Etiquetas para cada selección.</span>
+<span class="sd">        - :class:`QwtKnob`: Knob personalizado para ajustar el tiempo de integración.</span>
+<span class="sd">        - :class:`DisplayLCDModificado`: Pantalla LCD para mostrar el tiempo de integración seleccionado.</span>
+
+<span class="sd">        Los controles configurados son:</span>
+
+<span class="sd">        - `self.knb_iterTimeKnob`: Knob para ajustar el tiempo de integración.</span>
+<span class="sd">        - `self.lcd_iterTimerDisplay`: Pantalla LCD para mostrar el tiempo de integración seleccionado.</span>
+
+<span class="sd">        Se conectan varias señales a sus correspondientes manejadores para actualizar</span>
+<span class="sd">        los parámetros del tiempo de integración cuando los valores seleccionados cambian.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            time_box = self.create_teas_time_box()</span>
+<span class="sd">            layout.addWidget(time_box)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">gb_teasTimeBox</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Integration time per datapoint&quot;</span><span class="p">)</span>
+        <span class="c1"># font = QFont()</span>
+        <span class="c1"># font.setBold(True)</span>
+        <span class="n">gb_teasTimeBox</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fuenteHelvetica</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_iterTimeKnob</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtKnob</span><span class="p">()</span>
+        <span class="n">lb_iterTimeLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+        <span class="n">lcd_iterTimerDisplay</span> <span class="o">=</span> <span class="n">DisplayLCDModificado</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_iterTimeKnob</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">lcd_iterTimerDisplay</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_iterTimeKnob</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_knb_iterTimeKnob</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lb_iterTimeLabel</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">knb_iterTimeKnob</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lcd_iterTimerDisplay</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">gb_teasTimeBox</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_teasTimeBox</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.create_lock_in_thermo">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.create_lock_in_thermo">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_lock_in_thermo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crea un grupo de widgets para visualizar el nivel de la señal lock-in actual.</span>
+
+<span class="sd">    Este método configura un layout de cuadrícula (`QGridLayout`) que contiene un grupo de caja (`QGroupBox`)</span>
+<span class="sd">    titulado &quot;Current lock-in signal level&quot;. Dentro de este grupo de caja se incluye un termómetro </span>
+<span class="sd">    (`ThermometerModificado`) que muestra el nivel de la señal lock-in actual. Es sólo para pruebas y no tiene</span>
+<span class="sd">    funcionalidad real.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">    --------</span>
+<span class="sd">    QGroupBox</span>
+<span class="sd">        Un grupo de widgets configurado para visualizar el nivel de la señal lock-in actual.</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        window = TeasWindow()</span>
+<span class="sd">        lock_in_thermo_box = window.create_lock_in_thermo()</span>
+<span class="sd">        layout.addWidget(lock_in_thermo_box)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">gb_lockinThermoBox</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Current lock-in signal level&quot;</span><span class="p">)</span>
+        <span class="n">gb_lockinThermoBox</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fuenteHelvetica</span><span class="p">)</span>
+
+        <span class="n">thermo_lockinSignal</span> <span class="o">=</span> <span class="n">ThermometerModificado</span><span class="p">()</span>
+        <span class="n">thermo_lockinSignal</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">thermo_lockinSignal</span><span class="p">)</span>
+        <span class="n">gb_lockinThermoBox</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_lockinThermoBox</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.create_teas_channeltron_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.create_teas_channeltron_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_teas_channeltron_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea un cuadro de configuración para el voltaje de polarización del Channeltron.</span>
+
+<span class="sd">        Este método configura un cuadro de grupo con un campo de entrada de línea para</span>
+<span class="sd">        introducir el voltaje de polarización deseado para el Channeltron.</span>
+
+<span class="sd">        :return: Un QGroupBox configurado con un control para la configuración del voltaje del Channeltron.</span>
+<span class="sd">        :rtype: QGroupBox</span>
+
+<span class="sd">        Configura los siguientes widgets:</span>
+
+<span class="sd">        - :class:`QLineEdit`: Campo de texto para introducir el voltaje de polarización del Channeltron.</span>
+
+<span class="sd">        Los controles configurados son:</span>
+
+<span class="sd">        - `self.le_teasChanneltronLineEdit`: Campo de texto para introducir el voltaje de polarización del Channeltron.</span>
+
+<span class="sd">        Se conecta la señal `textChanged` del campo de texto a su correspondiente manejador para actualizar</span>
+<span class="sd">        el voltaje del Channeltron cuando el valor introducido cambia.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            channeltron_box = self.create_teas_channeltron_box()</span>
+<span class="sd">            layout.addWidget(channeltron_box)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gb_teasChanneltronBox</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Channeltron bias voltage (V)&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gb_teasChanneltronBox</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fuenteHelvetica</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_teasChanneltronLineEdit</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_teasChanneltronLineEdit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manejar_le_teasChanneltronLineEdit</span>
+        <span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_teasChanneltronLineEdit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gb_teasChanneltronBox</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gb_teasChanneltronBox</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.teas_system_ID_box">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.teas_system_ID_box">[docs]</a>
+    <span class="k">def</span> <span class="nf">teas_system_ID_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crea un cuadro de descripción de muestra/sistema.</span>
+
+<span class="sd">        Este método configura un cuadro de grupo con un campo de entrada de línea para</span>
+<span class="sd">        introducir una descripción de la muestra o del sistema TEAS.</span>
+
+<span class="sd">        :return: Un QGroupBox configurado con un control para la descripción de muestra/sistema.</span>
+<span class="sd">        :rtype: QGroupBox</span>
+
+<span class="sd">        Configura los siguientes widgets:</span>
+
+<span class="sd">        - :class:`QLineEdit`: Campo de texto para introducir la descripción de muestra/sistema.</span>
+
+<span class="sd">        Los controles configurados son:</span>
+
+<span class="sd">        - `self.le_teasSysIDboxLineEdit`: Campo de texto para introducir la descripción de muestra/sistema.</span>
+
+<span class="sd">        Se conecta la señal `textChanged` del campo de texto a su correspondiente manejador para actualizar</span>
+<span class="sd">        la descripción cuando el valor introducido cambia.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            sys_id_box = self.teas_system_ID_box()</span>
+<span class="sd">            layout.addWidget(sys_id_box)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+
+        <span class="n">gb_teasSysIDbox</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Sample/system description&quot;</span><span class="p">)</span>
+        <span class="n">gb_teasSysIDbox</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fuenteHelvetica</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_teasSysIDboxLineEdit</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_teasSysIDboxLineEdit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manejar_le_teasys_ID_box_line_edit</span>
+        <span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_teasSysIDboxLineEdit</span><span class="p">)</span>
+        <span class="n">gb_teasSysIDbox</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_teasSysIDbox</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.open_file_dialog">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.open_file_dialog">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_file_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abre un cuadro de diálogo para seleccionar un archivo de datos.</span>
+
+<span class="sd">        Este método abre un cuadro de diálogo del sistema para seleccionar un archivo.</span>
+<span class="sd">        Después de seleccionar un archivo, actualiza el campo de texto con la ruta del archivo seleccionado.</span>
+
+<span class="sd">        :param self: Referencia a la instancia de la clase.</span>
+<span class="sd">        :type self: object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">file</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">FileMode</span><span class="o">.</span><span class="n">AnyFile</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">setViewMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">ViewMode</span><span class="o">.</span><span class="n">List</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">setAcceptMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">AcceptMode</span><span class="o">.</span><span class="n">AcceptSave</span><span class="p">)</span>
+
+        <span class="c1"># Si se escribe una ruta y existe, que apareza en el cuadro de diálogo del sistema de gestor de archivos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archivo_incio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">le_fileLineEdit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archivo_incio</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archivo_incio</span><span class="p">):</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">setDirectory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archivo_incio</span><span class="p">)</span>
+
+        <span class="c1"># Comprobar si el diálogo se cerró con una selección válida de archivo</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">exec</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nombre_file</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">le_fileLineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nombre_file</span><span class="p">)</span>
+
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.set_data_file">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.set_data_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_data_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Configura un cuadro de selección de archivo de datos.</span>
+
+<span class="sd">        Este método configura un grupo de widgets para seleccionar un archivo de datos.</span>
+<span class="sd">        Incluye un campo de texto para mostrar la ruta del archivo seleccionado y un botón de navegación para buscar el archivo.</span>
+
+<span class="sd">        :return: Un QGroupBox configurado con un control para la selección de archivo de datos.</span>
+<span class="sd">        :rtype: QGroupBox</span>
+
+<span class="sd">        Configura los siguientes widgets:</span>
+
+<span class="sd">        - :class:`QLineEdit`: Campo de texto para mostrar la ruta del archivo seleccionado.</span>
+<span class="sd">        - :class:`boton_modificado`: Botón personalizado para navegar y seleccionar el archivo.</span>
+
+<span class="sd">        Los controles configurados son:</span>
+
+<span class="sd">        - `self.le_fileLineEdit`: Campo de texto para mostrar la ruta del archivo seleccionado.</span>
+<span class="sd">        - `btn_browseButton`: Botón para abrir el cuadro de diálogo de selección de archivo.</span>
+
+<span class="sd">        Se conecta la señal `clicked` del botón a su correspondiente manejador para abrir el cuadro de diálogo de selección de archivo.</span>
+<span class="sd">        Se conecta la señal `textChanged` del campo de texto a su correspondiente manejador para manejar cambios en el texto.</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            data_file_box = self.set_data_file()</span>
+<span class="sd">            layout.addWidget(data_file_box)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">gb_dataFileBox</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">&quot;Datafile selection&quot;</span><span class="p">)</span>
+        <span class="n">gb_dataFileBox</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fuenteHelvetica</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_fileLineEdit</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_fileLineEdit</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+        <span class="n">btn_browseButton</span> <span class="o">=</span> <span class="n">BotonModificado</span><span class="p">(</span><span class="s2">&quot;Browse&quot;</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">le_fileLineEdit</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn_browseButton</span><span class="p">)</span>
+
+        <span class="n">btn_browseButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_file_dialog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_fileLineEdit</span><span class="o">.</span><span class="n">textChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manejar_le_fileLineEdit</span><span class="p">)</span>
+
+        <span class="n">gb_dataFileBox</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gb_dataFileBox</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_silder_samplingRate">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_silder_samplingRate">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_silder_samplingRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en el valor del control deslizante de la tasa de muestreo DAC.</span>
+
+<span class="sd">        Este método actualiza el atributo `dac_sampling_rate` de la configuración</span>
+<span class="sd">        con el valor proporcionado por el control deslizante de la tasa de muestreo DAC.</span>
+
+<span class="sd">        :param value: El nuevo valor seleccionado en el control deslizante.</span>
+<span class="sd">        :type value: float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_sampling_rate</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+    <span class="k">def</span> <span class="nf">manejar_cb_teas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección de intensidad de entrada TEAS.</span>
+
+<span class="sd">        Este método actualiza el atributo `dac_input_intensity` de la configuración</span>
+<span class="sd">        con el texto seleccionado en el combobox de intensidad de entrada TEAS.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de intensidad de entrada TEAS.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_intensity</span> <span class="o">=</span> <span class="n">texto</span>
+
+<div class="viewcode-block" id="TeasWindow.manejar_cb_teasVrange">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_cb_teasVrange">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_teasVrange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección del rango de voltaje TEAS.</span>
+
+<span class="sd">        Este método actualiza el atributo `dac_teas_voltaje_range` de la configuración</span>
+<span class="sd">        con el texto seleccionado en el combobox de rango de voltaje TEAS.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de rango de voltaje TEAS.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_teas_voltaje_range</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+    <span class="k">def</span> <span class="nf">manejar_cb_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección de la temperatura de entrada.</span>
+
+<span class="sd">        Este método actualiza el atributo `dac_input_temperature` de la configuración</span>
+<span class="sd">        con el texto seleccionado en el combobox de temperatura de entrada.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de temperatura de entrada.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_temperature</span> <span class="o">=</span> <span class="n">texto</span>
+
+<div class="viewcode-block" id="TeasWindow.manejar_cb_tempVrange">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_cb_tempVrange">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_tempVrange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección del rango de voltaje de temperatura.</span>
+
+<span class="sd">        Este método actualiza el atributo `dac_temperature_voltaje_range` de la configuración</span>
+<span class="sd">        con el texto seleccionado en el combobox de rango de voltaje de temperatura.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de rango de voltaje de temperatura.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_temperature_voltaje_range</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_cb_lockinTimeCons">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_cb_lockinTimeCons">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_lockinTimeCons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección de la constante de tiempo del Lock-in.</span>
+
+<span class="sd">        Este método actualiza el atributo `lock_time_constant` de la configuración</span>
+<span class="sd">        con el texto seleccionado en el combobox de constante de tiempo del Lock-in.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de constante de tiempo del Lock-in.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">lock_time_constant</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_cb_lockinSens">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_cb_lockinSens">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_lockinSens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección de la sensibilidad del Lock-in.</span>
+
+<span class="sd">        Este método actualiza el atributo `lock_sensitivity` de la configuración</span>
+<span class="sd">        con el texto seleccionado en el combobox de sensibilidad del Lock-in.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de sensibilidad del Lock-in.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">lock_sensitivity</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_le_scanSensLineEdit">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_le_scanSensLineEdit">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_le_scanSensLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en el valor introducido en el campo de entrada de sensibilidad AML.</span>
+
+<span class="sd">        Este método actualiza el atributo `aml_sensitivity` de la configuración</span>
+<span class="sd">        con el texto introducido en el campo de entrada de sensibilidad AML.</span>
+
+<span class="sd">        :param texto: El texto introducido en el campo de entrada de sensibilidad AML.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_sensitivity</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_cb_scanAMLGaugeVrangeComboBox">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_cb_scanAMLGaugeVrangeComboBox">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_scanAMLGaugeVrangeComboBox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección del rango de voltaje del medidor de presión AML.</span>
+
+<span class="sd">        Este método actualiza el atributo `aml_voltage_range` de la configuración</span>
+<span class="sd">        con el texto seleccionado en el combobox de rango de voltaje del medidor de presión AML.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de rango de voltaje del medidor de presión AML.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_voltage_range</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.seleccionar_rb_scanEmission">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.seleccionar_rb_scanEmission">[docs]</a>
+    <span class="k">def</span> <span class="nf">seleccionar_rb_scanEmission</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la selección de la opción de emisión de corriente.</span>
+
+<span class="sd">        Este método verifica cuál de las opciones de emisión de corriente está seleccionada y</span>
+<span class="sd">        llama al método correspondiente para manejar esa selección.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rb_scanEmission_1</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manejar_rb_emision_1</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">rb_scanEmission_2</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manejar_rb_emision_2</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_rb_emision_1">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_rb_emision_1">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_rb_emision_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la selección de la opción de emisión de corriente &quot;0.5 mA&quot;.</span>
+
+<span class="sd">        Este método actualiza el atributo `aml_emission_current` de la configuración</span>
+<span class="sd">        para indicar que la corriente de emisión es de &quot;0.5 mA&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_emission_current</span> <span class="o">=</span> <span class="s2">&quot;0.5 mA&quot;</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_rb_emision_2">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_rb_emision_2">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_rb_emision_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la selección de la opción de emisión de corriente &quot;5.0 mA&quot;.</span>
+
+<span class="sd">        Este método actualiza el atributo `aml_emission_current` de la configuración</span>
+<span class="sd">        para indicar que la corriente de emisión es de &quot;5.0 mA&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_emission_current</span> <span class="o">=</span> <span class="s2">&quot;5.0 mA&quot;</span></div>
+
+
+    <span class="k">def</span> <span class="nf">manejar_cb_scanAMLGaugeDACcomboBox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección del canal de entrada del medidor de presión AML.</span>
+
+<span class="sd">        Este método actualiza el atributo `aml_input_pressure` de la configuración</span>
+<span class="sd">        con el texto seleccionado en el combobox de canal de entrada del medidor de presión AML.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de canal de entrada del medidor de presión AML.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_input_pressure</span> <span class="o">=</span> <span class="n">texto</span>
+
+<div class="viewcode-block" id="TeasWindow.manejar_cb_scanAMLUnitsComboBox">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_cb_scanAMLUnitsComboBox">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_scanAMLUnitsComboBox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección de las unidades de presión del medidor AML.</span>
+
+<span class="sd">        Este método actualiza el atributo `aml_presure_units` de la configuración</span>
+<span class="sd">        con el texto seleccionado en el combobox de unidades de presión del medidor AML.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de unidades de presión del medidor AML.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_presure_units</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_knb_iterTimeKnob">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_knb_iterTimeKnob">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_knb_iterTimeKnob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en el valor del control de ajuste de tiempo de integración.</span>
+
+<span class="sd">        Este método actualiza el atributo `integration_time` de la configuración</span>
+<span class="sd">        con el valor proporcionado por el control de ajuste de tiempo de integración.</span>
+
+<span class="sd">        :param value: El nuevo valor seleccionado en el control de ajuste de tiempo de integración.</span>
+<span class="sd">        :type value: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">integration_time</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_le_teasChanneltronLineEdit">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_le_teasChanneltronLineEdit">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_le_teasChanneltronLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en el valor introducido en el campo de entrada del voltaje del Channeltron TEAS.</span>
+
+<span class="sd">        Este método actualiza el atributo `channeltron_voltage` de la configuración</span>
+<span class="sd">        con el texto introducido en el campo de entrada del voltaje del Channeltron TEAS.</span>
+
+<span class="sd">        :param texto: El texto introducido en el campo de entrada del voltaje del Channeltron TEAS.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">channeltron_voltage</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_le_teasys_ID_box_line_edit">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_le_teasys_ID_box_line_edit">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_le_teasys_ID_box_line_edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en el valor introducido en el campo de entrada de descripción del sistema en el experimento TEAS.</span>
+
+<span class="sd">        Este método actualiza el atributo `descripcion` del experimento TEAS</span>
+<span class="sd">        con el texto introducido en el campo de entrada de descripción del sistema.</span>
+
+<span class="sd">        :param texto: El texto introducido en el campo de entrada de descripción del sistema.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">descripcion</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_le_fileLineEdit">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_le_fileLineEdit">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_le_fileLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en el valor introducido en el campo de entrada de ruta de archivo.</span>
+
+<span class="sd">        Este método actualiza el atributo `rutaCsv` del experimento TEAS</span>
+<span class="sd">        con el texto introducido en el campo de entrada de ruta de archivo.</span>
+
+<span class="sd">        :param texto: El texto introducido en el campo de entrada de ruta de archivo.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">rutaCsv</span> <span class="o">=</span> <span class="n">texto</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_cb_teas">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_cb_teas">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_teas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección de la intensidad de entrada para TEAS.</span>
+
+<span class="sd">        Si se selecciona &quot;-- Select --&quot;, no realiza ninguna acción.</span>
+<span class="sd">        Si el texto seleccionado es diferente al texto actualmente seleccionado en los comboboxes de temperatura y medidor de presión AML,</span>
+<span class="sd">        actualiza el atributo `dac_input_intensity` de la configuración con el texto seleccionado y lo imprime.</span>
+<span class="sd">        Si el texto seleccionado es igual al texto actualmente seleccionado en alguno de los comboboxes de temperatura o medidor de presión AML,</span>
+<span class="sd">        muestra un error.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de intensidad de entrada para TEAS.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">texto</span> <span class="o">==</span> <span class="s2">&quot; -- Select -- &quot;</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeDACcomboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_intensity</span> <span class="o">=</span> <span class="n">texto</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_input</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_teas</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_cb_scanAMLGaugeDACcomboBox">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_cb_scanAMLGaugeDACcomboBox">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_scanAMLGaugeDACcomboBox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección del canal de entrada del medidor de presión AML.</span>
+
+<span class="sd">        Si se selecciona &quot;-- Select --&quot;, no realiza ninguna acción.</span>
+<span class="sd">        Si el texto seleccionado es diferente al texto actualmente seleccionado en los comboboxes de temperatura y TEAS,</span>
+<span class="sd">        actualiza el atributo `aml_input_pressure` de la configuración con el texto seleccionado y lo imprime.</span>
+<span class="sd">        Si el texto seleccionado es igual al texto actualmente seleccionado en alguno de los comboboxes de temperatura o TEAS,</span>
+<span class="sd">        muestra un error.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox del canal de entrada del medidor de presión AML.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">texto</span> <span class="o">==</span> <span class="s2">&quot; -- Select -- &quot;</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_teas</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_input_pressure</span> <span class="o">=</span> <span class="n">texto</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_input</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeDACcomboBox</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.manejar_cb_temperature">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.manejar_cb_temperature">[docs]</a>
+    <span class="k">def</span> <span class="nf">manejar_cb_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja el cambio en la selección de la temperatura de entrada.</span>
+
+<span class="sd">        Si se selecciona &quot;-- Select --&quot;, no realiza ninguna acción.</span>
+<span class="sd">        Si el texto seleccionado es diferente al texto actualmente seleccionado en los comboboxes de medidor de presión AML y TEAS,</span>
+<span class="sd">        actualiza el atributo `dac_input_temperature` de la configuración con el texto seleccionado y lo imprime.</span>
+<span class="sd">        Si el texto seleccionado es igual al texto actualmente seleccionado en alguno de los comboboxes de medidor de presión AML o TEAS,</span>
+<span class="sd">        muestra un error.</span>
+
+<span class="sd">        :param texto: El texto seleccionado en el combobox de temperatura de entrada.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">texto</span> <span class="o">==</span> <span class="s2">&quot; -- Select -- &quot;</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeDACcomboBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">texto</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_teas</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">dac_input_temperature</span> <span class="o">=</span> <span class="n">texto</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_input</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.error_input">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.error_input">[docs]</a>
+    <span class="k">def</span> <span class="nf">error_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combobox</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Muestra un mensaje de error y restablece el combobox seleccionado a su índice inicial.</span>
+
+<span class="sd">        Este método muestra un mensaje de error y restablece el índice del combobox especificado a su valor inicial.</span>
+
+<span class="sd">        :param combobox: El combobox que se debe restablecer.</span>
+<span class="sd">        :type combobox: QComboBox</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mostrar_error</span><span class="p">()</span>
+        <span class="n">combobox</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.cargar_configuracion">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.cargar_configuracion">[docs]</a>
+    <span class="k">def</span> <span class="nf">cargar_configuracion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_experimento</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Carga la configuración asociada a un experimento.</span>
+
+<span class="sd">        Este método carga la configuración asociada a un experimento identificado por su ID.</span>
+<span class="sd">        La configuración cargada se utiliza para establecer los valores de los widgets</span>
+<span class="sd">        en la interfaz de usuario.</span>
+
+<span class="sd">        :param id_experimento: El ID del experimento cuya configuración se va a cargar.</span>
+<span class="sd">        :type id_experimento: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">experimento_cargado</span> <span class="o">=</span> <span class="n">ExperimentoDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">)</span>
+
+        <span class="n">configuracion_cargada</span> <span class="o">=</span> <span class="n">ConfiguracionTeasDAO</span><span class="o">.</span><span class="n">obtener_por_id</span><span class="p">(</span><span class="n">id_experimento</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">configuracion_cargada</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_teas</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_input_intensity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_teasVrange</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_teas_voltaje_range</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_temperature</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_input_temperature</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span>
+            <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_temperature_voltaje_range</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider_samplingRate</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">dac_sampling_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeDACcomboBox</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span>
+            <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">aml_input_pressure</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeVrangeComboBox</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span>
+            <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">aml_voltage_range</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_scanSensLineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">aml_sensitivity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLUnitsComboBox</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span>
+            <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">aml_presure_units</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">aml_emission_current</span> <span class="o">==</span> <span class="s2">&quot;0.5 mA&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rb_scanEmission_1</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_emission_current</span> <span class="o">=</span> <span class="s2">&quot;0.5 mA&quot;</span>
+        <span class="k">if</span> <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">aml_emission_current</span> <span class="o">==</span> <span class="s2">&quot;5.0 mA&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rb_scanEmission_2</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configuracion</span><span class="o">.</span><span class="n">aml_emission_current</span> <span class="o">=</span> <span class="s2">&quot;5.0 mA&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knb_iterTimeKnob</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">integration_time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_teasChanneltronLineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">channeltron_voltage</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_teasSysIDboxLineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">experimento_cargado</span><span class="o">.</span><span class="n">descripcion</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">le_fileLineEdit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">experimento_cargado</span><span class="o">.</span><span class="n">rutaCsv</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinTimeCons</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">lock_time_constant</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cb_lockinSens</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">configuracion_cargada</span><span class="o">.</span><span class="n">lock_sensitivity</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.set_DAC_parameters">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.set_DAC_parameters">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_DAC_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. note::</span>
+
+<span class="sd">            **IMPORTANTE**</span>
+<span class="sd">            Este codigo sólo es un ejemplo adaptado de la clase &quot;configscan.cpp&quot;, no es funcional.</span>
+
+<span class="sd">        Configura los parámetros DAC en función de las selecciones actuales en los comboboxes.</span>
+
+<span class="sd">        Este método configura los parámetros DAC en función de las selecciones actuales</span>
+<span class="sd">        en los comboboxes de voltaje de TEAS, medidor de presión AML y voltaje de temperatura.</span>
+<span class="sd">        Los parámetros configurados se almacenan en el atributo `teasDACParams` de la clase.</span>
+
+<span class="sd">        Se asignan valores específicos de acuerdo con los índices seleccionados en los comboboxes.</span>
+<span class="sd">        Cada combobox tiene una serie de opciones predefinidas que determinan el rango de valores</span>
+<span class="sd">        para los parámetros de los DAC.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_teasVrange</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_scanAMLGaugeVrangeComboBox</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cb_tempVrange</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.0</span>
+
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">10.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span>
+
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span>
+
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.5</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.5</span>
+
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.25</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.25</span>
+
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.0</span>
+
+        <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">10.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+        <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span>
+
+        <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span>
+
+        <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.5</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.5</span>
+
+        <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+        <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.25</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.25</span>
+
+        <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.0</span>
+
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">10.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span>
+
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.0</span>
+
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.5</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.5</span>
+
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.25</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.25</span>
+
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teasDACParams</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.actualizar_datos">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.actualizar_datos">[docs]</a>
+    <span class="k">def</span> <span class="nf">actualizar_datos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Actualiza los datos de forma periódica.</span>
+
+<span class="sd">        Este método configura un temporizador que desencadena la actualización de datos cada 100 milisegundos.</span>
+<span class="sd">        Cada vez que se actualizan los datos, se genera un valor aleatorio entre 0 y 100 y se actualiza un termómetro Qwt</span>
+<span class="sd">        con ese valor.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actualizar_datos</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="kn">import</span> <span class="nn">random</span>
+
+        <span class="n">thermo</span> <span class="o">=</span> <span class="n">Qwt</span><span class="o">.</span><span class="n">QwtThermo</span><span class="p">()</span>
+        <span class="n">thermo</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="TeasWindow.abrir_pantalla_grafica">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.TeasWindow.abrir_pantalla_grafica">[docs]</a>
+    <span class="k">def</span> <span class="nf">abrir_pantalla_grafica</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Abre una pantalla gráfica para visualizar datos del experimento.</span>
+
+<span class="sd">        Este método oculta la ventana actual y crea una nueva instancia de la clase TeasGraph,</span>
+<span class="sd">        que se utiliza para visualizar los datos del experimento identificado por su ID.</span>
+<span class="sd">        La nueva ventana gráfica se muestra después de ocultar la ventana actual.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grafica</span> <span class="o">=</span> <span class="n">TeasGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimento</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grafica</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../src.vista.html#src.vista.teas_config.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Función principal para iniciar la aplicación Teas.</span>
+
+<span class="sd">    Esta función inicializa la conexión con la base de datos, crea una instancia de la aplicación QApplication</span>
+<span class="sd">    y una instancia de la ventana principal TeasWindow. Luego muestra la ventana principal y ejecuta la aplicación.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Conexion</span><span class="o">.</span><span class="n">iniciar_bbdd</span><span class="p">()</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">teas_window</span> <span class="o">=</span> <span class="n">TeasWindow</span><span class="p">()</span>
+    <span class="n">teas_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec</span><span class="p">())</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Equipo prácticas IES Sampedro: Adolfo M. Luque, Iker Carrón &amp; David Romero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

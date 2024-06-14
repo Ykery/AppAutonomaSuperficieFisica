@@ -1,0 +1,19 @@
+PAQUETES
+========
+
+.. toctree::
+   :maxdepth: 4
+
+   src.modelo
+   src.utilidades
+   src.vista
+
+Module contents
+---------------
+
+.. automodule:: src
+   :members: 
+
+
+
+

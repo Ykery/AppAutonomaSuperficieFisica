@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.vista.componentes.boton &mdash; Aplicación UAM Depart. Física 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Aplicación UAM Depart. Física
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Vista General</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Aplicación UAM Depart. Física</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.vista.componentes.boton</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.vista.componentes.boton</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">PyQt6.QtWidgets</span> <span class="kn">import</span> <span class="n">QPushButton</span>
+<span class="kn">from</span> <span class="nn">PyQt6.QtGui</span> <span class="kn">import</span> <span class="n">QFont</span>
+
+
+<div class="viewcode-block" id="BotonModificado">
+<a class="viewcode-back" href="../../../../src.vista.componentes.html#src.vista.componentes.boton.BotonModificado">[docs]</a>
+<span class="k">class</span> <span class="nc">BotonModificado</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Un botón personalizado con un estilo y fuente específicos.</span>
+
+<span class="sd">    Esta clase extiende :class:`QPushButton` y aplica una fuente personalizada y</span>
+<span class="sd">    un estilo de hoja de estilos (CSS) para modificar la apariencia del botón.</span>
+
+<span class="sd">    :param texto: El texto que se mostrará en el botón.</span>
+<span class="sd">    :type texto: str</span>
+
+<span class="sd">    Ejemplo de uso:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        boton = BotonModificado(&quot;Click me&quot;)</span>
+<span class="sd">        layout.addWidget(boton)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inicializa el botón personalizado con el texto dado.</span>
+
+<span class="sd">        :param texto: El texto que se mostrará en el botón.</span>
+<span class="sd">        :type texto: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BotonModificado</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            QPushButton {</span>
+<span class="sd">                background-color: rgb(135, 206, 235);</span>
+<span class="sd">                padding: 10px;</span>
+<span class="sd">            }</span>
+<span class="sd">            QPushButton:hover {</span>
+<span class="sd">            background-color: lightblue;</span>
+<span class="sd">            }</span>
+<span class="sd">             QPushButton:pressed {</span>
+<span class="sd">            background-color: rgb(100, 121, 120);</span>
+<span class="sd">            }                  </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="BotonModificadoExit">
+<a class="viewcode-back" href="../../../../src.vista.componentes.html#src.vista.componentes.boton.BotonModificadoExit">[docs]</a>
+<span class="k">class</span> <span class="nc">BotonModificadoExit</span><span class="p">(</span><span class="n">BotonModificado</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inicializa un botón modificado con un estilo personalizado y señales.</span>
+
+<span class="sd">        Este método inicializa un botón con el texto proporcionado y aplica un estilo personalizado al botón para indicar su función de salida.</span>
+
+<span class="sd">        :param texto: El texto que se mostrará en el botón.</span>
+<span class="sd">        :type texto: str</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            boton_salir = BotonModificadoExit(&quot;Salir&quot;)</span>
+<span class="sd">            layout.addWidget(boton_salir)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            QPushButton {</span>
+<span class="sd">                background-color: rgb(201,112,098);</span>
+<span class="sd">                padding: 10px;</span>
+<span class="sd">            }</span>
+<span class="sd">            QPushButton:hover {</span>
+<span class="sd">                background-color: rgb(240, 140, 126);</span>
+<span class="sd">            }</span>
+<span class="sd">             QPushButton:pressed {</span>
+<span class="sd">                background-color: rgb(167, 98, 88);</span>
+<span class="sd">            }                  </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="BotonModificadoRun">
+<a class="viewcode-back" href="../../../../src.vista.componentes.html#src.vista.componentes.boton.BotonModificadoRun">[docs]</a>
+<span class="k">class</span> <span class="nc">BotonModificadoRun</span><span class="p">(</span><span class="n">BotonModificado</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texto</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inicializa un botón modificado con un estilo personalizado y señales.</span>
+
+<span class="sd">        Este método inicializa un botón con el texto proporcionado y aplica un estilo personalizado al botón para indicar su función de ejecución.</span>
+
+<span class="sd">        :param texto: El texto que se mostrará en el botón.</span>
+<span class="sd">        :type texto: str</span>
+
+<span class="sd">        Ejemplo de uso:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            boton_ejecutar = BotonModificadoRun(&quot;Ejecutar&quot;)</span>
+<span class="sd">            layout.addWidget(boton_ejecutar)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            QPushButton {</span>
+<span class="sd">                background-color: rgb(59, 235, 156);</span>
+<span class="sd">                padding: 10px;</span>
+<span class="sd">            }</span>
+<span class="sd">            QPushButton:hover {</span>
+<span class="sd">                background-color: rgb(79, 255, 176);</span>
+<span class="sd">            }</span>
+<span class="sd">             QPushButton:pressed {</span>
+<span class="sd">                background-color: rgb(100, 121, 120);</span>
+<span class="sd">            }                  </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Equipo prácticas IES Sampedro: Adolfo M. Luque, Iker Carrón &amp; David Romero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
